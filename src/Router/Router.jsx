@@ -1,60 +1,105 @@
 import React from "react";
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter } from "react-router-dom";
+
+import ProtectedRoute from "./ProtectedRoute";
+
+import AdminHome from "../dashboards/admin/AdminHome";
+import ManageUsers from "../dashboards/admin/ManageUsers";
+import ManageIssues from "../dashboards/admin/ManageIssues";
+
+import CitizenHome from "../dashboards/citizen/CitizenHome";
+
 import HomeLayouts from "../HomeLayouts/HomeLayouts";
-import Error from "../Error/Error";
+import AdminLayout from "../HomeLayouts/AdminLayout";
+import StaffLayout from "../HomeLayouts/StaffLayout";
+import CitizenLayout from "../HomeLayouts/CitizenLayout";
 import Home from "../Components/Home/Home";
 import Login from "../Components/Login/Login";
 import ForgotPassword from "../Components/Login/ForgotPassword";
 import AllIssues from "../Components/Navbar/AllIssues";
-import About from "../Components/Navbar/About";
-import AllServises from "../Components/Navbar/AllServises";
-import ReportAnIssue from "../Components/Home/RportAnIssue";
+import ReportIssue from "../Components/Home/RportAnIssue";
 import IssueDetails from "../Components/IssueDetails/IssueDetails";
-import PrivateRoute from "../Components/Footer/PrivareRoute";
+import StaffAssigned from "../Dashboards/Staff/StaffAssigned";
+import StaffHome from "../Dashboards/Staff/StaffHome";
+import UpdateIssue from "../Dashboards/Staff/UpdateIssue";
+import MyIssues from "../Dashboards/Citizen/MyIssues";
+import CitizenIssueDetails from "../Dashboards/Citizen/CitizenIssueDetails";
+import AdminAndStaffAndCeitjenLogin from "../Dashboards/Admin/AdminAndStaffAndCeitjenLogin";
+import AllServices from "../Components/Navbar/AllServises";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomeLayouts></HomeLayouts>,
-    errorElement: <Error></Error>,
+    element: <HomeLayouts />,
     children: [
-      {
-        path: "/",
-        element: <Home></Home>,
-      },
-      {
-        path: "/login",
-        element: <Login></Login>,
-      },
-      {
-        path: "/ForgotPassword",
-        element: <ForgotPassword></ForgotPassword>,
-      },
-      {
-        path: "/allIssues",
-        element: <AllIssues></AllIssues>,
-      },
-      {
-        path: "/about",
-        element: <About></About>,
-      },
+      { path: "/", element: <Home /> },
+      { path: "/login", element: <Login /> },
+      { path: "/forgotPassword", element: <ForgotPassword></ForgotPassword> },
+      { path: "/allIssues", element: <AllIssues /> },
+      { path: "/reportIssue", element: <ReportIssue /> },
       {
         path: "/allservises",
-        element: <AllServises></AllServises>,
-      },
-      {
-        path: "/reprotAnIssue",
-        element: <ReportAnIssue></ReportAnIssue>,
+        element: <AllServices></AllServices>,
       },
       {
         path: "/issues/:id",
         element: (
-          <PrivateRoute>
-            <IssueDetails></IssueDetails>
-          </PrivateRoute>
+          <ProtectedRoute>
+            <IssueDetails />
+          </ProtectedRoute>
         ),
       },
     ],
   },
+
+  // ---------------- ADMIN ----------------
+  {
+    path: "/adminLogin",
+    element: <AdminAndStaffAndCeitjenLogin></AdminAndStaffAndCeitjenLogin>,
+  },
+  {
+    path: "/admin",
+    element: (
+      <ProtectedRoute role="admin">
+        <AdminLayout />
+      </ProtectedRoute>
+    ),
+    children: [
+      { path: "dashboard", element: <AdminHome /> },
+      { path: "manage-users", element: <ManageUsers /> },
+      { path: "manage-issues", element: <ManageIssues /> },
+    ],
+  },
+
+  // ---------------- STAFF ----------------
+  {
+    path: "/staff",
+    element: (
+      <ProtectedRoute role="staff">
+        <StaffLayout />
+      </ProtectedRoute>
+    ),
+    children: [
+      { path: "dashboard", element: <StaffHome /> },
+      { path: "issues", element: <StaffAssigned /> },
+      { path: "issues/:id", element: <UpdateIssue /> },
+    ],
+  },
+
+  // ---------------- CITIZEN ----------------
+  {
+    path: "/citizen",
+    element: (
+      <ProtectedRoute role="citizen">
+        <CitizenLayout />
+      </ProtectedRoute>
+    ),
+    children: [
+      { path: "dashboard", element: <CitizenHome /> },
+      { path: "issues", element: <MyIssues /> },
+      { path: "issues/:id", element: <CitizenIssueDetails /> },
+    ],
+  },
 ]);
+
 export default router;

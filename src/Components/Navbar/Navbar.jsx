@@ -79,7 +79,7 @@ const Navbar = () => {
       </li>
       <li>
         <NavLink
-          to="/reprotAnIssue"
+          to="/reportIssue"
           className={({ isActive }) =>
             isActive
               ? "btn btn-sm md:btn-md btn-primary text-primary-content font-bold"
@@ -87,6 +87,18 @@ const Navbar = () => {
           }
         >
           Report An Issue
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to="/adminLogin"
+          className={({ isActive }) =>
+            isActive
+              ? "btn btn-sm md:btn-md btn-primary text-primary-content font-bold"
+              : "btn btn-sm md:btn-md btn-ghost hover:bg-base-200"
+          }
+        >
+          Admin Login
         </NavLink>
       </li>
     </>
@@ -266,6 +278,18 @@ const Navbar = () => {
                   }
                 >
                   All Servises
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/adminLogin"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "btn btn-sm md:btn-md btn-primary text-primary-content font-bold"
+                      : "btn btn-sm md:btn-md btn-ghost hover:bg-base-200"
+                  }
+                >
+                  Admin Login
                 </NavLink>
               </li>
               <li className="border-t border-base-300 mt-2 pt-2">
