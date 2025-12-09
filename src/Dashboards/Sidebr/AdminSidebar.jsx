@@ -27,6 +27,33 @@ const AdminSidebar = () => {
         >
           Manage Issues
         </NavLink>
+        <NavLink
+          to="/admin/manage-issues"
+          className="block p-2 rounded hover:bg-gray-700"
+        >
+          All Issues
+        </NavLink>
+        <NavLink
+          to="/admin/manage-issues"
+          className="block p-2 rounded hover:bg-gray-700"
+        >
+          Staff Manage
+        </NavLink>
+        <NavLink
+          to="/admin/manage-issues"
+          className="block p-2 rounded hover:bg-gray-700"
+        >
+          Issue Details
+        </NavLink>
+        <NavLink
+          to="/admin/manage-issues"
+          className="block p-2 rounded hover:bg-gray-700"
+        >
+          Staff Manage
+        </NavLink>
+        <NavLink to="/" className="block p-2 rounded hover:bg-gray-700">
+          Back to Home page
+        </NavLink>
       </nav>
     </div>
   );

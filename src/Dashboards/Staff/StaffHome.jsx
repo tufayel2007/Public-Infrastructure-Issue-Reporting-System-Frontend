@@ -9,9 +9,9 @@ const StaffHome = () => {
       </p>
 
       <div className="grid grid-cols-3 gap-5 mt-6">
-        <div className="p-5 bg-white rounded shadow">Assigned Issues: 14</div>
-        <div className="p-5 bg-white rounded shadow">In Progress: 5</div>
-        <div className="p-5 bg-white rounded shadow">Completed: 7</div>
+        <div className="p-5 bg-black rounded shadow">Assigned Issues: 14</div>
+        <div className="p-5 bg-black rounded shadow">In Progress: 5</div>
+        <div className="p-5 bg-black rounded shadow">Completed: 7</div>
       </div>
     </div>
   );

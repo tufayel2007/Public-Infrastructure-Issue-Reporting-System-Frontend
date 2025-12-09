@@ -14,7 +14,7 @@ const StaffAssigned = () => {
     <div>
       <h1 className="text-2xl font-bold mb-4">Assigned Issues</h1>
 
-      <table className="table w-full bg-white shadow">
+      <table className="table w-full bg-black shadow">
         <thead>
           <tr>
             <th>Title</th>

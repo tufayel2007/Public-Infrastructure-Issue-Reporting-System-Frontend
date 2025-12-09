@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const ManageIssues = () => {
   const [issues, setIssues] = useState([]);
@@ -13,7 +13,7 @@ const ManageIssues = () => {
     <div>
       <h1 className="text-2xl font-bold mb-4">Manage Issues</h1>
 
-      <table className="table w-full bg-white shadow">
+      <table className="table w-full bg-black shadow">
         <thead>
           <tr>
             <th>Title</th>

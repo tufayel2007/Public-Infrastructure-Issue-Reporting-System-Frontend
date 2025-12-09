@@ -3,12 +3,6 @@ import { createBrowserRouter } from "react-router-dom";
 
 import ProtectedRoute from "./ProtectedRoute";
 
-import AdminHome from "../dashboards/admin/AdminHome";
-import ManageUsers from "../dashboards/admin/ManageUsers";
-import ManageIssues from "../dashboards/admin/ManageIssues";
-
-import CitizenHome from "../dashboards/citizen/CitizenHome";
-
 import HomeLayouts from "../HomeLayouts/HomeLayouts";
 import AdminLayout from "../HomeLayouts/AdminLayout";
 import StaffLayout from "../HomeLayouts/StaffLayout";
@@ -26,6 +20,10 @@ import MyIssues from "../Dashboards/Citizen/MyIssues";
 import CitizenIssueDetails from "../Dashboards/Citizen/CitizenIssueDetails";
 import AdminAndStaffAndCeitjenLogin from "../Dashboards/Admin/AdminAndStaffAndCeitjenLogin";
 import AllServices from "../Components/Navbar/AllServises";
+import ManageUsers from "../Dashboards/Admin/ManageUsers";
+import ManageIssues from "../Dashboards/Admin/ManageIssues";
+import CitizenHome from "../Dashboards/Citizen/CitizenHome";
+import AdminHome from "../Dashboards/Admin/AdminHome";
 
 const router = createBrowserRouter([
   {
@@ -68,6 +66,7 @@ const router = createBrowserRouter([
       { path: "dashboard", element: <AdminHome /> },
       { path: "manage-users", element: <ManageUsers /> },
       { path: "manage-issues", element: <ManageIssues /> },
+      { path: "manage-issues", element: <AllIssues /> },
     ],
   },
 

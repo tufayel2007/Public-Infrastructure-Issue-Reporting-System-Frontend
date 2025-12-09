@@ -27,6 +27,9 @@ const CitizenSidebar = () => {
         >
           Report New Issue
         </NavLink>
+        <NavLink to="/" className="block p-2 rounded hover:bg-gray-700">
+          Back to Home page
+        </NavLink>
       </nav>
     </div>
   );
