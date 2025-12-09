@@ -33,10 +33,6 @@ const Login = () => {
 
   const handleEmailLogin = async (e) => {
     e.preventDefault();
-    if (!email || !password) {
-      toast.error("সব ফিল্ড পূরণ করুন!", { icon: "Warning" });
-      return;
-    }
 
     setLoading(true);
     try {
@@ -45,35 +41,43 @@ const Login = () => {
         email,
         password
       );
-      const user = userCredential.user;
+      const firebaseUser = userCredential.user;
 
-      await fetch("http://localhost:5000/api/LOGIN_USER/save-user", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          uid: user.uid,
-          email: user.email,
-          fullName: user.displayName || "N/A",
-          photoURL: user.photoURL || "N/A",
-        }),
-      });
+      // ⛔ এখানে token নেওয়া ছিল না → তাই 401 হচ্ছিল
+      const res = await fetch(
+        "http://localhost:5000/api/LOGIN_USER/save-user",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            uid: firebaseUser.uid,
+            email: firebaseUser.email,
+            fullName: firebaseUser.displayName || "N/A",
+            photoURL: firebaseUser.photoURL || "N/A",
+          }),
+        }
+      );
 
-      toast.success("স্বাগতম!", {
-        icon: <Sparkles className="text-yellow-400" />,
-      });
-      setTimeout(() => navigate("/"), 1500);
+      const data = await res.json();
+
+      // 🔥 TOKEN SAVE করুন – এখানে আসল কাজ!
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          uid: data.user.uid,
+          email: data.user.email,
+          name: data.user.fullName,
+          role: data.user.role,
+          photoURL: data.user.photoURL,
+          token: data.token, // ⭐ সবচেয়ে গুরুত্বপূর্ণ জিনিস!
+        })
+      );
+
+      toast.success("স্বাগতম!");
+      navigate("/");
     } catch (error) {
-      console.error("Firebase Login Error:", error.code, error.message);
-      let msg = "লগইন ব্যর্থ! ক্রেডেনশিয়াল চেক করুন।";
-      if (error.code === "auth/user-not-found") {
-        msg = "একাউন্ট পাওয়া যায়নি। প্রথমে রেজিস্টার করুন।";
-      } else if (
-        error.code === "auth/wrong-password" ||
-        error.code === "auth/invalid-credential"
-      ) {
-        msg = "পাসওয়ার্ড ভুল বা ক্রেডেনশিয়াল অবৈধ।";
-      }
-      toast.error(msg, { icon: "Warning" });
+      console.error(error);
+      toast.error("লগইন ব্যর্থ!");
     } finally {
       setLoading(false);
     }
@@ -82,21 +86,42 @@ const Login = () => {
   const handleGoogleLogin = async () => {
     const provider = new GoogleAuthProvider();
     setLoading(true);
+
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      await fetch("http://localhost:5000/api/LOGIN_USER/save-user", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          uid: user.uid,
-          email: user.email,
-          fullName: user.displayName || "N/A",
-          photoURL: user.photoURL || "N/A",
-        }),
-      });
+      // 1) Send to backend
+      const res = await fetch(
+        "http://localhost:5000/api/LOGIN_USER/save-user",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            uid: user.uid,
+            email: user.email,
+            fullName: user.displayName || "N/A",
+            photoURL: user.photoURL || "N/A",
+          }),
+        }
+      );
 
+      const data = await res.json();
+
+      // 2) Save to localStorage
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          uid: data.user.uid,
+          email: data.user.email,
+          name: data.user.fullName,
+          photoURL: data.user.photoURL,
+          role: data.user.role,
+          token: data.token, // ⭐ Required token
+        })
+      );
+
+      // 3) Toast + Redirect
       toast.success("Google দিয়ে স্বাগতম!", { icon: <FcGoogle size={20} /> });
       setTimeout(() => navigate("/"), 1500);
     } catch (error) {

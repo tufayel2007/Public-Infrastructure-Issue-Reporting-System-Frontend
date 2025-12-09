@@ -66,7 +66,6 @@ const router = createBrowserRouter([
       { path: "dashboard", element: <AdminHome /> },
       { path: "manage-users", element: <ManageUsers /> },
       { path: "manage-issues", element: <ManageIssues /> },
-      { path: "manage-issues", element: <AllIssues /> },
     ],
   },
 

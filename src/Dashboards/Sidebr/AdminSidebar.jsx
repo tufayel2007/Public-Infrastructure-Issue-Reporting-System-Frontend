@@ -9,49 +9,41 @@ const AdminSidebar = () => {
       <nav className="space-y-4">
         <NavLink
           to="/admin/dashboard"
-          className="block p-2 rounded hover:bg-gray-700"
+          className={({ isActive }) =>
+            `block p-2 rounded transition ${
+              isActive ? "bg-gray-700 font-semibold" : "hover:bg-gray-700"
+            }`
+          }
         >
           Dashboard Home
         </NavLink>
 
         <NavLink
           to="/admin/manage-users"
-          className="block p-2 rounded hover:bg-gray-700"
+          className={({ isActive }) =>
+            `block p-2 rounded transition ${
+              isActive ? "bg-gray-700 font-semibold" : "hover:bg-gray-700"
+            }`
+          }
         >
           Manage Users
         </NavLink>
 
         <NavLink
           to="/admin/manage-issues"
-          className="block p-2 rounded hover:bg-gray-700"
+          className={({ isActive }) =>
+            `block p-2 rounded transition ${
+              isActive ? "bg-gray-700 font-semibold" : "hover:bg-gray-700"
+            }`
+          }
         >
           Manage Issues
         </NavLink>
+
         <NavLink
-          to="/admin/manage-issues"
-          className="block p-2 rounded hover:bg-gray-700"
+          to="/"
+          className="block p-2 rounded hover:bg-gray-700 transition"
         >
-          All Issues
-        </NavLink>
-        <NavLink
-          to="/admin/manage-issues"
-          className="block p-2 rounded hover:bg-gray-700"
-        >
-          Staff Manage
-        </NavLink>
-        <NavLink
-          to="/admin/manage-issues"
-          className="block p-2 rounded hover:bg-gray-700"
-        >
-          Issue Details
-        </NavLink>
-        <NavLink
-          to="/admin/manage-issues"
-          className="block p-2 rounded hover:bg-gray-700"
-        >
-          Staff Manage
-        </NavLink>
-        <NavLink to="/" className="block p-2 rounded hover:bg-gray-700">
           Back to Home page
         </NavLink>
       </nav>

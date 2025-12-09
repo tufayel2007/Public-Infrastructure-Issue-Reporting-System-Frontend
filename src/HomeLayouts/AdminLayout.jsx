@@ -1,7 +1,7 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
 import AdminSidebar from "../Dashboards/Sidebr/AdminSidebar";
 import AdminNavbar from "../Dashboards/Admin/AdminNavbar";
+import { Outlet } from "react-router";
 
 const AdminLayout = () => {
   return (
@@ -10,8 +10,9 @@ const AdminLayout = () => {
 
       <div style={{ flex: 1 }}>
         <AdminNavbar />
-        <div style={{ padding: "20px" }}>
-          <Outlet />
+
+        <div className="p-4">
+          <Outlet /> {/* এখানে child route load হবে */}
         </div>
       </div>
     </div>

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import axiosSecure from "../../utils/axiosSecure";
 
-const IssueDetails = () => {
+const AllIssues = () => {
   const [issues, setIssues] = useState([]);
 
   const loadIssues = () => {
@@ -89,4 +89,4 @@ const IssueDetails = () => {
   );
 };
 
-export default IssueDetails;
+export default AllIssues;
