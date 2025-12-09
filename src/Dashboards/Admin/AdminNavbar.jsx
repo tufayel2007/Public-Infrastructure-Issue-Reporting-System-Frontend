@@ -8,9 +8,8 @@ const AdminNavbar = ({ toggleSidebar }) => {
     <div className="w-full h-16 bg-white shadow-md flex items-center justify-between px-4 sticky top-0 z-50">
       {/* Sidebar Toggle Button */}
       <button
-        onClick={() => toggleSidebar && toggleSidebar()}
+        onClick={toggleSidebar}
         className="text-xl lg:hidden text-gray-700"
-        aria-label="Toggle sidebar"
       >
         <FaBars />
       </button>
@@ -21,18 +20,12 @@ const AdminNavbar = ({ toggleSidebar }) => {
       {/* Right Section */}
       <div className="flex items-center gap-5">
         {/* Notification Icon */}
-        <div
-          className="text-2xl text-gray-600 cursor-pointer hover:text-blue-600 duration-200"
-          title="Notifications"
-        >
+        <div className="text-2xl text-gray-600 cursor-pointer hover:text-blue-600 duration-200">
           <IoMdNotificationsOutline />
         </div>
 
         {/* Profile */}
-        <div
-          className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center cursor-pointer"
-          title="Profile"
-        >
+        <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center cursor-pointer">
           <CgProfile className="text-2xl text-gray-700" />
         </div>
       </div>

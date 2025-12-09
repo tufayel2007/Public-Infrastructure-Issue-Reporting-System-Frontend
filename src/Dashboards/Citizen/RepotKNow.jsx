@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { AuthContext } from "../../context/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 
-const ReportIssue = () => {
+const ReportKNow = () => {
   const { user } = useContext(AuthContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -246,4 +246,4 @@ const ReportIssue = () => {
   );
 };
 
-export default ReportIssue;
+export default ReportKNow;

@@ -24,6 +24,7 @@ import ManageUsers from "../Dashboards/Admin/ManageUsers";
 import ManageIssues from "../Dashboards/Admin/ManageIssues";
 import CitizenHome from "../Dashboards/Citizen/CitizenHome";
 import AdminHome from "../Dashboards/Admin/AdminHome";
+import ReportKNow from "../Dashboards/Citizen/RepotKNow";
 
 const router = createBrowserRouter([
   {
@@ -96,6 +97,7 @@ const router = createBrowserRouter([
       { path: "dashboard", element: <CitizenHome /> },
       { path: "issues", element: <MyIssues /> },
       { path: "issues/:id", element: <CitizenIssueDetails /> },
+      { path: "reportKNow", element: <ReportKNow /> },
     ],
   },
 ]);

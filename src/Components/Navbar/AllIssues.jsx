@@ -1,9 +1,29 @@
 import { useEffect, useState } from "react";
-import { FaSearch } from "react-icons/fa";
+import {
+  FaSearch,
+  FaRegComment,
+  FaMapMarkerAlt,
+  FaCalendarAlt,
+} from "react-icons/fa";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { MdOutlineDoubleArrow } from "react-icons/md";
 
 const reactionTypes = ["like", "love", "haha", "wow", "sad", "angry"];
+
+// Helper function to get status-specific colors and icons
+const getStatusInfo = (status) => {
+  switch (status) {
+    case "pending":
+      return { className: "bg-yellow-100 text-yellow-800", icon: "🕒" };
+    case "in-progress":
+      return { className: "bg-blue-100 text-blue-800", icon: "🛠️" };
+    case "resolved":
+      return { className: "bg-green-100 text-green-800", icon: "✅" };
+    default:
+      return { className: "bg-gray-100 text-gray-800", icon: "" };
+  }
+};
 
 const AllIssues = () => {
   const navigate = useNavigate();
@@ -17,12 +37,15 @@ const AllIssues = () => {
 
   const fetchIssues = async () => {
     try {
+      // NOTE: Logic for API call remains unchanged
       const res = await fetch(
         `${
           import.meta.env.VITE_API_URL
         }/issues?page=${page}&limit=8&search=${search}&category=${category}&status=${status}`
       );
       const data = await res.json();
+      // Added a small delay to simulate loading for a better UX experience
+      // await new Promise(resolve => setTimeout(resolve, 300));
       setIssues(data.issues || []);
       setTotalPages(data.totalPages || 1);
     } catch {
@@ -32,10 +55,11 @@ const AllIssues = () => {
 
   useEffect(() => {
     fetchIssues();
-  }, [page, search, category, status]);
+  }, [page, search, category, status]); // Dependencies remain unchanged
 
   const handleReact = async (id, type) => {
     try {
+      // NOTE: Logic for Reaction remains unchanged
       const res = await fetch(
         `${import.meta.env.VITE_API_URL}/issues/${id}/react`,
         {
@@ -58,6 +82,7 @@ const AllIssues = () => {
   const handleComment = async (id, text) => {
     if (!text) return toast.error("Comment cannot be empty");
     try {
+      // NOTE: Logic for Comment remains unchanged
       const res = await fetch(
         `${import.meta.env.VITE_API_URL}/issues/${id}/comment`,
         {
@@ -80,140 +105,260 @@ const AllIssues = () => {
     }
   };
 
+  // Custom helper for formatting date
+  const formatIssueDate = (dateString) => {
+    if (!dateString) return "N/A";
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  };
+
   return (
-    <div className="container mx-auto py-10 px-4">
-      {/* 🔍 Search + Filter */}
-      <div className="flex flex-col md:flex-row gap-4 mb-6 justify-between">
-        <div className="flex items-center gap-2">
-          <input
-            type="text"
-            placeholder="Search by title or location..."
-            className="input input-bordered w-64"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <FaSearch className="text-gray-500" />
-        </div>
-        <div className="flex gap-3 flex-wrap">
-          <select
-            className="select select-bordered"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          >
-            <option value="all">All Categories</option>
-            <option value="pothole">Pothole</option>
-            <option value="streetlight">Streetlight</option>
-            <option value="garbage">Garbage</option>
-          </select>
-          <select
-            className="select select-bordered"
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-          >
-            <option value="all">All Status</option>
-            <option value="pending">Pending</option>
-            <option value="in-progress">In Progress</option>
-            <option value="resolved">Resolved</option>
-          </select>
-        </div>
-      </div>
+    <div className="min-h-screen bg-gray-50 py-10 px-4 sm:px-6 lg:px-8 mt-6">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-3xl font-extrabold text-gray-900 mb-8 border-b pb-2">
+          🌍 Community Issues Hub
+        </h1>
 
-      {/* Issues Grid */}
-      <div className="grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-6">
-        {issues.map((issue) => (
-          <div key={issue._id} className="card bg-white shadow p-4 rounded-lg">
-            <img
-              src={
-                issue.imageUrl
-                  ? `${import.meta.env.VITE_API_URL}${issue.imageUrl}`
-                  : "https://via.placeholder.com/300"
-              }
-              className="h-40 w-full object-cover rounded"
+        {/* 🔍 Search + Filter Section */}
+        <div className="flex flex-col md:flex-row gap-4 mb-8 justify-between p-4 bg-white shadow-lg rounded-xl">
+          <div className="flex-grow flex items-center bg-gray-100 rounded-lg p-2">
+            <input
+              type="text"
+              placeholder="Search by title or location..."
+              className="w-full bg-gray-100 p-2 focus:outline-none text-gray-700 placeholder-gray-500"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1); // Reset to page 1 on new search
+              }}
             />
-            <h3 className="text-lg font-bold mt-2">{issue.title}</h3>
-            <p className="text-sm text-gray-500">{issue.location}</p>
-            <div className="flex justify-between items-center mt-3 mb-2">
-              <span className="badge badge-outline">{issue.status}</span>
-            </div>
-
-            {/* Reactions */}
-            <div className="flex gap-2 mb-2">
-              {reactionTypes.map((type) => {
-                const count =
-                  issue.reactions?.filter((r) => r.type === type).length || 0;
-                const reacted = issue.reactions?.some(
-                  (r) => r.type === type && r.uid === "demo-user-id"
-                );
-                return (
-                  <button
-                    key={type}
-                    onClick={() => handleReact(issue._id, type)}
-                    className={`btn btn-sm ${
-                      reacted ? "btn-primary" : "btn-outline"
-                    }`}
-                  >
-                    {type} {count > 0 && `(${count})`}
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Comment Input */}
-            <div className="mb-2">
-              <input
-                type="text"
-                placeholder="Write a comment..."
-                className="input input-bordered w-full mb-1"
-                value={commentTexts[issue._id] || ""}
-                onChange={(e) =>
-                  setCommentTexts((prev) => ({
-                    ...prev,
-                    [issue._id]: e.target.value,
-                  }))
-                }
-              />
-              <button
-                className="btn btn-sm btn-primary w-full"
-                onClick={() =>
-                  handleComment(issue._id, commentTexts[issue._id])
-                }
-              >
-                Comment
-              </button>
-            </div>
-
-            {/* View Details */}
-            <button
-              className="btn btn-primary w-full mt-2"
-              onClick={() => navigate(`/issues/${issue._id}`)}
-            >
-              View Details
-            </button>
-
-            {/* Comments List */}
-            <div className="space-y-2 mt-2">
-              {issue.comments?.map((c, i) => (
-                <div key={i} className="flex items-center gap-2">
-                  <img src={c.avatarUrl} className="h-6 w-6 rounded-full" />
-                  <b>{c.name}:</b> {c.text}
-                </div>
-              ))}
-            </div>
+            <FaSearch className="text-gray-500 mr-2" />
           </div>
-        ))}
-      </div>
+          <div className="flex gap-3 flex-wrap justify-end">
+            <select
+              className="select select-bordered w-full md:w-auto border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-lg"
+              value={category}
+              onChange={(e) => {
+                setCategory(e.target.value);
+                setPage(1); // Reset to page 1 on new filter
+              }}
+            >
+              <option value="all">All Categories</option>
+              <option value="pothole">Pothole</option>
+              <option value="streetlight">Streetlight</option>
+              <option value="garbage">Garbage</option>
+            </select>
+            <select
+              className="select select-bordered w-full md:w-auto border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-lg"
+              value={status}
+              onChange={(e) => {
+                setStatus(e.target.value);
+                setPage(1); // Reset to page 1 on new filter
+              }}
+            >
+              <option value="all">All Status</option>
+              <option value="pending">Pending</option>
+              <option value="in-progress">In Progress</option>
+              <option value="resolved">Resolved</option>
+            </select>
+          </div>
+        </div>
 
-      {/* Pagination */}
-      <div className="flex justify-center mt-10 gap-2">
-        {Array.from({ length: totalPages }).map((_, i) => (
-          <button
-            key={i}
-            className={`btn btn-sm ${page === i + 1 ? "btn-primary" : ""}`}
-            onClick={() => setPage(i + 1)}
-          >
-            {i + 1}
-          </button>
-        ))}
+        <hr className="mb-8" />
+
+        {/* Issues Grid */}
+        <div className="grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-8">
+          {issues.map((issue) => {
+            const statusInfo = getStatusInfo(issue.status);
+            return (
+              <div
+                key={issue._id}
+                className="card bg-white shadow-xl hover:shadow-2xl transition-shadow duration-300 rounded-xl overflow-hidden flex flex-col"
+              >
+                {/* Image */}
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src={
+                      issue.imageUrl
+                        ? `${import.meta.env.VITE_API_URL}${issue.imageUrl}`
+                        : "https://via.placeholder.com/600x400?text=No+Image+Available"
+                    }
+                    alt={issue.title}
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                  />
+                  {/* Status Badge */}
+                  <div
+                    className={`absolute top-3 right-3 text-xs font-semibold px-3 py-1 rounded-full ${statusInfo.className}`}
+                  >
+                    {statusInfo.icon}{" "}
+                    {issue.status.charAt(0).toUpperCase() +
+                      issue.status.slice(1)}
+                  </div>
+                </div>
+
+                {/* Content Body */}
+                <div className="p-4 flex flex-col flex-grow">
+                  <h3 className="text-xl font-bold text-gray-900 line-clamp-2 mb-1">
+                    {issue.title}
+                  </h3>
+                  <div className="flex items-center text-sm text-gray-600 mb-3">
+                    <FaMapMarkerAlt className="mr-1 text-red-500" />
+                    <p className="line-clamp-1">{issue.location}</p>
+                    <span className="mx-2 text-gray-300">|</span>
+                    <FaCalendarAlt className="mr-1 text-blue-500" />
+                    <p className="text-xs">
+                      {formatIssueDate(issue.createdAt)}
+                    </p>
+                  </div>
+
+                  {/* Reactions Bar */}
+                  <div className="flex gap-2 mb-4 flex-wrap border-t pt-3">
+                    {reactionTypes.map((type) => {
+                      const count =
+                        issue.reactions?.filter((r) => r.type === type)
+                          .length || 0;
+                      const reacted = issue.reactions?.some(
+                        (r) => r.type === type && r.uid === "demo-user-id"
+                      );
+                      return (
+                        <button
+                          key={type}
+                          onClick={() => handleReact(issue._id, type)}
+                          className={`btn btn-xs min-h-0 h-7 px-2 py-0.5 text-xs font-medium rounded-full transition-colors duration-200 ${
+                            reacted
+                              ? "bg-indigo-600 text-white hover:bg-indigo-700"
+                              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                          }`}
+                        >
+                          {/* Use emoji for unique look */}
+                          {type === "like"
+                            ? "👍"
+                            : type === "love"
+                            ? "❤️"
+                            : type === "haha"
+                            ? "😂"
+                            : type === "wow"
+                            ? "😮"
+                            : type === "sad"
+                            ? "😢"
+                            : type === "angry"
+                            ? "😡"
+                            : ""}
+                          {count > 0 && ` ${count}`}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Comment Input */}
+                  <div className="mb-4">
+                    <div className="relative flex">
+                      <input
+                        type="text"
+                        placeholder="Add your support or comment..."
+                        className="input input-sm input-bordered w-full pr-12 text-sm rounded-full bg-gray-100 border-gray-300 focus:ring-indigo-500"
+                        value={commentTexts[issue._id] || ""}
+                        onChange={(e) =>
+                          setCommentTexts((prev) => ({
+                            ...prev,
+                            [issue._id]: e.target.value,
+                          }))
+                        }
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            handleComment(issue._id, commentTexts[issue._id]);
+                          }
+                        }}
+                      />
+                      <button
+                        className="absolute right-0 top-0 h-full w-10 btn btn-ghost btn-sm text-indigo-600 hover:text-indigo-700 rounded-full"
+                        onClick={() =>
+                          handleComment(issue._id, commentTexts[issue._id])
+                        }
+                      >
+                        <MdOutlineDoubleArrow className="text-lg" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* View Details Button */}
+                  <button
+                    className="btn btn-primary w-full mt-auto bg-indigo-600 text-white hover:bg-indigo-700 border-none rounded-lg"
+                    onClick={() => navigate(`/issues/${issue._id}`)}
+                  >
+                    View Details
+                  </button>
+
+                  {/* Comments List Preview */}
+                  {issue.comments && issue.comments.length > 0 && (
+                    <div className="space-y-2 mt-4 border-t pt-3">
+                      <div className="flex items-center text-sm font-semibold text-gray-700 mb-1">
+                        <FaRegComment className="mr-1" />
+                        Latest Comments ({issue.comments.length})
+                      </div>
+                      {issue.comments.slice(0, 2).map(
+                        (
+                          c,
+                          i // Show max 2 comments
+                        ) => (
+                          <div
+                            key={i}
+                            className="flex items-start gap-2 text-xs bg-gray-50 p-2 rounded-lg"
+                          >
+                            <img
+                              src={c.avatarUrl}
+                              alt={c.name}
+                              className="h-5 w-5 rounded-full object-cover mt-0.5"
+                            />
+                            <div className="leading-tight">
+                              <b className="font-bold text-gray-900">
+                                {c.name}:
+                              </b>
+                              <span className="text-gray-600 ml-1 line-clamp-2">
+                                {c.text}
+                              </span>
+                            </div>
+                          </div>
+                        )
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {issues.length === 0 && (
+          <div className="text-center py-10 text-gray-500 text-lg">
+            No issues found matching your criteria.
+          </div>
+        )}
+
+        <hr className="mt-10" />
+
+        {/* Pagination */}
+        <div className="flex justify-center mt-10">
+          <div className="btn-group">
+            {Array.from({ length: totalPages }).map((_, i) => (
+              <button
+                key={i}
+                className={`btn min-w-10 ${
+                  page === i + 1
+                    ? "bg-indigo-600 text-white hover:bg-indigo-700"
+                    : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+                }`}
+                onClick={() => setPage(i + 1)}
+              >
+                {i + 1}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

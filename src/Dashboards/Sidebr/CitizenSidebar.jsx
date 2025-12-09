@@ -22,7 +22,7 @@ const CitizenSidebar = () => {
         </NavLink>
 
         <NavLink
-          to="/reprotAnIssue"
+          to="reportKNow"
           className="block p-2 rounded hover:bg-blue-500"
         >
           Report New Issue

@@ -9,7 +9,7 @@ axiosSecure.interceptors.request.use((config) => {
   // এখন শুধু "token" চেক করবো, "user" না
   const token = localStorage.getItem("token");
 
-  console.log("ATTACHED TOKEN =", token); // এটা দেখবে token আছে কি না
+  // console.log("ATTACHED TOKEN =", token); // এটা দেখবে token আছে কি না
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
