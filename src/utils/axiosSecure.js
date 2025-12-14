@@ -1,4 +1,3 @@
-// utils/axiosSecure.js
 import axios from "axios";
 
 const axiosSecure = axios.create({
@@ -6,10 +5,8 @@ const axiosSecure = axios.create({
 });
 
 axiosSecure.interceptors.request.use((config) => {
-  // এখন শুধু "token" চেক করবো, "user" না
   const token = localStorage.getItem("token");
-
-  // console.log("ATTACHED TOKEN =", token); // এটা দেখবে token আছে কি না
+  console.log("TOKEN CHECK =", token); // Debug
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;

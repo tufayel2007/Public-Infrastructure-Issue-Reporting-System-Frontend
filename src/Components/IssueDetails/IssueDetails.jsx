@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK);
 
 const IssueDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
   const [issue, setIssue] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
+
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -15,24 +20,32 @@ const IssueDetails = () => {
     location: "",
   });
 
-  // ---------------- Fetch single issue ----------------
+  // Fetch issue
   const fetchIssue = async () => {
+    setLoading(true);
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/issues/${id}`, {
-        headers: { authorization: "Bearer demo-token" },
+        headers: { authorization: `Bearer ${localStorage.getItem("token")}` },
       });
-      if (!res.ok) throw new Error("Failed to fetch issue");
+
+      if (!res.ok) {
+        // try to show server message if any
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || "Failed to fetch issue");
+      }
+
       const data = await res.json();
       setIssue(data);
+
       setForm({
-        title: data.title,
-        description: data.description,
-        category: data.category,
-        location: data.location,
+        title: data.title || "",
+        description: data.description || "",
+        category: data.category || "",
+        location: data.location || "",
       });
     } catch (err) {
-      toast.error("Issue not found");
-      navigate("/all-issues");
+      toast.error(err.message || "Issue not found");
+      navigate(`/issues/${id}`);
     } finally {
       setLoading(false);
     }
@@ -40,81 +53,167 @@ const IssueDetails = () => {
 
   useEffect(() => {
     fetchIssue();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  // ---------------- Edit issue ----------------
+  // Edit issue (save)
   const handleEdit = async () => {
-    if (!form.title || !form.description) {
-      return toast.error("Title and Description are required");
+    if (!form.title || !form.description)
+      return toast.error("Title & Description required");
+
+    // Frontend guard: only allow editing if pending
+    if (issue?.status !== "pending") {
+      return toast.error("Cannot edit — issue is not pending");
     }
+
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/issues/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          authorization: "Bearer demo-token",
+          authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify(form),
       });
+
       const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Update failed");
+
       if (data.success) {
-        toast.success("Issue updated successfully!");
+        toast.success("Updated");
         setEditing(false);
         fetchIssue();
       } else {
         toast.error(data.message || "Update failed");
       }
-    } catch {
-      toast.error("Failed to update issue");
+    } catch (err) {
+      toast.error(err.message || "Update failed");
     }
   };
 
-  // ---------------- Delete issue ----------------
+  // Delete issue
   const handleDelete = async () => {
-    if (!window.confirm("Are you sure you want to delete this issue?")) return;
+    if (!confirm("Delete this issue?")) return;
+
+    // Frontend guard: only allow deleting if pending
+    if (issue?.status !== "pending") {
+      return toast.error("Cannot delete — issue is not pending");
+    }
+
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/issues/${id}`, {
         method: "DELETE",
-        headers: { authorization: "Bearer demo-token" },
+        headers: { authorization: `Bearer ${localStorage.getItem("token")}` },
       });
+
       const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Delete failed");
+
       if (data.success) {
-        toast.success("Issue deleted successfully!");
-        navigate("/all-issues");
+        toast.success("Deleted");
+        navigate(`/issues/${id}`);
       } else {
         toast.error(data.message || "Delete failed");
       }
-    } catch {
-      toast.error("Failed to delete issue");
+    } catch (err) {
+      toast.error(err.message || "Delete failed");
     }
   };
 
-  // ---------------- Boost priority ----------------
-  const handleBoost = async () => {
-    if (!window.confirm("Pay 100 Taka to boost priority?")) return;
+  // Mark as Resolved
+  const handleMarkResolved = async () => {
+    if (!confirm("Mark this issue as resolved?")) return;
+
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/issues/${id}/boost`,
+        `${import.meta.env.VITE_API_URL}/staff/issue/${id}/status`,
         {
-          method: "PUT",
-          headers: { authorization: "Bearer demo-token" },
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({ status: "resolved", note: "Marked resolved" }),
         }
       );
+
       const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Operation failed");
+
       if (data.success) {
-        toast.success("Priority boosted to High!");
+        toast.success("Marked resolved");
         fetchIssue();
       } else {
-        toast.error(data.message || "Boost failed");
+        toast.error(data.message || "Operation failed");
       }
-    } catch {
-      toast.error("Failed to boost priority");
+    } catch (err) {
+      toast.error(err.message || "Operation failed");
     }
   };
 
-  // ---------------- Loading & null handling ----------------
+  // Close issue
+  const handleClose = async () => {
+    if (!confirm("Close this issue? (No further edits allowed)")) return;
+
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/staff/issue/${id}/status`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({ status: "closed", note: "Closed by user" }),
+        }
+      );
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Operation failed");
+
+      if (data.success) {
+        toast.success("Closed");
+        fetchIssue();
+      } else {
+        toast.error(data.message || "Operation failed");
+      }
+    } catch (err) {
+      toast.error(err.message || "Operation failed");
+    }
+  };
+
+  // ---------------- BOOST PAYMENT ----------------
+  const handleBoost = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/payment/boost/create-session`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ issueId: id, amount: 100 }),
+        }
+      );
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Boost failed");
+
+      // 🔥 New Stripe Method — direct redirect
+      window.location.href = data.url;
+    } catch (err) {
+      toast.error(err.message || "Boost failed");
+    }
+  };
+
   if (loading) return <p className="text-center mt-10">Loading...</p>;
   if (!issue) return null;
+
+  // helper: whether editing allowed
+  const canEdit = issue.status === "pending";
 
   return (
     <div className="max-w-3xl mx-auto py-10 px-4 mt-24">
@@ -128,44 +227,48 @@ const IssueDetails = () => {
         />
       )}
 
+      {/* Edit / view mode */}
       {editing ? (
         <div className="space-y-3 mb-4">
           <input
-            className="input input-bordered w-full"
+            className="w-full p-2 border rounded"
             value={form.title}
             onChange={(e) => setForm({ ...form, title: e.target.value })}
             placeholder="Title"
           />
           <textarea
-            className="textarea textarea-bordered w-full"
+            className="w-full p-2 border rounded"
             value={form.description}
             onChange={(e) => setForm({ ...form, description: e.target.value })}
             placeholder="Description"
           />
-          <select
-            className="select select-bordered w-full"
+          <input
+            className="w-full p-2 border rounded"
             value={form.category}
             onChange={(e) => setForm({ ...form, category: e.target.value })}
-          >
-            <option value="pothole">Pothole</option>
-            <option value="streetlight">Streetlight</option>
-            <option value="garbage">Garbage</option>
-            <option value="water-leakage">Water Leakage</option>
-          </select>
+            placeholder="Category"
+          />
           <input
-            className="input input-bordered w-full"
+            className="w-full p-2 border rounded"
             value={form.location}
             onChange={(e) => setForm({ ...form, location: e.target.value })}
             placeholder="Location"
           />
+
           <div className="flex gap-2">
-            <button className="btn btn-primary" onClick={handleEdit}>
+            <button
+              onClick={handleEdit}
+              disabled={!canEdit}
+              className={`px-4 py-2 rounded text-white ${
+                canEdit ? "bg-green-600" : "bg-gray-400 cursor-not-allowed"
+              }`}
+            >
               Save
             </button>
             <button
-              className="btn btn-outline"
               onClick={() => {
                 setEditing(false);
+                // reset form to latest issue values
                 setForm({
                   title: issue.title,
                   description: issue.description,
@@ -173,6 +276,7 @@ const IssueDetails = () => {
                   location: issue.location,
                 });
               }}
+              className="px-4 py-2 rounded bg-gray-200"
             >
               Cancel
             </button>
@@ -180,65 +284,88 @@ const IssueDetails = () => {
         </div>
       ) : (
         <>
-          <p className="mb-1">
+          <p>
             <b>Category:</b> {issue.category}
           </p>
-          <p className="mb-1">
+          <p>
             <b>Location:</b> {issue.location}
           </p>
-          <p className="mb-1">
-            <b>Status:</b>{" "}
-            <span className="badge badge-outline">{issue.status}</span>
+          <p>
+            <b>Status:</b> {issue.status}
           </p>
-          <p className="mb-4">
-            <b>Priority:</b>{" "}
-            <span
-              className={`badge ${
-                issue.priority === "High" ? "badge-primary" : "badge-outline"
+          <p>
+            <b>Priority:</b> {issue.priority}
+          </p>
+
+          {/* Actions */}
+          <div className="flex flex-wrap gap-2 mt-3">
+            {/* Edit button shown but disabled if not pending */}
+            <button
+              onClick={() => setEditing(true)}
+              disabled={!canEdit}
+              className={`px-4 py-2 rounded text-white ${
+                canEdit ? "bg-blue-600" : "bg-gray-400 cursor-not-allowed"
               }`}
             >
-              {issue.priority || "Normal"}
-            </span>
-          </p>
+              Edit
+            </button>
 
-          {/* ✅ Edit/Delete buttons: Only own pending issues */}
-          {issue.uid === "demo-user-id" &&
-            issue.status === "pending" &&
-            !editing && (
-              <div className="flex gap-2 mb-4">
-                <button
-                  className="btn btn-warning"
-                  onClick={() => setEditing(true)}
-                >
-                  Edit
-                </button>
-                <button className="btn btn-error" onClick={handleDelete}>
-                  Delete
-                </button>
-              </div>
+            <button
+              onClick={handleDelete}
+              disabled={!canEdit}
+              className={`px-4 py-2 rounded text-white ${
+                canEdit ? "bg-red-600" : "bg-gray-400 cursor-not-allowed"
+              }`}
+            >
+              Delete
+            </button>
+
+            {/* Boost button - you may want to disable boosting for closed issues */}
+            <button
+              onClick={handleBoost}
+              disabled={issue.status === "closed"}
+              className={`px-4 py-2 rounded text-white ${
+                issue.status === "closed"
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-purple-600"
+              }`}
+            >
+              Boost Now (৳100)
+            </button>
+
+            {/* Staff / user actions: mark resolved / close — show depending on status */}
+            {issue.status !== "resolved" && issue.status !== "closed" && (
+              <button
+                onClick={handleMarkResolved}
+                className="px-4 py-2 rounded text-white bg-green-600"
+              >
+                Mark Resolved
+              </button>
             )}
 
-          <button className="btn btn-success mb-4" onClick={handleBoost}>
-            Boost Priority
-          </button>
+            {issue.status !== "closed" && (
+              <button
+                onClick={handleClose}
+                className="px-4 py-2 rounded text-white bg-indigo-600"
+              >
+                Close
+              </button>
+            )}
+          </div>
         </>
       )}
 
       {/* Timeline */}
-      <h2 className="text-2xl font-bold mb-2">Timeline</h2>
-      <div className="space-y-2 border-t pt-2">
-        {issue.timeline?.map((t, i) => (
-          <div key={i} className="p-2 border rounded">
-            <p>
-              <b>Status:</b> {t.status} | <b>Updated By:</b> {t.updatedBy}
-            </p>
-            <p>{t.message}</p>
-            <p className="text-sm text-gray-500">
-              {new Date(t.date).toLocaleString()}
-            </p>
-          </div>
-        ))}
-      </div>
+      <h2 className="text-2xl font-bold mb-2 mt-5">Timeline</h2>
+      {issue.timeline?.map((t, i) => (
+        <div key={i} className="p-2 border rounded mb-2">
+          <p>
+            <b>Status:</b> {t.status}
+          </p>
+          <p>{t.message}</p>
+          <small>{new Date(t.date).toLocaleString()}</small>
+        </div>
+      ))}
     </div>
   );
 };

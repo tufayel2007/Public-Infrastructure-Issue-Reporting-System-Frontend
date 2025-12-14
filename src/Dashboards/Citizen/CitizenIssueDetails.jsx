@@ -33,7 +33,7 @@ const IssueDetails = () => {
       });
     } catch (err) {
       toast.error("Issue not found");
-      navigate("/all-issues");
+      navigate("/allIssues");
     } finally {
       setLoading(false);
     }
@@ -81,7 +81,7 @@ const IssueDetails = () => {
       const data = await res.json();
       if (data.success) {
         toast.success("Issue deleted successfully!");
-        navigate("/all-issues");
+        navigate("/allIssues");
       } else {
         toast.error(data.message || "Delete failed");
       }

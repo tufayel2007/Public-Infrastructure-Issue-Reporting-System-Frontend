@@ -25,6 +25,10 @@ import ManageIssues from "../Dashboards/Admin/ManageIssues";
 import CitizenHome from "../Dashboards/Citizen/CitizenHome";
 import AdminHome from "../Dashboards/Admin/AdminHome";
 import ReportKNow from "../Dashboards/Citizen/RepotKNow";
+import BoostSuccess from "../OnlinePyment/BoostSuccess";
+import BoostCancel from "../OnlinePyment/BoostCancel";
+import CitizenRegister from "../Dashboards/Admin/CitizenRegister";
+import CitizenReportIssue from "../Dashboards/Citizen/CitizenReportIssue";
 
 const router = createBrowserRouter([
   {
@@ -40,13 +44,22 @@ const router = createBrowserRouter([
         path: "/allservises",
         element: <AllServices></AllServices>,
       },
+
       {
-        path: "/issues/:id",
-        element: (
-          <ProtectedRoute>
-            <IssueDetails />
-          </ProtectedRoute>
-        ),
+        path: "/issue/:id",
+        element: <IssueDetails />,
+      },
+      {
+        path: "/boost/success",
+        element: <BoostSuccess />,
+      },
+      {
+        path: "/boost/cancel",
+        element: <BoostCancel />,
+      },
+      {
+        path: "/CitizenRegister",
+        element: <CitizenRegister></CitizenRegister>,
       },
     ],
   },
@@ -98,6 +111,7 @@ const router = createBrowserRouter([
       { path: "issues", element: <MyIssues /> },
       { path: "issues/:id", element: <CitizenIssueDetails /> },
       { path: "reportKNow", element: <ReportKNow /> },
+      { path: "citizenReportIssue", element: <CitizenReportIssue /> },
     ],
   },
 ]);

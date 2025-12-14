@@ -4,10 +4,19 @@ export const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const login = (loggedUser) => {
-    setUser(loggedUser);
-    localStorage.setItem("user", JSON.stringify(loggedUser));
+    if (!loggedUser) return;
+
+    // 🔥 role MUST exist
+    const normalizedUser = {
+      ...loggedUser,
+      role: loggedUser.role || "citizen",
+    };
+
+    setUser(normalizedUser);
+    localStorage.setItem("user", JSON.stringify(normalizedUser));
   };
 
   const logout = () => {
@@ -16,17 +25,31 @@ const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const saved = localStorage.getItem("user");
-    if (saved) setUser(JSON.parse(saved));
+    try {
+      const saved = localStorage.getItem("user");
+      if (saved) {
+        setUser(JSON.parse(saved));
+      }
+    } catch {
+      localStorage.removeItem("user");
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const ctx = useContext(AuthContext);
+  if (!ctx) {
+    throw new Error("useAuth must be used inside AuthProvider");
+  }
+  return ctx;
+};
 
 export default AuthProvider;

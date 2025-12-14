@@ -8,6 +8,7 @@ import {
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineDoubleArrow } from "react-icons/md";
+import { useQueryClient } from "@tanstack/react-query";
 
 const reactionTypes = ["like", "love", "haha", "wow", "sad", "angry"];
 
@@ -28,21 +29,30 @@ const getStatusInfo = (status) => {
 const AllIssues = () => {
   const navigate = useNavigate();
   const [issues, setIssues] = useState([]);
+  const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const [status, setStatus] = useState("all");
   const [totalPages, setTotalPages] = useState(1);
   const [commentTexts, setCommentTexts] = useState({});
-
+  const token = localStorage.getItem("token");
   const fetchIssues = async () => {
     try {
       // NOTE: Logic for API call remains unchanged
+      const token = localStorage.getItem("token");
+
       const res = await fetch(
         `${
           import.meta.env.VITE_API_URL
-        }/issues?page=${page}&limit=8&search=${search}&category=${category}&status=${status}`
+        }/issues?page=${page}&limit=8&search=${search}&category=${category}&status=${status}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
+
       const data = await res.json();
       // Added a small delay to simulate loading for a better UX experience
       // await new Promise(resolve => setTimeout(resolve, 300));
@@ -58,24 +68,40 @@ const AllIssues = () => {
   }, [page, search, category, status]); // Dependencies remain unchanged
 
   const handleReact = async (id, type) => {
+    if (!id || !type) return toast.error("Invalid reaction data");
+
     try {
-      // NOTE: Logic for Reaction remains unchanged
       const res = await fetch(
         `${import.meta.env.VITE_API_URL}/issues/${id}/react`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            authorization: "Bearer demo-token",
+            authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ type }),
         }
       );
+
+      if (!res.ok) {
+        const errText = await res.text();
+        console.error("Network response not ok:", errText);
+        return toast.error("Reaction failed (network error)");
+      }
+
       const data = await res.json();
-      if (data.success) fetchIssues();
-      else toast.error("Reaction failed");
-    } catch {
-      toast.error("Reaction failed");
+      if (data.success) {
+        // Refresh local AllIssues list
+        fetchIssues();
+        // Invalidate admin cache to auto-update admin panel
+        queryClient.invalidateQueries({ queryKey: ["adminIssues"] });
+        toast.success("Reaction updated!");
+      } else {
+        toast.error("Reaction failed (server error)");
+      }
+    } catch (err) {
+      console.error("Fetch error:", err);
+      toast.error("Reaction failed (unexpected error)");
     }
   };
 
@@ -89,7 +115,7 @@ const AllIssues = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            authorization: "Bearer demo-token",
+            authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ text }),
         }
@@ -221,9 +247,11 @@ const AllIssues = () => {
                       const count =
                         issue.reactions?.filter((r) => r.type === type)
                           .length || 0;
+
                       const reacted = issue.reactions?.some(
-                        (r) => r.type === type && r.uid === "demo-user-id"
-                      );
+                        (r) => r.uid === "demo-user-id" && r.type === type
+                      ); // Check if current user reacted with this type
+
                       return (
                         <button
                           key={type}
@@ -234,7 +262,6 @@ const AllIssues = () => {
                               : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                           }`}
                         >
-                          {/* Use emoji for unique look */}
                           {type === "like"
                             ? "👍"
                             : type === "love"
@@ -287,8 +314,8 @@ const AllIssues = () => {
 
                   {/* View Details Button */}
                   <button
-                    className="btn btn-primary w-full mt-auto bg-indigo-600 text-white hover:bg-indigo-700 border-none rounded-lg"
-                    onClick={() => navigate(`/issues/${issue._id}`)}
+                    className="btn btn-primary w-full mt-2"
+                    onClick={() => navigate(`/issue/${issue._id}`)}
                   >
                     View Details
                   </button>

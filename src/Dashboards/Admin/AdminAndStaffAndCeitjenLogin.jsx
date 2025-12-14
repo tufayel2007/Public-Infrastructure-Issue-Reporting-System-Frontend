@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
 const Login = () => {
@@ -83,6 +83,10 @@ const Login = () => {
         >
           {loading ? "Logging in..." : "Login"}
         </button>
+        <div>
+          don't have any acount ?
+          <Link to="/CitizenRegister">Crate account</Link>
+        </div>
       </form>
     </div>
   );

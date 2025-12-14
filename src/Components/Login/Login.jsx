@@ -22,6 +22,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
+  // Already logged in user redirect
   React.useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -31,10 +32,11 @@ const Login = () => {
     return () => unsubscribe();
   }, [navigate]);
 
+  // ✅ EMAIL + PASSWORD LOGIN
   const handleEmailLogin = async (e) => {
     e.preventDefault();
-
     setLoading(true);
+
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
@@ -43,24 +45,32 @@ const Login = () => {
       );
       const firebaseUser = userCredential.user;
 
-      // ⛔ এখানে token নেওয়া ছিল না → তাই 401 হচ্ছিল
-      const res = await fetch(
-        "http://localhost:5000/api/LOGIN_USER/save-user",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            uid: firebaseUser.uid,
-            email: firebaseUser.email,
-            fullName: firebaseUser.displayName || "N/A",
-            photoURL: firebaseUser.photoURL || "N/A",
-          }),
-        }
-      );
+      // Send to backend to create/get user + JWT token
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
       const data = await res.json();
 
-      // 🔥 TOKEN SAVE করুন – এখানে আসল কাজ!
+      if (data.success) {
+        localStorage.setItem("token", data.token); // 🔥 TOKEN SAVE
+        localStorage.setItem("user", JSON.stringify(data.user)); // optional
+      }
+
+      console.log("EMAIL LOGIN RESPONSE:", data);
+
+      if (!data.token || !data.user) {
+        toast.error("Token or user missing from backend!");
+        setLoading(false);
+        return;
+      }
+
+      // ⭐ TOKEN আলাদা key হিসেবে সেভ করবো
+      localStorage.setItem("token", data.token);
+
+      // ⭐ USER info সেভ করবো আলাদা করে (token ছাড়া)
       localStorage.setItem(
         "user",
         JSON.stringify({
@@ -69,20 +79,20 @@ const Login = () => {
           name: data.user.fullName,
           role: data.user.role,
           photoURL: data.user.photoURL,
-          token: data.token, // ⭐ সবচেয়ে গুরুত্বপূর্ণ জিনিস!
         })
       );
 
       toast.success("স্বাগতম!");
       navigate("/");
     } catch (error) {
-      console.error(error);
+      console.error("EMAIL LOGIN ERROR:", error);
       toast.error("লগইন ব্যর্থ!");
     } finally {
       setLoading(false);
     }
   };
 
+  // ✅ GOOGLE LOGIN
   const handleGoogleLogin = async () => {
     const provider = new GoogleAuthProvider();
     setLoading(true);
@@ -91,7 +101,6 @@ const Login = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      // 1) Send to backend
       const res = await fetch(
         "http://localhost:5000/api/LOGIN_USER/save-user",
         {
@@ -107,21 +116,30 @@ const Login = () => {
       );
 
       const data = await res.json();
+      console.log("GOOGLE LOGIN RESPONSE:", data);
 
-      // 2) Save to localStorage
+      if (!data.token || !data.user) {
+        toast.error("Token or user missing from backend!");
+        setLoading(false);
+        return;
+      }
+
+      // ⭐ Token আলাদা করে
+      localStorage.setItem("token", data.token);
+
+      // ⭐ User info
       localStorage.setItem(
         "user",
         JSON.stringify({
           uid: data.user.uid,
           email: data.user.email,
           name: data.user.fullName,
-          photoURL: data.user.photoURL,
           role: data.user.role,
-          token: data.token, // ⭐ Required token
+          photoURL: data.user.photoURL,
         })
       );
+      console.log("EMAIL LOGIN RESPONSE:", data);
 
-      // 3) Toast + Redirect
       toast.success("Google দিয়ে স্বাগতম!", { icon: <FcGoogle size={20} /> });
       setTimeout(() => navigate("/"), 1500);
     } catch (error) {
@@ -246,7 +264,6 @@ const Login = () => {
           </button>
         </div>
 
-        {/* Register*/}
         <p className="text-center mt-8 text-base-content/70">
           New here?{" "}
           <Link to="/register" className="link link-primary font-bold">
@@ -256,26 +273,26 @@ const Login = () => {
       </div>
 
       <style>{`
-  @keyframes pulse {
-    0%, 100% {
-      opacity: 0.4;
-      transform: scale(1);
-    }
-    50% {
-      opacity: 0.6;
-      transform: scale(1.05);
-    }
-  }
-  .animate-pulse {
-    animation: pulse 4s infinite;
-  }
-  .animation-delay-2000 {
-    animation-delay: 2s;
-  }
-  .animation-delay-4000 {
-    animation-delay: 4s;
-  }
-`}</style>
+        @keyframes pulse {
+          0%, 100% {
+            opacity: 0.4;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 0.6;
+            transform: scale(1.05);
+          }
+        }
+        .animate-pulse {
+          animation: pulse 4s infinite;
+        }
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+      `}</style>
     </div>
   );
 };

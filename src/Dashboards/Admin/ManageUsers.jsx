@@ -100,10 +100,17 @@ const ManageUsers = () => {
                       <td className="p-6">
                         <div className="flex items-center gap-4">
                           <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-xl font-bold text-white shadow-lg">
-                            {user.name.charAt(0).toUpperCase()}
+                            {(user.name || user.email || "U")
+                              .charAt(0)
+                              .toUpperCase()}
                           </div>
                           <div>
-                            <p className="font-semibold text-lg">{user.name}</p>
+                            <p className="font-semibold text-lg">
+                              {user.name ||
+                                user.email?.split("@")[0] ||
+                                "Unknown"}
+                            </p>
+
                             <p className="text-sm text-gray-400">
                               ID: {user._id.slice(-6)}
                             </p>

@@ -7,7 +7,9 @@ const MyIssues = () => {
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/issues?mine=true`, {
-      headers: { authorization: "Bearer demo-token" },
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
     })
       .then((res) => res.json())
       .then((data) => {
