@@ -1,4 +1,3 @@
-// src/Dashboards/Admin/ManageIssues.jsx
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import { useState } from "react";
