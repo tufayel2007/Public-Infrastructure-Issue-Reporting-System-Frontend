@@ -138,7 +138,6 @@ const AdminManageIssues = () => {
 
   return (
     <div className="p-4 md:p-8 max-w-7xl mx-auto min-h-screen">
-      {/* Hero Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
         <div className="stat bg-gradient-to-br from-purple-600 to-purple-500 text-white shadow-lg rounded-2xl">
           <div className="stat-title text-white/80">Total Issues</div>
