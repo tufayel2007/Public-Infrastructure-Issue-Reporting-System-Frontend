@@ -73,7 +73,6 @@ const ManageUsers = () => {
           </p>
         </div>
 
-        {/* Main Card */}
         <div className="backdrop-blur-xl bg-white/10 rounded-3xl shadow-2xl border border-white/20 overflow-hidden">
           <div className="p-8">
             <div className="overflow-x-auto">
@@ -135,7 +134,6 @@ const ManageUsers = () => {
                         </span>
                       </td>
 
-                      {/* Status */}
                       <td className="p-6 text-center">
                         {user.blocked ? (
                           <span className="px-6 py-3 bg-red-500/20 text-red-400 font-bold rounded-full border border-red-500/50 animate-pulse">
@@ -148,7 +146,6 @@ const ManageUsers = () => {
                         )}
                       </td>
 
-                      {/* Action Button */}
                       <td className="p-6 text-center">
                         {user.blocked ? (
                           <button
