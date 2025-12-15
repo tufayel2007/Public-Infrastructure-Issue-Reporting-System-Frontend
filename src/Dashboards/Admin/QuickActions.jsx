@@ -4,7 +4,7 @@ import { FaUserPlus, FaFileInvoiceDollar, FaTools } from "react-icons/fa";
 
 const QuickActions = () => {
   return (
-    <div className="flex  gap-3">
+    <div className="flex flex-col gap-3">
       <Link
         to="/admin/staff"
         className="flex items-center gap-3 p-3 border rounded hover:bg-gray-50"
