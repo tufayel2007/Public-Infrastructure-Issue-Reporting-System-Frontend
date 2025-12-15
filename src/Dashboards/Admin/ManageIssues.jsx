@@ -287,7 +287,6 @@ const AdminManageIssues = () => {
         </div>
       )}
 
-      {/* Empty State */}
       {issues.length === 0 && (
         <div className="text-center py-32">
           <div className="text-9xl mb-8 animate-bounce">All Clear</div>
