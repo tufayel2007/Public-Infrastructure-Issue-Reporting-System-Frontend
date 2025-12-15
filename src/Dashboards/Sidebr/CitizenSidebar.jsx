@@ -78,7 +78,7 @@ const CitizenSidebar = () => {
           )}
         </NavLink>
 
-        {/* Report New Issue */}
+        {/* Report  */}
         <NavLink
           to="/citizen/report-issue"
           className={({ isActive }) =>
