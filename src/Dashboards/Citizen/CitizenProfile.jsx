@@ -727,7 +727,7 @@ const CitizenProfile = () => {
           )}
         </AnimatePresence>
 
-        {/* Completion Celebra */}
+        {/* Completion Celebration */}
         <AnimatePresence>
           {completion === 100 && (
             <motion.div
