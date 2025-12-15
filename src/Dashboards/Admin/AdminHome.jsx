@@ -78,7 +78,6 @@ const AdminDashboard = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-6 mb-10">
-          {/* Total Issues */}
           <div className="group relative backdrop-blur-xl bg-white/10 border border-cyan-500/30 rounded-3xl p-6 shadow-2xl hover:scale-105 transition-all">
             <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-cyan-600/20 to-purple-600/20 blur-xl group-hover:blur-2xl transition"></div>
             <div className="relative z-10">
