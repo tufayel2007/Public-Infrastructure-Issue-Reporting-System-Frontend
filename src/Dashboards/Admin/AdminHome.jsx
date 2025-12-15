@@ -9,7 +9,6 @@ import PaymentsSummary from "./PaymentsSummary";
 import IssuesBarChart from "./IssuesBarChart";
 import IssuesPieChart from "./IssuesPieChart";
 
-// fetchers
 const fetchAdminIssues = async () => {
   const res = await axiosSecure.get("/admin/issues");
   return res.data;
