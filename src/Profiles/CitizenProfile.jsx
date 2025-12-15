@@ -577,9 +577,10 @@ const CitizenProfile = () => {
                   name="email"
                   type="email"
                   value={formData.email}
-                  onChange={handleChange}
+                  disabled
                   label="Email"
                 />
+
                 <FloatingInput
                   name="bio"
                   type="textarea"
