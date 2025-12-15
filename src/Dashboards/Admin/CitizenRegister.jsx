@@ -64,7 +64,6 @@ const CitizenRegister = () => {
               />
             </div>
 
-            {/* Password Input */}
             <div>
               <input
                 type="password"
@@ -76,7 +75,6 @@ const CitizenRegister = () => {
               />
             </div>
 
-            {/* Photo Upload */}
             <div>
               <input
                 type="file"
