@@ -125,7 +125,7 @@ const CitizenProfile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const token = localStorage.getItem("token"); // আপনার টোকেন যেখানে সেভ করা আছে
+        const token = localStorage.getItem("token");
         const res = await fetch("/api/profile", {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -163,7 +163,7 @@ const CitizenProfile = () => {
   const handleCoverImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setCoverFile(file); // ✅ file save
+      setCoverFile(file);
       setPreviewCoverImage(URL.createObjectURL(file));
     }
   };
@@ -197,7 +197,7 @@ const CitizenProfile = () => {
 
     // ✅ file
     if (coverFile) {
-      form.append("photo", coverFile); // backend expects "photo"
+      form.append("photo", coverFile);
     }
 
     const token = localStorage.getItem("token");
@@ -664,7 +664,6 @@ const CitizenProfile = () => {
           </div>
         </div>
 
-        {/* Theme Picker Modal */}
         {/* animated  issue and update data  */}
         <AnimatePresence>
           {showThemePicker && (
