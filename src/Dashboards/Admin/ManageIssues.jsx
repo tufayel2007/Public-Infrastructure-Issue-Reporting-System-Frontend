@@ -239,7 +239,6 @@ const AdminManageIssues = () => {
         ))}
       </div>
 
-      {/* Active Filters Chips */}
       {(filterStatus || filterCategory || filterPriority) && (
         <div className="flex flex-wrap gap-3 mb-6">
           {filterStatus && (
