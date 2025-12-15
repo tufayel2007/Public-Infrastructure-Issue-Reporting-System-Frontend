@@ -111,7 +111,6 @@ const CitizenSidebar = () => {
 
         <div className="my-6 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
 
-        {/* Back to Home */}
         <NavLink
           to="/"
           className="flex items-center gap-4 px-5 py-4 rounded-xl hover:bg-white/10 hover:scale-[1.02] hover:shadow-lg transition-all duration-300 group"
