@@ -90,7 +90,6 @@ const CitizenRegister = () => {
               </p>
             </div>
 
-            {/* Submit Button */}
             <button
               className="btn btn-primary w-full text-xl font-bold py-6 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-purple-500/50 border-0"
               type="submit"
