@@ -41,7 +41,6 @@ const CitizenRegister = () => {
         <div className="absolute bottom-20 left-1/3 w-72 h-72 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob animation-delay-4s" />
       </div>
 
-      {/* Glassmorphism Registration Card */}
       <div className="relative z-10 w-full max-w-md mx-4">
         <div className="backdrop-blur-2xl bg-white/5 border border-white/10 rounded-3xl shadow-2xl p-8 md:p-12 animate-fade-in">
           <h2 className="text-4xl font-extrabold text-center text-white mb-4 tracking-tight">
