@@ -33,7 +33,6 @@ const CitizenRegister = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-black">
-      {/* Animated Gradient + Floating Blobs Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-indigo-900 to-pink-900 opacity-70" />
       <div className="absolute inset-0">
         <div className="absolute top-10 left-10 w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob" />
