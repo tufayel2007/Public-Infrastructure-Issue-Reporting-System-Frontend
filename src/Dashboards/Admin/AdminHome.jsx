@@ -77,7 +77,6 @@ const AdminDashboard = () => {
           </p>
         </div>
 
-        {/* Stats Cards - Neon Glow */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-6 mb-10">
           {/* Total Issues */}
           <div className="group relative backdrop-blur-xl bg-white/10 border border-cyan-500/30 rounded-3xl p-6 shadow-2xl hover:scale-105 transition-all">
