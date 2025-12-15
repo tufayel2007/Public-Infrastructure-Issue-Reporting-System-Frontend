@@ -57,7 +57,6 @@ const AdminManageIssues = () => {
     ? issuesData
     : issuesData?.issues || [];
 
-  // Calculate stats for hero section
   const total = issues.length;
   const pending = issues.filter((i) => i.status === "pending").length;
   const inProgress = issues.filter((i) => i.status === "in-progress").length;
