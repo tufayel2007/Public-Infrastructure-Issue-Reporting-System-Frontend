@@ -6,7 +6,6 @@ import { CgProfile } from "react-icons/cg";
 const AdminNavbar = ({ toggleSidebar }) => {
   return (
     <div className="w-full h-16 bg-white shadow-md flex items-center justify-between px-4 sticky top-0 z-50">
-      {/* Sidebar Toggle Button */}
       <button
         onClick={toggleSidebar}
         className="text-xl lg:hidden text-gray-700"
