@@ -281,7 +281,7 @@ const CitizenProfile = () => {
     }
   };
 
-  // Profile comple
+  // Profile completion
   const fields = ["name", "email", "bio", "location", "phone"];
   const filled = fields.filter((f) => formData[f]?.trim());
   const completion = Math.round((filled.length / fields.length) * 100);
