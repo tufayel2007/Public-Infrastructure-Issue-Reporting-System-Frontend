@@ -6,7 +6,7 @@ import {
   FaCalendarAlt,
 } from "react-icons/fa";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MdOutlineDoubleArrow } from "react-icons/md";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -361,8 +361,40 @@ const AllIssues = () => {
         </div>
 
         {issues.length === 0 && (
-          <div className="text-center py-10 text-gray-500 text-lg">
-            No issues found matching your criteria.
+          <div className="min-h-[50vh] flex items-center justify-center px-6">
+            <div className="max-w-xl w-full bg-gradient-to-br from-gray-900 via-black to-gray-900 border border-gray-800 rounded-3xl shadow-2xl p-10 text-center">
+              <div className="text-6xl mb-6">🔐</div>
+
+              <h2 className="text-3xl font-extrabold text-white mb-4">
+                Login Required,
+              </h2>
+              <h2 className="text-3xl font-extrabold text-orange-300 mb-4">
+                Plasse wite
+              </h2>
+
+              <p className="text-gray-400 text-lg leading-relaxed mb-8">
+                To view issues and access this feature, you must be logged in.
+                <br />
+                Please create an account using your email and password, or log
+                in to your existing account to continue.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link
+                  to="/CitizenRegister"
+                  className="px-8 py-4 rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold text-lg shadow-xl hover:scale-105 transition"
+                >
+                  Create Account
+                </Link>
+
+                <Link
+                  to="/adminLogin"
+                  className="px-8 py-4 rounded-2xl rounded-2xl bg-gray-800 text-white font-bold text-lg border border-gray-700 shadow-xl hover:bg-gray-700 transition"
+                >
+                  Login
+                </Link>
+              </div>
+            </div>
           </div>
         )}
 

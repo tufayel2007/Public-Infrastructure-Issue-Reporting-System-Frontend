@@ -106,7 +106,9 @@ const CitizenSidebar = () => {
             </>
           )}
         </NavLink>
-
+        <span>
+          <Link to="/citizen/CitizenProfile">MY Profile</Link>
+        </span>
         {/* Divider */}
         <div className="my-6 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
 

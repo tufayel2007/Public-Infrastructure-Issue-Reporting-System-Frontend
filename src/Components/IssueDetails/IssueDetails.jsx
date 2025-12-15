@@ -29,7 +29,6 @@ const IssueDetails = () => {
       });
 
       if (!res.ok) {
-        // try to show server message if any
         const err = await res.json().catch(() => ({}));
         throw new Error(err.message || "Failed to fetch issue");
       }
@@ -45,7 +44,6 @@ const IssueDetails = () => {
       });
     } catch (err) {
       toast.error(err.message || "Issue not found");
-      navigate(`/issues/${id}`);
     } finally {
       setLoading(false);
     }
@@ -61,7 +59,6 @@ const IssueDetails = () => {
     if (!form.title || !form.description)
       return toast.error("Title & Description required");
 
-    // Frontend guard: only allow editing if pending
     if (issue?.status !== "pending") {
       return toast.error("Cannot edit — issue is not pending");
     }
@@ -95,7 +92,6 @@ const IssueDetails = () => {
   const handleDelete = async () => {
     if (!confirm("Delete this issue?")) return;
 
-    // Frontend guard: only allow deleting if pending
     if (issue?.status !== "pending") {
       return toast.error("Cannot delete — issue is not pending");
     }
@@ -111,7 +107,7 @@ const IssueDetails = () => {
 
       if (data.success) {
         toast.success("Deleted");
-        navigate(`/issues/${id}`);
+        navigate("/issues");
       } else {
         toast.error(data.message || "Delete failed");
       }
@@ -133,7 +129,10 @@ const IssueDetails = () => {
             "Content-Type": "application/json",
             authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          body: JSON.stringify({ status: "resolved", note: "Marked resolved" }),
+          body: JSON.stringify({
+            status: "resolved",
+            note: "Marked resolved by staff/user",
+          }),
         }
       );
 
@@ -164,7 +163,10 @@ const IssueDetails = () => {
             "Content-Type": "application/json",
             authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          body: JSON.stringify({ status: "closed", note: "Closed by user" }),
+          body: JSON.stringify({
+            status: "closed",
+            note: "Closed by user/staff",
+          }),
         }
       );
 
@@ -202,170 +204,254 @@ const IssueDetails = () => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Boost failed");
 
-      // 🔥 New Stripe Method — direct redirect
       window.location.href = data.url;
     } catch (err) {
       toast.error(err.message || "Boost failed");
     }
   };
 
-  if (loading) return <p className="text-center mt-10">Loading...</p>;
+  if (loading)
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <p className="text-white text-xl animate-pulse">
+          Loading issue details...
+        </p>
+      </div>
+    );
   if (!issue) return null;
 
-  // helper: whether editing allowed
   const canEdit = issue.status === "pending";
 
   return (
-    <div className="max-w-3xl mx-auto py-10 px-4 mt-24">
-      <h1 className="text-3xl font-bold mb-4">{issue.title}</h1>
+    <div className="min-h-screen bg-black text-white px-4 py-8 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto space-y-10">
+        {/* Main Issue Card - Dark Premium */}
+        <div className="bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-3xl shadow-2xl border border-gray-800 overflow-hidden">
+          {/* Premium Gradient Header */}
+          <div className="bg-gradient-to-r from-purple-700 via-indigo-800 to-pink-800 p-8 sm:p-10">
+            <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight">
+              {issue.title}
+            </h1>
 
-      {issue.imageUrl && (
-        <img
-          src={`${import.meta.env.VITE_API_URL}${issue.imageUrl}`}
-          className="w-full h-64 object-cover rounded mb-4"
-          alt="issue"
-        />
-      )}
+            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6 text-gray-200">
+              <div className="flex items-center gap-3">
+                <span className="font-medium">Category:</span>
+                <span className="bg-gray-800/50 px-4 py-2 rounded-full">
+                  {issue.category}
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="font-medium">Location:</span>
+                <span className="bg-gray-800/50 px-4 py-2 rounded-full">
+                  {issue.location}
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span
+                  className={`px-5 py-2.5 text-sm font-bold uppercase rounded-full shadow-lg ${
+                    issue.status === "resolved"
+                      ? "bg-green-600/30 text-green-300 border border-green-500/50"
+                      : issue.status === "pending"
+                      ? "bg-yellow-600/30 text-yellow-300 border border-yellow-500/50"
+                      : "bg-gray-600/40 text-gray-300 border border-gray-500/50"
+                  }`}
+                >
+                  {issue.status}
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="font-medium text-red-400">Priority:</span>
+                <span className="text-2xl font-bold text-red-400">
+                  {issue.priority}
+                </span>
+              </div>
+            </div>
+          </div>
 
-      {/* Edit / view mode */}
-      {editing ? (
-        <div className="space-y-3 mb-4">
-          <input
-            className="w-full p-2 border rounded"
-            value={form.title}
-            onChange={(e) => setForm({ ...form, title: e.target.value })}
-            placeholder="Title"
-          />
-          <textarea
-            className="w-full p-2 border rounded"
-            value={form.description}
-            onChange={(e) => setForm({ ...form, description: e.target.value })}
-            placeholder="Description"
-          />
-          <input
-            className="w-full p-2 border rounded"
-            value={form.category}
-            onChange={(e) => setForm({ ...form, category: e.target.value })}
-            placeholder="Category"
-          />
-          <input
-            className="w-full p-2 border rounded"
-            value={form.location}
-            onChange={(e) => setForm({ ...form, location: e.target.value })}
-            placeholder="Location"
-          />
+          {/* Issue Image */}
+          {issue.imageUrl && (
+            <div className="p-6 sm:p-8">
+              <img
+                src={`${import.meta.env.VITE_API_URL}${issue.imageUrl}`}
+                className="w-full h-72 sm:h-96 object-cover rounded-2xl border-4 border-gray-800 shadow-2xl"
+                alt="Issue visual reference"
+              />
+            </div>
+          )}
 
-          <div className="flex gap-2">
-            <button
-              onClick={handleEdit}
-              disabled={!canEdit}
-              className={`px-4 py-2 rounded text-white ${
-                canEdit ? "bg-green-600" : "bg-gray-400 cursor-not-allowed"
-              }`}
-            >
-              Save
-            </button>
-            <button
-              onClick={() => {
-                setEditing(false);
-                // reset form to latest issue values
-                setForm({
-                  title: issue.title,
-                  description: issue.description,
-                  category: issue.category,
-                  location: issue.location,
-                });
-              }}
-              className="px-4 py-2 rounded bg-gray-200"
-            >
-              Cancel
-            </button>
+          {/* Description / Edit */}
+          <div className="p-6 sm:p-10">
+            {editing ? (
+              <div className="space-y-6">
+                <input
+                  type="text"
+                  className="w-full px-6 py-4 text-xl bg-gray-900/70 border border-gray-700 rounded-2xl focus:ring-4 focus:ring-purple-500 focus:border-purple-500 text-white placeholder-gray-500 transition"
+                  value={form.title}
+                  onChange={(e) => setForm({ ...form, title: e.target.value })}
+                  placeholder="Issue Title"
+                />
+                <textarea
+                  rows="6"
+                  className="w-full px-6 py-4 bg-gray-900/70 border border-gray-700 rounded-2xl focus:ring-4 focus:ring-purple-500 focus:border-purple-500 text-white placeholder-gray-500 resize-none transition"
+                  value={form.description}
+                  onChange={(e) =>
+                    setForm({ ...form, description: e.target.value })
+                  }
+                  placeholder="Detailed Description"
+                />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <input
+                    type="text"
+                    className="px-6 py-4 bg-gray-900/70 border border-gray-700 rounded-2xl focus:ring-4 focus:ring-purple-500 text-white"
+                    value={form.category}
+                    onChange={(e) =>
+                      setForm({ ...form, category: e.target.value })
+                    }
+                    placeholder="Category"
+                  />
+                  <input
+                    type="text"
+                    className="px-6 py-4 bg-gray-900/70 border border-gray-700 rounded-2xl focus:ring-4 focus:ring-purple-500 text-white"
+                    value={form.location}
+                    onChange={(e) =>
+                      setForm({ ...form, location: e.target.value })
+                    }
+                    placeholder="Location"
+                  />
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-5 pt-4">
+                  <button
+                    onClick={handleEdit}
+                    disabled={!canEdit}
+                    className={`py-5 px-10 rounded-2xl font-bold text-xl shadow-2xl transition transform hover:scale-105 ${
+                      canEdit
+                        ? "bg-gradient-to-r from-emerald-500 to-teal-600 text-white"
+                        : "bg-gray-700 text-gray-500 cursor-not-allowed"
+                    }`}
+                  >
+                    Save Changes
+                  </button>
+                  <button
+                    onClick={() => {
+                      setEditing(false);
+                      setForm({
+                        title: issue.title,
+                        description: issue.description,
+                        category: issue.category,
+                        location: issue.location,
+                      });
+                    }}
+                    className="py-5 px-10 rounded-2xl bg-gray-800/70 text-white font-bold shadow-lg hover:bg-gray-700 transition"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <h3 className="text-3xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                  Description
+                </h3>
+                <p className="text-gray-300 text-lg leading-relaxed whitespace-pre-wrap">
+                  {issue.description}
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Action Buttons - Neon Style */}
+          <div className="p-6 sm:p-10 pt-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <button
+                onClick={() => setEditing(true)}
+                disabled={!canEdit}
+                className={`py-5 rounded-2xl font-bold text-xl shadow-2xl transition transform hover:scale-105 ${
+                  canEdit
+                    ? "bg-gradient-to-r from-blue-600 to-cyan-600 text-white"
+                    : "bg-gray-800 text-gray-500 cursor-not-allowed"
+                }`}
+              >
+                Edit Issue
+              </button>
+
+              <button
+                onClick={handleDelete}
+                disabled={!canEdit}
+                className={`py-5 rounded-2xl font-bold text-xl shadow-2xl transition transform hover:scale-105 ${
+                  canEdit
+                    ? "bg-gradient-to-r from-red-600 to-pink-600 text-white"
+                    : "bg-gray-800 text-gray-500 cursor-not-allowed"
+                }`}
+              >
+                Delete Issue
+              </button>
+
+              <button
+                onClick={handleBoost}
+                disabled={issue.status === "closed"}
+                className={`py-6 rounded-3xl font-bold text-2xl shadow-2xl transition transform hover:scale-110 bg-gradient-to-r ${
+                  issue.status === "closed"
+                    ? "from-gray-700 to-gray-800 text-gray-500 cursor-not-allowed"
+                    : "from-pink-500 via-purple-600 to-indigo-700 text-white animate-pulse shadow-pink-500/50"
+                }`}
+              >
+                Boost Priority (৳100)
+              </button>
+
+              {issue.status !== "resolved" && issue.status !== "closed" && (
+                <button
+                  onClick={handleMarkResolved}
+                  className="py-5 rounded-2xl font-bold text-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-2xl transform hover:scale-105 col-span-1 sm:col-span-2 lg:col-span-1"
+                >
+                  Mark as Resolved
+                </button>
+              )}
+
+              {issue.status !== "closed" && (
+                <button
+                  onClick={handleClose}
+                  className="py-5 rounded-2xl font-bold text-xl bg-gradient-to-r from-indigo-600 to-purple-700 text-white shadow-2xl transform hover:scale-105 col-span-1 sm:col-span-2 lg:col-span-1"
+                >
+                  Close Issue
+                </button>
+              )}
+            </div>
           </div>
         </div>
-      ) : (
-        <>
-          <p>
-            <b>Category:</b> {issue.category}
-          </p>
-          <p>
-            <b>Location:</b> {issue.location}
-          </p>
-          <p>
-            <b>Status:</b> {issue.status}
-          </p>
-          <p>
-            <b>Priority:</b> {issue.priority}
-          </p>
 
-          {/* Actions */}
-          <div className="flex flex-wrap gap-2 mt-3">
-            {/* Edit button shown but disabled if not pending */}
-            <button
-              onClick={() => setEditing(true)}
-              disabled={!canEdit}
-              className={`px-4 py-2 rounded text-white ${
-                canEdit ? "bg-blue-600" : "bg-gray-400 cursor-not-allowed"
-              }`}
-            >
-              Edit
-            </button>
+        {/* Timeline - Dark Glassmorphism */}
+        <div className="bg-gray-900/60 backdrop-blur-xl rounded-3xl border border-gray-800 p-8 sm:p-10 shadow-2xl">
+          <h2 className="text-3xl sm:text-4xl font-extrabold mb-10 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+            Timeline & History
+          </h2>
 
-            <button
-              onClick={handleDelete}
-              disabled={!canEdit}
-              className={`px-4 py-2 rounded text-white ${
-                canEdit ? "bg-red-600" : "bg-gray-400 cursor-not-allowed"
-              }`}
-            >
-              Delete
-            </button>
-
-            {/* Boost button - you may want to disable boosting for closed issues */}
-            <button
-              onClick={handleBoost}
-              disabled={issue.status === "closed"}
-              className={`px-4 py-2 rounded text-white ${
-                issue.status === "closed"
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-purple-600"
-              }`}
-            >
-              Boost Now (৳100)
-            </button>
-
-            {/* Staff / user actions: mark resolved / close — show depending on status */}
-            {issue.status !== "resolved" && issue.status !== "closed" && (
-              <button
-                onClick={handleMarkResolved}
-                className="px-4 py-2 rounded text-white bg-green-600"
+          <div className="space-y-10">
+            {issue.timeline?.map((t, i) => (
+              <div
+                key={i}
+                className="relative pl-12 before:absolute before:left-5 before:top-0 before:w-1 before:h-full before:bg-gradient-to-b before:from-purple-500 before:via-pink-500 before:to-indigo-500 before:rounded-full last:before:h-12"
               >
-                Mark Resolved
-              </button>
-            )}
+                <div className="absolute left-0 top-2 w-10 h-10 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full flex items-center justify-center text-white font-black text-lg shadow-2xl ring-4 ring-black">
+                  {i + 1}
+                </div>
 
-            {issue.status !== "closed" && (
-              <button
-                onClick={handleClose}
-                className="px-4 py-2 rounded text-white bg-indigo-600"
-              >
-                Close
-              </button>
-            )}
+                <div className="bg-gray-800/70 backdrop-blur border border-gray-700 rounded-2xl p-6 hover:border-purple-500/50 transition">
+                  <p className="text-2xl font-bold text-white">
+                    {t.status.charAt(0).toUpperCase() + t.status.slice(1)}
+                    <span className="ml-5 text-sm font-normal text-gray-400">
+                      {new Date(t.date).toLocaleString()}
+                    </span>
+                  </p>
+                  <p className="mt-3 text-gray-300 italic text-lg">
+                    {t.message}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
-        </>
-      )}
-
-      {/* Timeline */}
-      <h2 className="text-2xl font-bold mb-2 mt-5">Timeline</h2>
-      {issue.timeline?.map((t, i) => (
-        <div key={i} className="p-2 border rounded mb-2">
-          <p>
-            <b>Status:</b> {t.status}
-          </p>
-          <p>{t.message}</p>
-          <small>{new Date(t.date).toLocaleString()}</small>
         </div>
-      ))}
+      </div>
     </div>
   );
 };

@@ -29,6 +29,11 @@ import BoostSuccess from "../OnlinePyment/BoostSuccess";
 import BoostCancel from "../OnlinePyment/BoostCancel";
 import CitizenRegister from "../Dashboards/Admin/CitizenRegister";
 import CitizenReportIssue from "../Dashboards/Citizen/CitizenReportIssue";
+import PrivateRoute from "../Components/Footer/PrivareRoute";
+import Premium from "../OnlinePyment/Premium";
+import PremiumSuccess from "../OnlinePyment/PremiumSuccess";
+import About from "../Components/Navbar/About";
+import CitizenProfile from "../Dashboards/Citizen/CitizenProfile";
 
 const router = createBrowserRouter([
   {
@@ -39,7 +44,15 @@ const router = createBrowserRouter([
       { path: "/login", element: <Login /> },
       { path: "/forgotPassword", element: <ForgotPassword></ForgotPassword> },
       { path: "/allIssues", element: <AllIssues /> },
-      { path: "/reportIssue", element: <ReportIssue /> },
+      { path: "/about", element: <About /> },
+      {
+        path: "/reportIssue",
+        element: (
+          <PrivateRoute>
+            <ReportIssue />
+          </PrivateRoute>
+        ),
+      },
       {
         path: "/allservises",
         element: <AllServices></AllServices>,
@@ -49,10 +62,12 @@ const router = createBrowserRouter([
         path: "/issue/:id",
         element: <IssueDetails />,
       },
+
       {
         path: "/boost/success",
         element: <BoostSuccess />,
       },
+
       {
         path: "/boost/cancel",
         element: <BoostCancel />,
@@ -109,9 +124,12 @@ const router = createBrowserRouter([
     children: [
       { path: "dashboard", element: <CitizenHome /> },
       { path: "issues", element: <MyIssues /> },
+      { path: "CitizenProfile", element: <CitizenProfile /> },
       { path: "issues/:id", element: <CitizenIssueDetails /> },
       { path: "reportKNow", element: <ReportKNow /> },
       { path: "citizenReportIssue", element: <CitizenReportIssue /> },
+      { path: "premium", element: <Premium /> },
+      { path: "premium/success", element: <PremiumSuccess /> },
     ],
   },
 ]);

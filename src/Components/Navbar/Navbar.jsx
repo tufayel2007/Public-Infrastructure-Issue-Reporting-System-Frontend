@@ -93,12 +93,25 @@ const Navbar = () => {
         <NavLink
           to="/adminLogin"
           className={({ isActive }) =>
-            isActive
-              ? "btn btn-sm md:btn-md btn-primary text-primary-content font-bold"
-              : "btn btn-sm md:btn-md btn-ghost hover:bg-base-200"
+            `
+      btn btn-xs md:btn-sm
+      rounded-full
+      px-4 md:px-5
+      py-2
+      font-medium
+      tracking-wide
+      text-sm md:text-base
+      transition-all duration-200 ease-in-out
+      animate-bounce-slow
+      ${
+        isActive
+          ? "bg-gradient-to-r from-primary to-secondary text-white shadow-lg scale-105"
+          : "bg-base-200 text-base-content hover:bg-gradient-to-r hover:from-primary hover:to-secondary hover:text-white hover:shadow-md"
+      }
+      `
           }
         >
-          Admin Login
+          Access Portal
         </NavLink>
       </li>
     </>
@@ -289,7 +302,7 @@ const Navbar = () => {
                       : "btn btn-sm md:btn-md btn-ghost hover:bg-base-200"
                   }
                 >
-                  Admin Login
+                  Login
                 </NavLink>
               </li>
               <li className="border-t border-base-300 mt-2 pt-2">

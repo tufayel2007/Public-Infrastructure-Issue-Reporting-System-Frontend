@@ -110,10 +110,7 @@ const CitizenHome = () => {
           </p>
 
           {!isPremium && stats.total >= 3 && (
-            <Link
-              to="/premium"
-              className="btn btn-warning btn-lg mt-4 shadow-lg hover:scale-105"
-            >
+            <Link to="/citizen/premium" className="btn btn-warning ...">
               প্রিমিয়াম নিন → আনলিমিটেড রিপোর্ট
             </Link>
           )}
@@ -265,12 +262,12 @@ const CitizenHome = () => {
                 </div>
               ))}
             </div>
-            <Link
-              to="/premium"
-              className="btn btn-lg btn-accent shadow-2xl hover:scale-105"
-            >
-              মাত্র ১০০০ টাকায় প্রিমিয়াম হোন
-            </Link>
+
+            <button className="btn ">
+              <Link to="/citizen/premium">
+                প্রিমিয়াম নিন → আনলিমিটেড রিপোর্ট
+              </Link>
+            </button>
           </div>
         )}
 

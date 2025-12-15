@@ -12,7 +12,7 @@ const ReportIssue = () => {
   const [location, setLocation] = useState("");
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);const token = localStorage.getItem
 
   // Fetch current user's report count
   const { data: stats, isLoading: statsLoading } = useQuery({

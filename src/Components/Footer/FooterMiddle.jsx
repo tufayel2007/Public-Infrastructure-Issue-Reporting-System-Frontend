@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronUp } from "lucide-react";
@@ -12,51 +11,44 @@ const FooterMiddle = ({
 }) => {
   return (
     <>
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 gap-8 py-12">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-12">
         {footerLinks.map((column, i) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
+            viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}
-            className="col-span-1"
           >
+            {/* Mobile Accordion */}
             <div className="md:hidden">
               <button
                 onClick={() => setOpenSection(openSection === i ? null : i)}
-                className="flex justify-between items-center w-full text-left font-bold text-green-400 pb-2 border-b border-gray-700 dark:border-gray-600"
+                className="flex justify-between items-center w-full text-left font-semibold text-primary pb-3 border-b border-base-200"
               >
                 <span className="flex items-center gap-2">
                   {column.icon} {column.title}
                 </span>
-                {openSection === i ? (
-                  <ChevronUp size={18} />
-                ) : (
-                  <ChevronDown size={18} />
-                )}
+                {openSection === i ? <ChevronUp /> : <ChevronDown />}
               </button>
               <AnimatePresence>
                 {openSection === i && (
                   <motion.ul
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ type: "spring", damping: 15, stiffness: 100 }}
-                    className="overflow-hidden mt-3"
+                    initial={{ height: 0 }}
+                    animate={{ height: "auto" }}
+                    exit={{ height: 0 }}
+                    className="overflow-hidden mt-4 space-y-2"
                   >
                     {column.links.map((link, j) => (
                       <motion.li
                         key={j}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: j * 0.05 }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
                       >
                         <a
                           href={link.href}
-                          className="flex items-center gap-2 py-2 text-sm text-gray-300 hover:text-green-400 transition-all"
+                          className="text-base-content/70 hover:text-primary transition"
                         >
-                          {link.icon && <span>{link.icon}</span>}
                           {link.text}
                         </a>
                       </motion.li>
@@ -66,27 +58,20 @@ const FooterMiddle = ({
               </AnimatePresence>
             </div>
 
+            {/* Desktop */}
             <div className="hidden md:block">
-              <h4 className="text-lg font-bold text-green-400 border-b-2 border-green-500 pb-1 mb-4 inline-block flex items-center gap-2">
+              <h4 className="font-bold text-primary mb-4 flex items-center gap-2">
                 {column.icon} {column.title}
               </h4>
-              <ul className="space-y-2 text-sm">
+              <ul className="space-y-3">
                 {column.links.map((link, j) => (
                   <motion.li
                     key={j}
                     whileHover={{ x: 8 }}
-                    transition={{ type: "spring", stiffness: 400 }}
+                    className="text-base-content/70 hover:text-primary transition-all"
                   >
-                    <a
-                      href={link.href}
-                      className="text-gray-300 hover:text-green-400 transition-all duration-300 flex items-center gap-2 group"
-                    >
-                      <span className="inline-block w-0 group-hover:w-3 transition-all duration-300 text-green-400">
-                        →
-                      </span>
-                      {link.icon && (
-                        <span className="text-green-500">{link.icon}</span>
-                      )}
+                    <a href={link.href} className="flex items-center gap-2">
+                      <span className="text-primary">→</span>
                       {link.text}
                     </a>
                   </motion.li>
@@ -97,12 +82,8 @@ const FooterMiddle = ({
         ))}
       </div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, amount: 0.5 }}
-        className="grid grid-cols-1 md:grid-cols-3 gap-6 py-8 border-t border-gray-700 dark:border-gray-600"
-      >
+      {/* Quick Contact Info */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 py-8 border-t border-base-200">
         {quickInfo.map((info, i) => {
           const Icon = info.icon;
           return (
@@ -113,22 +94,22 @@ const FooterMiddle = ({
               rel={
                 info.href.startsWith("http") ? "noopener noreferrer" : undefined
               }
-              className="flex items-center gap-3 text-sm group"
+              className="flex items-center gap-4 group"
               whileHover={{ x: 5 }}
             >
-              <div className="w-10 h-10 bg-gradient-to-br from-green-500/20 to-emerald-600/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                <Icon className="text-green-400" size={18} />
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition">
+                <Icon className="text-primary" size={20} />
               </div>
               <div>
-                <p className="text-gray-400">{info.label}</p>
-                <p className="text-white font-medium group-hover:text-green-400 transition-colors">
+                <p className="text-sm text-base-content/60">Contact</p>
+                <p className="font-medium group-hover:text-primary transition">
                   {info.text}
                 </p>
               </div>
             </motion.a>
           );
         })}
-      </motion.div>
+      </div>
     </>
   );
 };

@@ -1,17 +1,7 @@
 /* eslint-disable no-unused-vars */
-
 import React from "react";
 import { motion } from "framer-motion";
-import {
-  Mail,
-  Send,
-  CheckCircle,
-  AlertCircle,
-  Shield,
-  Award,
-  Truck,
-  RefreshCw,
-} from "lucide-react";
+import { Mail, Send } from "lucide-react";
 
 const FooterTop = ({
   email,
@@ -19,40 +9,44 @@ const FooterTop = ({
   handleSubscribe,
   isSubmitting,
   socialLinks,
-  certifications,
+  features, // ← এখানে features নিচ্ছি
 }) => {
   return (
-    <div className="pb-10 border-b border-gray-700 dark:border-gray-600 flex flex-col lg:flex-row justify-between items-start gap-12">
+    <div className="pb-10 border-b border-base-200 flex flex-col lg:flex-row justify-between items-start gap-12">
+      {/* Logo & Title */}
       <motion.div
         initial={{ opacity: 0, x: -30 }}
         whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true, amount: 0.5 }}
-        className="flex items-center gap-3 lg:w-1/4"
+        viewport={{ once: true }}
+        className="flex items-center gap-4 lg:w-1/3"
       >
         <motion.div
           whileHover={{ rotate: 360 }}
-          transition={{ duration: 0.6 }}
-          className="w-14 h-14 bg-gradient-to-br from-green-400 via-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-xl"
+          transition={{ duration: 0.8 }}
+          className="w-16 h-16 bg-gradient-to-br from-primary to-blue-700 rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-2xl"
         >
-          SD
+          IH
         </motion.div>
         <div>
-          <h1 className="text-3xl font-black bg-gradient-to-r from-green-400 via-emerald-500 to-teal-500 bg-clip-text text-transparent">
-            Social Development
+          <h1 className="text-3xl font-black bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
+            IssueHub
           </h1>
-          <p className="text-xs text-green-300">Your Indoor Oasis</p>
+          <p className="text-sm text-base-content/70">
+            Public Infrastructure Reporting System
+          </p>
         </div>
       </motion.div>
 
+      {/* Social Links */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.5 }}
+        viewport={{ once: true }}
         transition={{ delay: 0.2 }}
         className="flex flex-col gap-4 lg:w-1/3"
       >
-        <h4 className="text-lg font-bold text-green-400">Stay Connected</h4>
-        <div className="flex flex-wrap gap-3">
+        <h4 className="text-lg font-bold text-primary">Follow Us</h4>
+        <div className="flex flex-wrap gap-4">
           {socialLinks.map((item, i) => {
             const Icon = item.icon;
             return (
@@ -61,44 +55,42 @@ const FooterTop = ({
                 href={item.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`group relative w-12 h-12 flex items-center justify-center rounded-full ${item.color} transition-all hover:scale-110 hover:rotate-12 shadow-xl`}
+                className="w-12 h-12 bg-base-200 rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-all shadow-lg"
                 aria-label={item.label}
-                whileHover={{ y: -4 }}
+                whileHover={{ scale: 1.15, y: -5 }}
               >
-                <Icon className="w-6 h-6 text-white" />
-                <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                  {item.label}
-                </span>
+                <Icon size={20} />
               </motion.a>
             );
           })}
         </div>
       </motion.div>
 
+      {/* Newsletter */}
       <motion.div
         initial={{ opacity: 0, x: 30 }}
         whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true, amount: 0.5 }}
+        viewport={{ once: true }}
         transition={{ delay: 0.4 }}
         className="lg:w-1/3 w-full"
       >
-        <h4 className="text-lg font-bold text-green-400 border-b-2 border-green-500 pb-1 mb-4 inline-block">
-          SDEP Newsletter
+        <h4 className="text-lg font-bold text-primary mb-3">
+          Get Updates on Civic Progress
         </h4>
-        <p className="text-sm text-gray-400 mb-4">
-          Get exclusive plant care tips, new arrivals, and{" "}
-          <strong className="text-green-300">10% off</strong> your first order!
+        <p className="text-sm text-base-content/70 mb-4">
+          Subscribe to receive updates on resolved issues, new features, and
+          city improvements.
         </p>
-        <form onSubmit={handleSubscribe} className="space-y-3">
-          <div className="relative group">
-            <Mail className="absolute left-3 top-3.5 text-gray-500 w-5 h-5 group-focus-within:text-green-400 transition-colors" />
+        <form onSubmit={handleSubscribe} className="space-y-4">
+          <div className="relative">
+            <Mail className="absolute left-4 top-3.5 text-base-content/50 w-5 h-5" />
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="your@email.com"
-              className="w-full pl-10 pr-4 py-3 rounded-xl bg-gradient-to-r from-gray-800 to-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500/30 transition-all"
-              aria-label="Email for newsletter"
+              className="w-full pl-12 pr-4 py-3 rounded-xl bg-base-200 border border-base-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all"
+              required
             />
           </div>
           <motion.button
@@ -106,33 +98,30 @@ const FooterTop = ({
             whileTap={{ scale: 0.98 }}
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-gradient-to-r from-green-500 via-emerald-600 to-teal-700 text-white font-bold py-3 rounded-xl shadow-lg hover:shadow-green-500/40 transition-all flex items-center justify-center gap-2 disabled:opacity-70"
+            className="w-full bg-primary text-white font-bold py-3 rounded-xl shadow-lg hover:shadow-primary/50 transition-all flex items-center justify-center gap-2 disabled:opacity-70"
           >
             {isSubmitting ? (
-              <motion.div className="flex items-center gap-2">
-                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                Subscribing...
-              </motion.div>
+              <>Subscribing...</>
             ) : (
               <>
-                <span>Join the SDEP</span>
-                <Send size={18} />
+                Subscribe Now <Send size={18} />
               </>
             )}
           </motion.button>
         </form>
 
+        {/* Features / Badges */}
         <div className="flex flex-wrap gap-3 mt-6">
-          {certifications.map((cert, i) => {
-            const Icon = cert.icon;
+          {(features || []).map((feat, i) => {
+            const Icon = feat.icon;
             return (
               <motion.div
                 key={i}
-                whileHover={{ scale: 1.1 }}
-                className="flex items-center gap-2 text-xs text-gray-300 bg-gradient-to-r from-gray-800 to-gray-900 px-3 py-1.5 rounded-full border border-gray-700"
+                whileHover={{ scale: 1.08 }}
+                className="flex items-center gap-2 text-sm bg-base-200 px-4 py-2 rounded-full border border-base-300"
               >
-                <Icon size={14} className="text-green-400" />
-                <span>{cert.text}</span>
+                <Icon size={16} className="text-primary" />
+                <span>{feat.text}</span>
               </motion.div>
             );
           })}

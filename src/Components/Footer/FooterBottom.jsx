@@ -1,77 +1,48 @@
-/* eslint-disable no-unused-vars */
-
 import React from "react";
 import { motion } from "framer-motion";
-import { Languages, DollarSign, ExternalLink } from "lucide-react";
 
 const FooterBottom = ({ currentYear }) => {
   const policyLinks = [
     "Privacy Policy",
-    "Terms & Conditions",
-    "Shipping Info",
-    "Returns",
+    "Terms of Service",
+    "Guidelines",
     "Accessibility",
+    "Contact Us",
   ];
 
   return (
-    <>
-      <div className="border-t border-gray-700 dark:border-gray-600 pt-6 flex flex-col lg:flex-row justify-between items-center text-xs text-gray-400 gap-4">
+    <div className="border-t border-base-200 pt-8 mt-8">
+      <div className="flex flex-col lg:flex-row justify-between items-center text-sm text-base-content/70 gap-6">
         <p className="text-center lg:text-left">
-          © {currentYear} <span className="text-green-400 font-bold">SDEP</span>
-          . All rights reserved.
+          © {currentYear}{" "}
+          <span className="font-bold text-primary">IssueHub</span>. All rights
+          reserved.
           <br className="lg:hidden" />
-          <span className="hidden lg:inline"> • </span>
-          Made with <span className="text-red-500">Heart</span> for SDEP lovers
-          by <em className="text-green-400 font-medium">Tufayel</em>
+          <span className="hidden lg:inline"> • </span>A Public Infrastructure
+          Reporting Platform for Better Cities.
         </p>
 
-        <div className="flex flex-wrap justify-center gap-4">
-          {policyLinks.map((item) => (
+        <div className="flex flex-wrap justify-center gap-6">
+          {policyLinks.map((link) => (
             <a
-              key={item}
-              href={`/${item
-                .toLowerCase()
-                .replace(/ & /g, "-")
-                .replace(/\s+/g, "-")}`}
-              className="hover:text-green-400 transition-colors flex items-center gap-1 group"
+              key={link}
+              href={`/${link.toLowerCase().replace(/\s+/g, "-")}`}
+              className="hover:text-primary transition"
             >
-              {item}
-              <ExternalLink
-                size={10}
-                className="text-gray-500 group-hover:text-green-400 transition-colors"
-              />
+              {link}
             </a>
           ))}
         </div>
-
-        <div className="flex items-center gap-4">
-          <button
-            className="flex items-center gap-1 text-xs hover:text-green-400 transition-colors"
-            aria-label="Select Language"
-          >
-            <Languages size={14} />
-            <span>EN</span>
-          </button>
-          <button
-            className="flex items-center gap-1 text-xs hover:text-green-400 transition-colors"
-            aria-label="Select Currency"
-          >
-            <DollarSign size={14} />
-            <span>USD</span>
-          </button>
-        </div>
       </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.5 }}
-        transition={{ delay: 0.6 }}
-        className="text-center mt-10 text-green-400 font-medium italic text-lg"
+      <motion.p
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        className="text-center mt-8 text-primary font-medium"
       >
-        "Social Development Events Platform"
-      </motion.div>
-    </>
+        Report • Track • Resolve — Together We Improve Our City
+      </motion.p>
+    </div>
   );
 };
 
