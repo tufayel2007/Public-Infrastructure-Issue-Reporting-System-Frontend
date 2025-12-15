@@ -90,7 +90,7 @@ const FloatingInput = ({
 );
 
 // Main Component
-const CitizenProfile = () => {
+const AdminProfile = () => {
   const navigate = useNavigate();
   const profileRef = useRef(null);
 
@@ -124,43 +124,28 @@ const CitizenProfile = () => {
   // Load user data
   useEffect(() => {
     const fetchProfile = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        toast.error("You must be logged in to view profile");
-        navigate("/login");
-        return;
-      }
-
       try {
-        const res = await fetch("http://localhost:5000/api/profile", {
+        const token = localStorage.getItem("token"); // আপনার টোকেন যেখানে সেভ করা আছে
+        const res = await fetch("/api/profile", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-
-        if (!res.ok) {
-          const errorData = await res.json();
-          throw new Error(errorData.message || "Failed to fetch profile");
-        }
-
         const data = await res.json();
         if (data.success) {
           setUser(data.profile);
           setFormData({ ...data.profile });
           setPreviewCoverImage(data.profile.photoURL || "/default-cover.jpg");
-        } else {
-          throw new Error(data.message || "Failed to load profile");
         }
       } catch (err) {
-        console.error("Profile fetch error:", err);
-        toast.error(`Failed to load profile: ${err.message}`);
+        toast.error("Failed to load profile");
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchProfile();
-  }, [navigate]);
+  }, []);
 
   const themeGradients = {
     blue: "from-blue-500 to-indigo-600",
@@ -783,4 +768,4 @@ const CitizenProfile = () => {
   );
 };
 
-export default CitizenProfile;
+export default AdminProfile;

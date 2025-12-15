@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import {
   MdDashboard,
   MdAssignment,
@@ -72,7 +72,9 @@ const StaffSidebar = () => {
             <MdAssignment className="w-5 h-5" />
             <span>Assigned Issues</span>
           </NavLink>
-
+          <span>
+            <Link to="/staff/profileRouter">MY Profile</Link>
+          </span>
           <NavLink
             to="/"
             className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-700 transition-all duration-300"

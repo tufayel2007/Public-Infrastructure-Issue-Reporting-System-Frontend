@@ -124,43 +124,28 @@ const CitizenProfile = () => {
   // Load user data
   useEffect(() => {
     const fetchProfile = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        toast.error("You must be logged in to view profile");
-        navigate("/login");
-        return;
-      }
-
       try {
-        const res = await fetch("http://localhost:5000/api/profile", {
+        const token = localStorage.getItem("token"); // আপনার টোকেন যেখানে সেভ করা আছে
+        const res = await fetch("/api/profile", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-
-        if (!res.ok) {
-          const errorData = await res.json();
-          throw new Error(errorData.message || "Failed to fetch profile");
-        }
-
         const data = await res.json();
         if (data.success) {
           setUser(data.profile);
           setFormData({ ...data.profile });
           setPreviewCoverImage(data.profile.photoURL || "/default-cover.jpg");
-        } else {
-          throw new Error(data.message || "Failed to load profile");
         }
       } catch (err) {
-        console.error("Profile fetch error:", err);
-        toast.error(`Failed to load profile: ${err.message}`);
+        toast.error("Failed to load profile");
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchProfile();
-  }, [navigate]);
+  }, []);
 
   const themeGradients = {
     blue: "from-blue-500 to-indigo-600",
@@ -170,54 +155,69 @@ const CitizenProfile = () => {
     rose: "from-rose-500 to-pink-600",
   };
   const currentGradient = themeGradients[themeColor] || themeGradients.blue;
-
+  const [coverFile, setCoverFile] = useState(null);
+  const [avatarFile, setAvatarFile] = useState(null);
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleCoverImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const result = reader.result;
-        setPreviewCoverImage(result);
-        setFormData((prev) => ({ ...prev, photoURL: result }));
-      };
-      reader.readAsDataURL(file);
+      setCoverFile(file); // ✅ file save
+      setPreviewCoverImage(URL.createObjectURL(file));
     }
   };
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFormData((prev) => ({ ...prev, avatarURL: reader.result }));
-      };
-      reader.readAsDataURL(file);
+      setAvatarFile(file);
+      setFormData((prev) => ({
+        ...prev,
+        avatarURL: URL.createObjectURL(file),
+      }));
     }
   };
 
-  const handleUpdate = async () => {
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+
     const form = new FormData();
-    // সব ফিল্ড যোগ করুন
-    Object.keys(formData).forEach((key) => {
-      if (formData[key]) form.append(key, formData[key]);
-    });
-    // যদি ফাইল থাকে
+
+    // text fields
+    form.append("name", formData.name);
+    form.append("bio", formData.bio);
+    form.append("location", formData.location);
+    form.append("phone", formData.phone);
+    form.append("facebook", formData.facebook);
+    form.append("instagram", formData.instagram);
+    form.append("twitter", formData.twitter);
+    form.append("linkedin", formData.linkedin);
+    form.append("website", formData.website);
+
+    // ✅ file
+    if (coverFile) {
+      form.append("photo", coverFile); // backend expects "photo"
+    }
 
     const token = localStorage.getItem("token");
+
     const res = await fetch("/api/profile", {
       method: "PUT",
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
       body: form,
     });
 
     const data = await res.json();
+
     if (data.success) {
       setUser(data.profile);
-      toast.success("Profile updated!");
+      toast.success("Profile updated successfully!");
       setIsEditing(false);
+    } else {
+      toast.error("Profile update failed");
     }
   };
 

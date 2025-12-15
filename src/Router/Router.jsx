@@ -34,6 +34,7 @@ import Premium from "../OnlinePyment/Premium";
 import PremiumSuccess from "../OnlinePyment/PremiumSuccess";
 import About from "../Components/Navbar/About";
 import CitizenProfile from "../Dashboards/Citizen/CitizenProfile";
+import ProfileRouter from "../Profiles/ProfileRouter";
 
 const router = createBrowserRouter([
   {
@@ -95,6 +96,7 @@ const router = createBrowserRouter([
       { path: "dashboard", element: <AdminHome /> },
       { path: "manage-users", element: <ManageUsers /> },
       { path: "manage-issues", element: <ManageIssues /> },
+      { path: "profileRouter", element: <ProfileRouter /> },
     ],
   },
 
@@ -110,6 +112,7 @@ const router = createBrowserRouter([
       { path: "dashboard", element: <StaffHome /> },
       { path: "issues", element: <StaffAssigned /> },
       { path: "issues/:id", element: <UpdateIssue /> },
+      { path: "profileRouter", element: <ProfileRouter /> },
     ],
   },
 
@@ -124,7 +127,7 @@ const router = createBrowserRouter([
     children: [
       { path: "dashboard", element: <CitizenHome /> },
       { path: "issues", element: <MyIssues /> },
-      { path: "CitizenProfile", element: <CitizenProfile /> },
+      { path: "profileRouter", element: <ProfileRouter /> },
       { path: "issues/:id", element: <CitizenIssueDetails /> },
       { path: "reportKNow", element: <ReportKNow /> },
       { path: "citizenReportIssue", element: <CitizenReportIssue /> },

@@ -1,6 +1,6 @@
 // src/components/AdminSidebar.jsx  (বা যেখানে আছে)
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import {
   MdDashboard,
   MdPeople,
@@ -105,7 +105,9 @@ const AdminSidebar = () => {
             </>
           )}
         </NavLink>
-
+        <span>
+          <Link to="/staff/profileRouter">MY Profile</Link>
+        </span>
         {/* Divider */}
         <div className="my-6 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
 
