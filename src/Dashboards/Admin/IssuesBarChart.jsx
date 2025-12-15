@@ -8,11 +8,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-/**
- * Aggregates issues by category (or by month if you prefer)
- * Props:
- *  - issues: array of issue objects with .category and .date
- */
 const IssuesBarChart = ({ issues = [] }) => {
   const data = useMemo(() => {
     const map = {};
