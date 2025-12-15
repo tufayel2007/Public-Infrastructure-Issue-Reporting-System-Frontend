@@ -695,7 +695,7 @@ const CitizenProfile = () => {
           )}
         </AnimatePresence>
 
-        {/* QR Modal  for proa and issue */}
+        {/* QR Modal  for profile data and issue */}
         <AnimatePresence>
           {showQR && (
             <motion.div
