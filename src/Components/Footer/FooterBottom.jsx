@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router";
 
 const FooterBottom = ({ currentYear }) => {
   const policyLinks = [
@@ -42,6 +43,40 @@ const FooterBottom = ({ currentYear }) => {
       >
         Report • Track • Resolve — Together We Improve Our City
       </motion.p>
+      <div className="mt-10 text-center">
+        <p className="text-sm md:text-base text-gray-400">
+          Made & Developed by{" "}
+          <Link
+            to="https://my-protflio-web.vercel.app/"
+            target="_blank"
+            className="font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 
+                 bg-clip-text text-transparent hover:opacity-80 transition duration-300
+                 animate-gradient"
+          >
+            👉🏼 Tufayel
+          </Link>{" "}
+          — Web Experts
+        </p>
+
+        {/* Gradient Animation */}
+        <style jsx>{`
+          @keyframes gradient-move {
+            0% {
+              background-position: 0% 50%;
+            }
+            50% {
+              background-position: 100% 50%;
+            }
+            100% {
+              background-position: 0% 50%;
+            }
+          }
+          .animate-gradient {
+            background-size: 200% 200%;
+            animation: gradient-move 4s ease infinite;
+          }
+        `}</style>
+      </div>
     </div>
   );
 };

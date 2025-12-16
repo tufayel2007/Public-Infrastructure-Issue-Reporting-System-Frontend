@@ -50,7 +50,7 @@ const Banner = () => {
             Report broken roads, faulty streetlights, garbage piles, water
             logging —{" "}
             <span className="text-cyan-300 font-bold">in just 30 seconds</span>.
-            Together, let's make Dhaka cleaner, safer, and smarter.
+            Together, let's make Sylhetcleaner, safer, and smarter.
           </p>
 
           {/* CTA Buttons */}

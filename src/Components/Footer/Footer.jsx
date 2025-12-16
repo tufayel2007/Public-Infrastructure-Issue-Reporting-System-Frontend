@@ -116,7 +116,7 @@ const Footer = () => {
     },
     {
       icon: MapPin,
-      text: "Dhaka City Corporation, Bangladesh",
+      text: "SylhetCity Corporation, Bangladesh",
       href: "https://maps.google.com",
     },
   ];

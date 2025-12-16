@@ -36,7 +36,7 @@ const FAQSection = () => {
     },
     {
       q: "Is it only for Dhaka?",
-      a: "Currently available for Dhaka City Corporation areas. Coming soon to Chittagong, Khulna, Rajshahi, and more!",
+      a: "Currently available for SylhetCity Corporation areas. Coming soon to Chittagong, Khulna, Rajshahi, and more!",
     },
   ];
 
