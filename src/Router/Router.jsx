@@ -34,7 +34,8 @@ import Premium from "../OnlinePyment/Premium";
 import PremiumSuccess from "../OnlinePyment/PremiumSuccess";
 import About from "../Components/Navbar/About";
 import CitizenProfile from "../Dashboards/Citizen/CitizenProfile";
-import ProfileRouter from "../Profiles/ProfileRouter";
+
+import Register from "../Components/Login/Register";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,7 @@ const router = createBrowserRouter([
       { path: "/forgotPassword", element: <ForgotPassword></ForgotPassword> },
       { path: "/allIssues", element: <AllIssues /> },
       { path: "/about", element: <About /> },
+      { path: "/register", element: <Register /> },
       {
         path: "/reportIssue",
         element: (
@@ -63,7 +65,7 @@ const router = createBrowserRouter([
         path: "/issue/:id",
         element: <IssueDetails />,
       },
-
+      { path: "/premium", element: <Premium /> },
       {
         path: "/boost/success",
         element: <BoostSuccess />,
@@ -96,7 +98,6 @@ const router = createBrowserRouter([
       { path: "dashboard", element: <AdminHome /> },
       { path: "manage-users", element: <ManageUsers /> },
       { path: "manage-issues", element: <ManageIssues /> },
-      { path: "profileRouter", element: <ProfileRouter /> },
     ],
   },
 
@@ -112,7 +113,6 @@ const router = createBrowserRouter([
       { path: "dashboard", element: <StaffHome /> },
       { path: "issues", element: <StaffAssigned /> },
       { path: "issues/:id", element: <UpdateIssue /> },
-      { path: "profileRouter", element: <ProfileRouter /> },
     ],
   },
 
@@ -127,7 +127,7 @@ const router = createBrowserRouter([
     children: [
       { path: "dashboard", element: <CitizenHome /> },
       { path: "issues", element: <MyIssues /> },
-      { path: "profileRouter", element: <ProfileRouter /> },
+      { path: "profileRouter", element: <CitizenProfile /> },
       { path: "issues/:id", element: <CitizenIssueDetails /> },
       { path: "reportKNow", element: <ReportKNow /> },
       { path: "citizenReportIssue", element: <CitizenReportIssue /> },

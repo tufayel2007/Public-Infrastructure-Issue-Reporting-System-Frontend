@@ -105,9 +105,32 @@ const CitizenSidebar = () => {
             </>
           )}
         </NavLink>
-        <span>
-          <Link to="/citizen/profileRouter">MY Profile</Link>
-        </span>
+
+        <NavLink
+          to="/citizen/profileRouter"
+          className={({ isActive }) =>
+            `flex items-center gap-4 px-5 py-4 rounded-xl transition-all duration-300 group relative overflow-hidden ${
+              isActive
+                ? "bg-gradient-to-r from-cyan-500 to-blue-600 shadow-xl shadow-cyan-500/30 font-bold scale-[1.02]"
+                : "hover:bg-white/10 hover:scale-[1.02] hover:shadow-lg"
+            }`
+          }
+          end
+        >
+          {({ isActive }) => (
+            <>
+              {isActive && (
+                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-cyan-300 to-blue-400 rounded-r"></div>
+              )}
+              <MdHome
+                className={`w-6 h-6 transition-all ${
+                  isActive ? "text-white" : "group-hover:text-cyan-300"
+                }`}
+              />
+              <span className="text-base tracking-wide">Profile update</span>
+            </>
+          )}
+        </NavLink>
 
         <div className="my-6 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 const CitizenRegister = () => {
+  const [name, setName] = useState(""); // <-- New state
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [photo, setPhoto] = useState(null);
@@ -11,6 +12,7 @@ const CitizenRegister = () => {
     setLoading(true);
 
     const formData = new FormData();
+    formData.append("name", name); // <-- Send name to server
     formData.append("email", email);
     formData.append("password", password);
     formData.append("photo", photo);
@@ -26,6 +28,7 @@ const CitizenRegister = () => {
       alert(data.message);
     } else {
       alert("Citizen Registered Successfully");
+      // Optionally, redirect to login or home page
     }
 
     setLoading(false);
@@ -33,13 +36,7 @@ const CitizenRegister = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-black">
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-indigo-900 to-pink-900 opacity-70" />
-      <div className="absolute inset-0">
-        <div className="absolute top-10 left-10 w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob" />
-        <div className="absolute top-40 right-10 w-80 h-80 bg-pink-600 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob animation-delay-2s" />
-        <div className="absolute bottom-20 left-1/3 w-72 h-72 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob animation-delay-4s" />
-      </div>
-
+      {/* ...existing gradient backgrounds and animations */}
       <div className="relative z-10 w-full max-w-md mx-4">
         <div className="backdrop-blur-2xl bg-white/5 border border-white/10 rounded-3xl shadow-2xl p-8 md:p-12 animate-fade-in">
           <h2 className="text-4xl font-extrabold text-center text-white mb-4 tracking-tight">
@@ -50,6 +47,18 @@ const CitizenRegister = () => {
           </p>
 
           <form onSubmit={handleRegister} className="space-y-7">
+            {/* Name Input */}
+            <div>
+              <input
+                type="text"
+                placeholder="Enter your Name"
+                className="input input-bordered w-full bg-white/10 border-white/20 text-white placeholder-gray-400 text-lg py-6 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/30 transition-all duration-300"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+
             {/* Email Input */}
             <div>
               <input
@@ -62,6 +71,7 @@ const CitizenRegister = () => {
               />
             </div>
 
+            {/* Password Input */}
             <div>
               <input
                 type="password"
@@ -73,6 +83,7 @@ const CitizenRegister = () => {
               />
             </div>
 
+            {/* Photo Upload */}
             <div>
               <input
                 type="file"
@@ -86,6 +97,7 @@ const CitizenRegister = () => {
               </p>
             </div>
 
+            {/* Submit Button */}
             <button
               className="btn btn-primary w-full text-xl font-bold py-6 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-purple-500/50 border-0"
               type="submit"
@@ -96,46 +108,6 @@ const CitizenRegister = () => {
           </form>
         </div>
       </div>
-
-      {/* Custom Animations (Tailwind + Inline) */}
-      <style jsx>{`
-        @keyframes blob {
-          0% {
-            transform: translate(0px, 0px) scale(1);
-          }
-          33% {
-            transform: translate(40px, -60px) scale(1.1);
-          }
-          66% {
-            transform: translate(-30px, 30px) scale(0.9);
-          }
-          100% {
-            transform: translate(0px, 0px) scale(1);
-          }
-        }
-        .animate-blob {
-          animation: blob 25s infinite;
-        }
-        .animation-delay-2s {
-          animation-delay: 2s;
-        }
-        .animation-delay-4s {
-          animation-delay: 4s;
-        }
-        @keyframes fade-in {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        .animate-fade-in {
-          animation: fade-in 1.2s ease-out;
-        }
-      `}</style>
     </div>
   );
 };

@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-import AdminProfile from "./AdminProfile";
-import StaffProfile from "./StaffProfile";
+// import AdminProfile from "./AdminProfile";
+// import StaffProfile from "./StaffProfile";
 import CitizenProfile from "./CitizenProfile";
 import { useAuth } from "../context/AuthContext";
 
@@ -16,10 +16,10 @@ const ProfileRouter = () => {
   }
 
   switch (user.role) {
-    case "admin":
-      return <AdminProfile />;
-    case "staff":
-      return <StaffProfile />;
+    // case "admin":
+    //   return <AdminProfile />;
+    // case "staff":
+    //   return <StaffProfile />;
     default:
       return <CitizenProfile />;
   }

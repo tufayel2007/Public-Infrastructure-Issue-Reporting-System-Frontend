@@ -54,8 +54,8 @@ const CitizenHome = () => {
 
   const isPremium = user?.subscription === "premium";
   const remainingReports = isPremium
-    ? "আনলিমিটেড"
-    : `${Math.max(0, 3 - (stats.total || 0))} টি বাকি`;
+    ? "Unlimited"
+    : `${Math.max(0, 3 - (stats.total || 0))} remaining`;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white py-12 px-4">
@@ -71,10 +71,10 @@ const CitizenHome = () => {
                 />
               </svg>
               <div>
-                <strong>আপনার অ্যাকাউন্ট ব্লক করা হয়েছে!</strong>
+                <strong>Your account has been blocked!</strong>
                 <p>
-                  নতুন রিপোর্ট, আপভোট বা বুস্ট করতে পারবেন না। অ্যাডমিনের সাথে
-                  যোগাযোগ করুন।
+                  You cannot submit new reports, upvote, or boost issues. Please
+                  contact an admin.
                 </p>
               </div>
             </div>
@@ -84,10 +84,11 @@ const CitizenHome = () => {
         {/* Welcome Hero */}
         <div className="text-center mb-16 mt-10">
           <h1 className="text-5xl md:text-7xl font-extrabold bg-gradient-to-r from-cyan-300 via-purple-300 to-pink-300 bg-clip-text text-transparent drop-shadow-2xl">
-            স্বাগতম, {user?.name || "নাগরিক"}!
+            Welcome,{" "}
+            <span className="text-orange-300">{user?.name || "Citizen"}</span>!
           </h1>
           <p className="mt-6 text-xl md:text-2xl text-gray-300 font-light">
-            একসাথে আমরা ঢাকাকে আরও সুন্দর, নিরাপদ ও স্মার্ট করছি
+            Together, we're making the city smarter, safer, and better
           </p>
           <div className="mt-8 flex justify-center">
             <div className="h-1 w-48 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full"></div>
@@ -97,10 +98,10 @@ const CitizenHome = () => {
         {/* Report Limit Info */}
         <div className="text-center mb-10">
           <p className="text-lg">
-            আপনার রিপোর্ট লিমিট:{" "}
+            Your Report Limit:{" "}
             <span
               className={`font-bold ${
-                remainingReports === "0 টি বাকি"
+                remainingReports.includes("0")
                   ? "text-red-400"
                   : "text-cyan-300"
               }`}
@@ -110,8 +111,24 @@ const CitizenHome = () => {
           </p>
 
           {!isPremium && stats.total >= 3 && (
-            <Link to="/citizen/premium" className="btn btn-warning ...">
-              প্রিমিয়াম নিন → আনলিমিটেড রিপোর্ট
+            <Link
+              to="/citizen/premium"
+              className="group relative inline-flex items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-cyan-600 px-10 py-5 text-xl font-bold text-white shadow-2xl transition-all duration-500 hover:shadow-purple-500/50 hover:scale-105 mt-4"
+            >
+              {/* Shimmer Effect */}
+              <span className="absolute inset-0 translate-x-[-100%] bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12 transition-transform duration-1000 group-hover:translate-x-[100%]"></span>
+
+              {/* Main Text */}
+              <span className="relative z-10 flex items-center gap-3">
+                Go Premium
+                <span className="text-2xl font-bold">→</span>
+                <span className="hidden group-hover:inline ml-2">
+                  Unlimited Reports
+                </span>
+              </span>
+
+              {/* Optional: Pulsing Glow Ring */}
+              <span className="absolute inset-0 rounded-2xl ring-4 ring-purple-500/0 group-hover:ring-purple-500/50 transition-all duration-700"></span>
             </Link>
           )}
         </div>
@@ -120,23 +137,23 @@ const CitizenHome = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
           {[
             {
-              label: "মোট রিপোর্ট",
+              label: "Total Reports",
               value: stats.total || 0,
               color: "from-cyan-400 to-purple-400",
             },
             {
-              label: "পেন্ডিং",
+              label: "Pending",
               value: stats.pending || 0,
               color: "from-yellow-400 to-orange-400",
               pulse: true,
             },
             {
-              label: "চলমান",
+              label: "In Progress",
               value: stats.inProgress || 0,
               color: "from-blue-400 to-cyan-400",
             },
             {
-              label: "সমাধান হয়েছে",
+              label: "Resolved",
               value: stats.resolved || 0,
               color: "from-green-400 to-emerald-400",
             },
@@ -168,7 +185,7 @@ const CitizenHome = () => {
         {recentIssues.length > 0 && (
           <section className="mb-16">
             <h2 className="text-4xl font-bold text-center mb-10 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              আমার সাম্প্রতিক রিপোর্টসমূহ
+              My Recent Reports
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {recentIssues.slice(0, 3).map((issue) => (
@@ -195,7 +212,8 @@ const CitizenHome = () => {
                             : "badge-success"
                         }`}
                       >
-                        {issue.status}
+                        {issue.status.charAt(0).toUpperCase() +
+                          issue.status.slice(1)}
                       </span>
                       {issue.priority === "high" && (
                         <span className="badge badge-error">Boosted</span>
@@ -206,7 +224,7 @@ const CitizenHome = () => {
                         to={`/issue/${issue._id}`}
                         className="btn btn-sm btn-primary"
                       >
-                        বিস্তারিত
+                        View Details
                       </Link>
                     </div>
                   </div>
@@ -217,68 +235,368 @@ const CitizenHome = () => {
         )}
 
         {/* Quick Actions */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-10 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-            দ্রুত কার্যক্রম
+        <div className="my-20 text-center">
+          {/* Section Title */}
+          <h2 className="text-5xl md:text-6xl font-extrabold mb-12 bg-gradient-to-r from-cyan-300 via-purple-300 to-pink-300 bg-clip-text text-transparent animate-gradient bg-[length:200%_200%]">
+            Quick Actions
           </h2>
-          <div className="flex flex-wrap justify-center gap-6">
+
+          {/* Buttons Container */}
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-10 max-w-5xl mx-auto">
+            {/* Primary Action: Report New Issue */}
             <Link
               to="/reportIssue"
-              className="btn btn-lg btn-primary shadow-2xl hover:scale-110 transition-all duration-300 flex items-center gap-3 text-xl"
               onClick={(e) => {
                 if (!isPremium && stats.total >= 3) {
                   e.preventDefault();
-                  toast.error("রিপোর্ট লিমিট শেষ! প্রিমিয়াম নিন।");
+                  toast.error("Report limit reached! Upgrade to Premium.");
                 }
               }}
+              className="group relative inline-flex items-center justify-center overflow-hidden rounded-3xl px-12 py-8 text-2xl font-bold text-white shadow-2xl transition-all duration-700 hover:shadow-purple-500/60 hover:scale-110"
             >
-              নতুন সমস্যা রিপোর্ট করুন
+              {/* Gradient Background */}
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-cyan-600 group-hover:from-purple-700 group-hover:via-pink-700 group-hover:to-cyan-700 transition-all duration-700"></div>
+
+              {/* Shimmer Effect */}
+              <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 transition-transform duration-1000 group-hover:translate-x-full"></div>
+
+              {/* Glowing Border Ring */}
+              <div className="absolute inset-0 rounded-3xl ring-4 ring-purple-500/0 group-hover:ring-purple-500/60 transition-all duration-700"></div>
+
+              {/* Content */}
+              <span className="relative z-10 flex items-center gap-5 drop-shadow-lg">
+                <span className="text-4xl">📢</span>
+                Report a New Issue
+                <span className="text-3xl ml-2 group-hover:translate-x-3 transition-transform duration-500">
+                  →
+                </span>
+              </span>
             </Link>
+
+            {/* Secondary Action: View All Reports */}
             <Link
               to="/citizen/issues"
-              className="btn btn-lg btn-outline border-white/30 text-white hover:bg-white/10 hover:scale-110 transition-all duration-300 text-xl"
+              className="group relative inline-flex items-center justify-center rounded-3xl px-12 py-8 text-2xl font-bold text-white backdrop-blur-xl bg-white/10 border-2 border-white/20 shadow-2xl transition-all duration-700 hover:bg-white/20 hover:border-white/40 hover:scale-110"
             >
-              আমার সব রিপোর্ট
+              {/* Subtle Inner Glow */}
+              <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-purple-500/10 to-cyan-500/10 blur-xl group-hover:blur-2xl transition-all duration-700"></div>
+
+              {/* Content */}
+              <span className="relative z-10 flex items-center gap-5">
+                <span className="text-4xl">📋</span>
+                View All My Reports
+                <span className="text-3xl ml-2 group-hover:translate-x-3 transition-transform duration-500">
+                  →
+                </span>
+              </span>
             </Link>
           </div>
+
+          {/* Optional: Premium Hint Below (only if free user near/at limit) */}
+          {!isPremium && stats.total >= 2 && (
+            <p className="mt-12 text-lg text-gray-300 animate-pulse">
+              {stats.total === 3
+                ? "🚨 You've reached your free report limit!"
+                : `⚡ ${3 - stats.total} free report${
+                    3 - stats.total === 1 ? "" : "s"
+                  } remaining`}
+            </p>
+          )}
         </div>
 
+        {/* Custom Animation Styles */}
+        <style jsx>{`
+          @keyframes gradient-move {
+            0% {
+              background-position: 0% 50%;
+            }
+            50% {
+              background-position: 100% 50%;
+            }
+            100% {
+              background-position: 0% 50%;
+            }
+          }
+          .animate-gradient {
+            animation: gradient-move 6s ease infinite;
+          }
+        `}</style>
         {/* Premium CTA */}
         {!isPremium && (
-          <div className="my-16 p-10 bg-gradient-to-r from-purple-800/50 to-pink-800/50 backdrop-blur-md rounded-3xl border border-purple-500 text-center">
-            <h3 className="text-4xl font-bold mb-6">
-              প্রিমিয়াম হয়ে আরও শক্তিশালী হোন!
+          <div className="my-20 p-12 bg-gradient-to-br from-purple-900/40 via-pink-900/30 to-indigo-900/40 backdrop-blur-2xl rounded-3xl border border-purple-500/50 text-center relative overflow-hidden shadow-2xl">
+            {/* Animated Floating Blobs */}
+            <div className="absolute top-0 left-0 w-96 h-96 bg-purple-600 rounded-full mix-blend-screen filter blur-3xl opacity-50 animate-blob animation-delay-0s"></div>
+            <div className="absolute top-20 right-10 w-80 h-80 bg-pink-500 rounded-full mix-blend-screen filter blur-3xl opacity-40 animate-blob animation-delay-4s"></div>
+            <div className="absolute -bottom-20 left-20 w-72 h-72 bg-cyan-500 rounded-full mix-blend-screen filter blur-3xl opacity-30 animate-blob animation-delay-2s"></div>
+
+            {/* Glowing Border Animation */}
+            <div className="absolute inset-0 rounded-3xl border-2 border-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 bg-clip-border animate-pulse-glow pointer-events-none"></div>
+
+            {/* Floating Particles */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              {[...Array(6)].map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute w-2 h-2 bg-white rounded-full opacity-60 animate-float"
+                  style={{
+                    left: `${Math.random() * 100}%`,
+                    animationDelay: `${i * 1.5}s`,
+                    animationDuration: `${15 + Math.random() * 10}s`,
+                  }}
+                />
+              ))}
+            </div>
+
+            {/* Header */}
+            <h3 className="text-5xl md:text-6xl font-extrabold mb-8 relative z-10 bg-gradient-to-r from-cyan-200 via-purple-200 to-pink-200 bg-clip-text text-transparent animate-gradient bg-[length:200%_200%]">
+              Go Premium – Unlock Ultimate Power!
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-4xl mx-auto text-left mb-8">
+
+            <p className="text-xl text-gray-200 mb-10 max-w-2xl mx-auto font-light">
+              Elevate your impact. Report without limits and get your issues
+              resolved faster.
+            </p>
+
+            {/* Premium Features Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-5xl mx-auto mb-12 relative z-10">
               {[
-                "আনলিমিটেড রিপোর্ট",
-                "প্রায়োরিটি সাপোর্ট",
-                "বুস্ট খরচ কম",
-                "প্রিমিয়াম ব্যাজ",
-              ].map((feat) => (
-                <div key={feat} className="flex items-center gap-3">
-                  <span className="text-2xl">Checkmark</span>
-                  <span className="text-lg">{feat}</span>
+                {
+                  label: "Unlimited Reports",
+                  icon: "∞",
+                  color: "from-cyan-400 to-blue-400",
+                },
+                {
+                  label: "Priority Support",
+                  icon: "⚡",
+                  color: "from-purple-400 to-indigo-400",
+                },
+                {
+                  label: "50% Lower Boost Costs",
+                  icon: "🚀",
+                  color: "from-pink-400 to-rose-400",
+                },
+                {
+                  label: "Exclusive Premium Badge",
+                  icon: "👑",
+                  color: "from-yellow-400 to-amber-400",
+                },
+              ].map((feat, i) => (
+                <div
+                  key={feat.label}
+                  className="group relative bg-white/5 backdrop-blur-md p-6 rounded-2xl border border-white/10 hover:border-white/30 transition-all duration-500 hover:scale-110 hover:-translate-y-4 shadow-xl hover:shadow-2xl"
+                  style={{ transitionDelay: `${i * 100}ms` }}
+                >
+                  {/* Glow on hover */}
+                  <div
+                    className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${feat.color} opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500`}
+                  ></div>
+
+                  <div className="relative z-10 flex flex-col items-center">
+                    <span
+                      className={`text-5xl mb-4 bg-gradient-to-r ${feat.color} bg-clip-text text-transparent`}
+                    >
+                      {feat.icon}
+                    </span>
+                    <span className="text-lg font-bold text-white">
+                      {feat.label}
+                    </span>
+                  </div>
                 </div>
               ))}
             </div>
 
-            <button className="btn ">
-              <Link to="/citizen/premium">
-                প্রিমিয়াম নিন → আনলিমিটেড রিপোর্ট
-              </Link>
-            </button>
+            {/* Call-to-Action Button with Shimmer */}
+            <Link
+              to="/citizen/premium"
+              className="relative inline-block px-10 py-5 text-xl font-bold text-white rounded-2xl overflow-hidden group"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-cyan-600 group-hover:from-purple-700 group-hover:via-pink-700 group-hover:to-cyan-700 transition-all duration-500"></div>
+
+              {/* Shimmer Effect */}
+              <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-full transition-transform duration-1000 skew-x-12"></div>
+
+              <span className="relative z-10 flex items-center gap-3">
+                Upgrade to Premium Now
+                <span className="text-2xl">→</span>
+              </span>
+            </Link>
+
+            {/* Custom Animations */}
+            <style jsx>{`
+              @keyframes blob {
+                0%,
+                100% {
+                  transform: translate(0px, 0px) scale(1);
+                }
+                25% {
+                  transform: translate(50px, -50px) scale(1.15);
+                }
+                50% {
+                  transform: translate(-40px, 60px) scale(0.95);
+                }
+                75% {
+                  transform: translate(30px, 40px) scale(1.1);
+                }
+              }
+              .animate-blob {
+                animation: blob 25s infinite ease-in-out;
+              }
+              .animation-delay-2s {
+                animation-delay: 2s;
+              }
+              .animation-delay-4s {
+                animation-delay: 4s;
+              }
+
+              @keyframes gradient-move {
+                0% {
+                  background-position: 0% 50%;
+                }
+                50% {
+                  background-position: 100% 50%;
+                }
+                100% {
+                  background-position: 0% 50%;
+                }
+              }
+              .animate-gradient {
+                animation: gradient-move 8s ease infinite;
+              }
+
+              @keyframes pulse-glow {
+                0%,
+                100% {
+                  opacity: 0.4;
+                }
+                50% {
+                  opacity: 0.8;
+                }
+              }
+
+              @keyframes float {
+                0% {
+                  transform: translateY(100vh) rotate(0deg);
+                }
+                100% {
+                  transform: translateY(-100px) rotate(360deg);
+                }
+              }
+              .animate-float {
+                animation: float linear infinite;
+              }
+            `}</style>
           </div>
         )}
 
-        {/* Motivational Quote */}
-        <div className="text-center py-12 px-8 backdrop-blur-md bg-white/5 rounded-3xl border border-white/10">
-          <p className="text-3xl md:text-5xl font-bold italic text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-purple-300">
-            "একটি অভিযোগ = একটি উন্নত শহর"
-          </p>
-          <p className="mt-6 text-xl text-gray-300">
-            — আপনার কণ্ঠস্বর গুরুত্বপূর্ণ
-          </p>
+        {/* Motivation */}
+        <div className="relative my-20 py-16 px-8 overflow-hidden rounded-3xl backdrop-blur-2xl bg-white/5 border border-white/20 shadow-2xl">
+          {/* Animated Background Blobs */}
+          <div className="absolute inset-0 -z-10">
+            <div className="absolute top-0 left-0 w-96 h-96 bg-cyan-600/30 rounded-full mix-blend-screen blur-3xl animate-blob animation-delay-0s"></div>
+            <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-600/30 rounded-full mix-blend-screen blur-3xl animate-blob animation-delay-5s"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-pink-600/20 rounded-full mix-blend-screen blur-3xl animate-blob animation-delay-3s"></div>
+          </div>
+
+          {/* Floating Sparkles */}
+          <div className="absolute inset-0 pointer-events-none">
+            {[...Array(8)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute w-1 h-1 bg-white rounded-full opacity-70 animate-twinkle"
+                style={{
+                  top: `${Math.random() * 100}%`,
+                  left: `${Math.random() * 100}%`,
+                  animationDelay: `${i * 0.8}s`,
+                  animationDuration: `${3 + Math.random() * 4}s`,
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Main Quote */}
+          <div className="relative z-10 text-center max-w-5xl mx-auto">
+            <p className="text-4xl md:text-6xl lg:text-7xl font-extrabold italic leading-tight">
+              <span className="block bg-gradient-to-r from-cyan-200 via-purple-200 to-pink-200 bg-clip-text text-transparent animate-gradient bg-[length:300%_300%]">
+                "One Report =
+              </span>
+              <span className="block mt-4 bg-gradient-to-r from-pink-200 via-purple-200 to-cyan-200 bg-clip-text text-transparent animate-gradient-reverse bg-[length:300%_300%]">
+                One Step Toward a Better City"
+              </span>
+            </p>
+
+            {/* Subtitle */}
+            <p className="mt-10 text-2xl md:text-3xl font-light text-gray-200 tracking-wider">
+              —{" "}
+              <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-purple-300">
+                Your voice matters
+              </span>
+            </p>
+
+            {/* Decorative Line */}
+            <div className="mt-12 flex justify-center items-center gap-8 opacity-60">
+              <div className="h-px w-32 bg-gradient-to-r from-transparent via-cyan-400 to-transparent"></div>
+              <span className="text-4xl">✨</span>
+              <div className="h-px w-32 bg-gradient-to-r from-transparent via-purple-400 to-transparent"></div>
+            </div>
+          </div>
+
+          {/* Custom Styles */}
+          <style jsx>{`
+            @keyframes blob {
+              0%,
+              100% {
+                transform: translate(0, 0) scale(1);
+              }
+              33% {
+                transform: translate(40px, -60px) scale(1.1);
+              }
+              66% {
+                transform: translate(-30px, 50px) scale(0.9);
+              }
+            }
+            .animate-blob {
+              animation: blob 25s infinite ease-in-out;
+            }
+            .animation-delay-3s {
+              animation-delay: 3s;
+            }
+            .animation-delay-5s {
+              animation-delay: 5s;
+            }
+
+            @keyframes gradient-move {
+              0% {
+                background-position: 0% 50%;
+              }
+              50% {
+                background-position: 100% 50%;
+              }
+              100% {
+                background-position: 0% 50%;
+              }
+            }
+            .animate-gradient {
+              animation: gradient-move 12s ease infinite;
+            }
+            .animate-gradient-reverse {
+              animation: gradient-move 12s ease infinite reverse;
+            }
+
+            @keyframes twinkle {
+              0%,
+              100% {
+                opacity: 0;
+                transform: scale(0);
+              }
+              50% {
+                opacity: 0.8;
+                transform: scale(1);
+              }
+            }
+            .animate-twinkle {
+              animation: twinkle linear infinite;
+            }
+          `}</style>
         </div>
       </div>
     </div>

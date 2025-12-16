@@ -4,12 +4,12 @@ import { useState } from "react";
 import AssignStaffModal from "./AssignStaffModal";
 
 const reactionTypes = {
-  like: "Like",
-  love: "Love",
-  haha: "Haha",
-  wow: "Wow",
-  sad: "Sad",
-  angry: "Angry",
+  like: "👍",
+  love: "❤️",
+  haha: "😂",
+  wow: "😲",
+  sad: "😢",
+  angry: "😡",
 };
 
 const AdminManageIssues = () => {
@@ -285,11 +285,13 @@ const AdminManageIssues = () => {
 
       {issues.length === 0 && (
         <div className="text-center py-32">
-          <div className="text-9xl mb-8 animate-bounce">All Clear</div>
-          <h3 className="text-5xl font-bold bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
+          <div className="text-6xl md:text-9xl mb-8 animate-bounce">
+            All Clear
+          </div>
+          <h3 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
             No Issues Found!
           </h3>
-          <p className="text-xl mt-6 opacity-80">
+          <p className="text-lg md:text-xl mt-6 opacity-80">
             The city is running smoothly. You're doing an amazing job!
           </p>
         </div>
@@ -309,10 +311,12 @@ const AdminManageIssues = () => {
                 <img
                   src={issue.imageUrl || "/placeholder.jpg"}
                   alt="issue"
-                  className="w-24 h-24 object-cover rounded-xl shadow-md"
+                  className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl shadow-md"
                 />
                 <div className="flex-1">
-                  <h3 className="font-bold text-xl">{issue.title}</h3>
+                  <h3 className="font-bold text-lg sm:text-xl">
+                    {issue.title}
+                  </h3>
                   <p className="text-sm opacity-70 flex items-center gap-1">
                     Location: {issue.location}
                   </p>
@@ -353,7 +357,9 @@ const AdminManageIssues = () => {
                           onClick={() => handleReact(issue._id, type)}
                           className="relative group transform transition-all duration-300 hover:scale-150 hover:-translate-y-8"
                         >
-                          <div className="text-4xl drop-shadow-lg">{emoji}</div>
+                          <div className="text-3xl sm:text-4xl drop-shadow-lg">
+                            {emoji}
+                          </div>
                           {count > 0 && (
                             <span className="absolute -top-3 -right-3 bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center animate-pulse">
                               {count}
@@ -511,6 +517,7 @@ const AdminManageIssues = () => {
                         Assign
                       </button>
                     )}
+
                     {issue.status === "pending" && (
                       <button
                         onClick={() => handleReject(issue)}
@@ -569,7 +576,7 @@ const AdminManageIssues = () => {
         <button
           onClick={() => setPage((p) => Math.max(1, p - 1))}
           disabled={page === 1}
-          className="btn btn-outline btn-lg"
+          className="btn btn-outline md:btn-lg"
         >
           Previous
         </button>
@@ -578,7 +585,7 @@ const AdminManageIssues = () => {
         </div>
         <button
           onClick={() => setPage((p) => p + 1)}
-          className="btn btn-outline btn-lg"
+          className="btn btn-outline md:btn-lg"
         >
           Next
         </button>

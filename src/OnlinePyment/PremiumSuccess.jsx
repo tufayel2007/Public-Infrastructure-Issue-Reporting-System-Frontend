@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import Confetti from "react-confetti"; // npm install react-confetti
+import Confetti from "react-confetti";
+import { useAuth } from "../context/AuthContext";
 
 const PremiumSuccess = () => {
+  const { user, login } = useAuth();
   const [showCard, setShowCard] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -34,6 +36,13 @@ const PremiumSuccess = () => {
 
         if (data.success) {
           toast.success("Premium activated successfully!");
+
+          // 🔥 update AuthContext dynamically
+          login({
+            ...user,
+            subscription: "premium",
+          });
+
           setShowCard(true);
         } else {
           toast.error(data.message || "Payment verification failed");
@@ -47,7 +56,7 @@ const PremiumSuccess = () => {
     };
 
     verifyPayment();
-  }, []);
+  }, [login, user]);
 
   if (loading) {
     return (

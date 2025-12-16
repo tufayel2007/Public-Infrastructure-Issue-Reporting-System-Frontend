@@ -13,6 +13,8 @@ const AuthProvider = ({ children }) => {
     const normalizedUser = {
       ...loggedUser,
       role: loggedUser.role || "citizen",
+      subscription: loggedUser.subscription || "free",
+      avatarUrl: loggedUser.avatarUrl || null,
     };
 
     setUser(normalizedUser);
