@@ -15,28 +15,24 @@ Premium users get **priority support** and can post issues for **50৳** with di
 
 ## 👤 Admin Credentials
 
-| Email             | Password  | Notes       |
-| ----------------- | --------- | ----------- |
-| admin@example.com | Admin@123 | Full access |
+| Email               | Password | Notes       |
+| ------------------- | -------- | ----------- |
+| adminking@gmail.com | 123456   | Full access |
 
 ---
 
 ## 🧑‍💻 Citizens (Sample Accounts)
 
-| Name       | Email            | Password | Premium | Notes                              |
-| ---------- | ---------------- | -------- | ------- | ---------------------------------- |
-| John Doe   | john@example.com | John1234 | No      | Free user                          |
-| Jane Smith | jane@example.com | Jane1234 | Yes     | Can post for 50৳, priority support |
-| Ali Khan   | ali@example.com  | Ali1234  | No      | Free user                          |
+Crate a new account 🏃🏼‍➡️🏃🏼‍➡️🏃🏼‍➡️ |
 
 ---
 
 ## 👥 Staff (Sample Accounts)
 
-| Name      | Email              | Password | Assigned Issues |
-| --------- | ------------------ | -------- | --------------- |
-| Staff One | staff1@example.com | Staff123 | 0               |
-| Staff Two | staff2@example.com | Staff123 | 0               |
+| Name        | Email           | Password | Assigned Issues |
+| ----------- | --------------- | -------- | --------------- |
+| Rasel Ahmed | rasel@staff.com | 778899   | 154+            |
+| Hasan       | hasan@staff.com | 667788   | 119+            |
 
 ---
 
@@ -103,7 +99,7 @@ Premium users get **priority support** and can post issues for **50৳** with di
 ## 📝 How to Use
 
 1. Visit the **Home page** → Explore the latest resolved issues & features.
-2. Sign up / Login as **Citizen, Staff, or Admin**.
+2. Sign up / cess Portal **Citizen, Staff, or Admin**.
 3. **Citizens**:
    - Submit new issues with images & location.
    - Edit pending issues.
@@ -171,7 +167,7 @@ Premium users get **priority support** and can post issues for **50৳** with di
 | Contact            | [ta07092007@gmail.com](mailto:ta07092007@gmail.com)              |
 | Contribution Guide | Fork → Branch → Commit → Pull Request                            |
 | Project Status     | Active / Live                                                    |
-| Live Demo          | [https://your-live-site.com](https://your-live-site.com)         |
+| Live Demo          | [https://your-live-site.com](https://issue-hub-nine.vercel.app/) |
 
 ---
 
@@ -181,9 +177,6 @@ Support and follow the project on social platforms. Click the icons below:
 
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/tufayel2007)  
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/tufayel)  
-[![Facebook](https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white)](https://facebook.com/tufayel)  
-[![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/tufayel)  
-[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/tufayel)  
-[![Team](https://img.shields.io/badge/Team-00C853?style=for-the-badge&logo=slack&logoColor=white)](https://example.com/team)
+[![visit my protflio](https://my-protflio-web.vercel.app/)](https://my-protflio-web.vercel.app/)
 
 > ⭐ **Tip:** Click the GitHub icon to star the repository or the social icons to follow & support the project.
