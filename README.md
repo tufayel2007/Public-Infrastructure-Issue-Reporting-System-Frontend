@@ -41,7 +41,7 @@ Crate a new account 🏃🏼‍➡️🏃🏼‍➡️🏃🏼‍➡️ |
 1. Citizens can report issues with images and location
 2. Issue status tracking: Pending → In-Progress → Resolved → Closed
 3. Free & Premium user limits and subscriptions
-4. Premium users get **priority support** and can post issues for **50৳**
+4. Premium users get **priority support** and can Boost issues for **50৳**
 5. Upvote feature: a user can upvote an issue only once
 6. Boosted Issue: Increase priority via payment
 7. Search, filter, and pagination (server-side)
@@ -99,7 +99,7 @@ Crate a new account 🏃🏼‍➡️🏃🏼‍➡️🏃🏼‍➡️ |
 ## 📝 How to Use
 
 1. Visit the **Home page** → Explore the latest resolved issues & features.
-2. Sign up / Access Portal **Citizen, Staff, or Admin**.
+2. Sign up / Click the Navbar , Access Portal **Citizen, Staff, or Admin**. and login now🏃🏼‍➡️
 3. **Citizens**:
    - Submit new issues with images & location.
    - Edit pending issues.
@@ -157,17 +157,17 @@ Crate a new account 🏃🏼‍➡️🏃🏼‍➡️🏃🏼‍➡️ |
 
 ## 🧑‍💻 Developer Information
 
-| Field              | Details                                                          |
-| ------------------ | ---------------------------------------------------------------- |
-| Developer Name     | Tufayel Ahmed                                                    |
-| Email              | [ta07092007@gmail.com](mailto:ta07092007@gmail.com)              |
-| GitHub Profile     | [https://github.com/tufayel2007](https://github.com/tufayel2007) |
-| Project Created On | November 13, 2025                                                |
-| Tech Stack         | React, TailwindCSS, Firebase, MongoDB, Stripe, TanStack Query    |
-| Contact            | [ta07092007@gmail.com](mailto:ta07092007@gmail.com)              |
-| Contribution Guide | Fork → Branch → Commit → Pull Request                            |
-| Project Status     | Active / Live                                                    |
-| Live Demo          | [https://your-live-site.com](https://issue-hub-nine.vercel.app/) |
+| Field              | Details                                                                  |
+| ------------------ | ------------------------------------------------------------------------ |
+| Developer Name     | Tufayel Ahmed                                                            |
+| Email              | [ta07092007@gmail.com](mailto:ta07092007@gmail.com)                      |
+| GitHub Profile     | [https://github.com/tufayel2007](https://github.com/tufayel2007)         |
+| Project Created On | November 13, 2025                                                        |
+| Tech Stack         | React, TailwindCSS, Firebase, MongoDB, Stripe, TanStack Query            |
+| Contact            | [ta07092007@gmail.com](mailto:ta07092007@gmail.com)                      |
+| Contribution Guide | Fork → Branch → Commit → Pull Request                                    |
+| Project Status     | Active / Live                                                            |
+| Live Demo          | [https://issue-hub-nine.vercel.app/](https://issue-hub-nine.vercel.app/) |
 
 ---
 
