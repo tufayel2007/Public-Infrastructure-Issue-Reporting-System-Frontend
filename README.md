@@ -9,7 +9,7 @@ Premium users get **priority support** and can post issues for **50৳** with di
 
 ## 🌐 Live Website
 
-**Live Site URL:** [https://your-live-site.com](https://your-live-site.com)
+**Live Site URL:** [https://issue-hub-nine.vercel.app/](https://issue-hub-nine.vercel.app/)
 
 ---
 
@@ -99,7 +99,7 @@ Crate a new account 🏃🏼‍➡️🏃🏼‍➡️🏃🏼‍➡️ |
 ## 📝 How to Use
 
 1. Visit the **Home page** → Explore the latest resolved issues & features.
-2. Sign up / cess Portal **Citizen, Staff, or Admin**.
+2. Sign up / Access Portal **Citizen, Staff, or Admin**.
 3. **Citizens**:
    - Submit new issues with images & location.
    - Edit pending issues.
@@ -171,12 +171,13 @@ Crate a new account 🏃🏼‍➡️🏃🏼‍➡️🏃🏼‍➡️ |
 
 ---
 
-## 🌐 Connect & Vote for This Project
+## 🌐 Connect & Support
 
 Support and follow the project on social platforms. Click the icons below:
 
-[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/tufayel2007)  
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/tufayel)  
-[![visit my protflio](https://my-protflio-web.vercel.app/)](https://my-protflio-web.vercel.app/)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/tufayel2007)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/tufayel)
+[![Portfolio](https://img.shields.io/badge/Portfolio-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://my-protflio-web.vercel.app/)
 
-> ⭐ **Tip:** Click the GitHub icon to star the repository or the social icons to follow & support the project.
+> ⭐ **Tip:** Click the GitHub button to ⭐ star the repository,  
+> and visit my **Portfolio** to see more real-world projects & skills.
