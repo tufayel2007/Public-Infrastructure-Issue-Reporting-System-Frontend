@@ -180,4 +180,4 @@ Support and follow the project on social platforms. Click the icons below:
 [![Portfolio](https://img.shields.io/badge/Portfolio-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://my-protflio-web.vercel.app/)
 
 > ⭐ **Tip:** Click the GitHub button to ⭐ star the repository,  
-> and visit my **Portfolio** to see more real-world projects & skills.
+> and visit my **Portfolio** to see more real-world projects & skills...

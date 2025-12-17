@@ -20,7 +20,6 @@ const FooterMiddle = ({
             viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}
           >
-            {/* Mobile Accordion */}
             <div className="md:hidden">
               <button
                 onClick={() => setOpenSection(openSection === i ? null : i)}
@@ -58,7 +57,6 @@ const FooterMiddle = ({
               </AnimatePresence>
             </div>
 
-            {/* Desktop */}
             <div className="hidden md:block">
               <h4 className="font-bold text-primary mb-4 flex items-center gap-2">
                 {column.icon} {column.title}
@@ -82,7 +80,6 @@ const FooterMiddle = ({
         ))}
       </div>
 
-      {/* Quick Contact Info */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 py-8 border-t border-base-200">
         {quickInfo.map((info, i) => {
           const Icon = info.icon;

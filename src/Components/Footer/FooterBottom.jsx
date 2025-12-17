@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router";
@@ -58,7 +59,6 @@ const FooterBottom = ({ currentYear }) => {
           — Web Experts
         </p>
 
-        {/* Gradient Animation */}
         <style jsx>{`
           @keyframes gradient-move {
             0% {

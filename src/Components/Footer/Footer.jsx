@@ -151,7 +151,6 @@ const Footer = () => {
     <>
       <Toaster position="top-center" />
 
-      {/* Back to Top Button */}
       <AnimatePresence>
         {scrolled && (
           <motion.button
@@ -167,7 +166,6 @@ const Footer = () => {
         )}
       </AnimatePresence>
 
-      {/* Live Chat Button */}
       <motion.button
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -180,7 +178,6 @@ const Footer = () => {
 
       <footer className="bg-base-300 text-base-content pt-16 pb-8" id="footer">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Top Alert Banner */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -199,7 +196,7 @@ const Footer = () => {
             handleSubscribe={handleSubscribe}
             isSubmitting={isSubmitting}
             socialLinks={socialLinks}
-            features={features} // changed from certifications
+            features={features}
           />
 
           <FooterMiddle

@@ -9,7 +9,7 @@ const FooterTop = ({
   handleSubscribe,
   isSubmitting,
   socialLinks,
-  features, // ← এখানে features নিচ্ছি
+  features,
 }) => {
   return (
     <div className="pb-10 border-b border-base-200 flex flex-col lg:flex-row justify-between items-start gap-12">
@@ -37,7 +37,6 @@ const FooterTop = ({
         </div>
       </motion.div>
 
-      {/* Social Links */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -66,7 +65,6 @@ const FooterTop = ({
         </div>
       </motion.div>
 
-      {/* Newsletter */}
       <motion.div
         initial={{ opacity: 0, x: 30 }}
         whileInView={{ opacity: 1, x: 0 }}
@@ -110,7 +108,6 @@ const FooterTop = ({
           </motion.button>
         </form>
 
-        {/* Features / Badges */}
         <div className="flex flex-wrap gap-3 mt-6">
           {(features || []).map((feat, i) => {
             const Icon = feat.icon;

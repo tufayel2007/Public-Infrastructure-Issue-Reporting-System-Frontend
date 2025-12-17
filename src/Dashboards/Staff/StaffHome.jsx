@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/set-state-in-effect */
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -34,7 +36,6 @@ const StaffHome = () => {
 
       const data = await res.json();
 
-      // ✅ ensure array
       const issuesArray = Array.isArray(data)
         ? data
         : Array.isArray(data.issues)
@@ -61,7 +62,7 @@ const StaffHome = () => {
 
   useEffect(() => {
     fetchIssues();
-    const interval = setInterval(fetchIssues, 10000); // Auto refresh every 10s
+    const interval = setInterval(fetchIssues, 10000);
     return () => clearInterval(interval);
   }, []);
 

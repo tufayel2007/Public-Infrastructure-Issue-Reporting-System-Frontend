@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -54,7 +55,6 @@ const IssueDetails = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  // Edit issue (save)
   const handleEdit = async () => {
     if (!form.title || !form.description)
       return toast.error("Title & Description required");
@@ -271,7 +271,6 @@ const IssueDetails = () => {
             </div>
           </div>
 
-          {/* Issue Image */}
           {issue.imageUrl && (
             <div className="p-6 sm:p-8">
               <img
@@ -282,7 +281,6 @@ const IssueDetails = () => {
             </div>
           )}
 
-          {/* Description / Edit */}
           <div className="p-6 sm:p-10">
             {editing ? (
               <div className="space-y-6">
@@ -363,7 +361,6 @@ const IssueDetails = () => {
             )}
           </div>
 
-          {/* Action Buttons - Neon Style */}
           <div className="p-6 sm:p-10 pt-0">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               <button
@@ -434,7 +431,6 @@ const IssueDetails = () => {
           </div>
         </div>
 
-        {/* Timeline - Dark Glassmorphism */}
         <div className="bg-gray-900/60 backdrop-blur-xl rounded-3xl border border-gray-800 p-8 sm:p-10 shadow-2xl">
           <h2 className="text-3xl sm:text-4xl font-extrabold mb-10 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
             Timeline & History

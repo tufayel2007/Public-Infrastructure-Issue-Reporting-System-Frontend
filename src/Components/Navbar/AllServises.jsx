@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import axiosSecure from "../../utils/axiosSecure"; // তোমার axios instance
+import axiosSecure from "../../utils/axiosSecure";
 
 const AllServices = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Fetch all issues (public or authenticated)
   const {
     data: issues = [],
     isLoading,
@@ -15,12 +14,11 @@ const AllServices = () => {
   } = useQuery({
     queryKey: ["all-issues"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/issues"); // তোমার backend route
+      const res = await axiosSecure.get("/issues");
       return res.data.issues || [];
     },
   });
 
-  // Filter logic
   const filteredIssues = issues.filter((issue) => {
     const matchesStatus =
       statusFilter === "all" || issue.status === statusFilter;
@@ -79,7 +77,6 @@ const AllServices = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-12 px-4">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
             All City Services
@@ -89,9 +86,7 @@ const AllServices = () => {
           </p>
         </div>
 
-        {/* Filters & Search */}
         <div className="mb-10 grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Status Filter */}
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
@@ -104,7 +99,6 @@ const AllServices = () => {
             <option value="rejected">Rejected</option>
           </select>
 
-          {/* Category Filter */}
           <select
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
@@ -119,7 +113,6 @@ const AllServices = () => {
             <option value="footpath">Footpath</option>
           </select>
 
-          {/* Search */}
           <div className="relative">
             <input
               type="text"
@@ -144,13 +137,11 @@ const AllServices = () => {
           </div>
         </div>
 
-        {/* Results Count */}
         <p className="text-right text-gray-300 mb-6">
           Showing <strong>{filteredIssues.length}</strong> service
           {filteredIssues.length !== 1 && "s"}
         </p>
 
-        {/* Services Grid */}
         {filteredIssues.length === 0 ? (
           <div className="text-center py-20">
             <div className="text-8xl mb-6 opacity-20">🔍</div>
@@ -168,7 +159,6 @@ const AllServices = () => {
                 key={issue._id}
                 className="group relative bg-white/10 backdrop-blur-md rounded-2xl shadow-xl hover:shadow-2xl border border-white/20 overflow-hidden transform hover:-translate-y-3 transition-all duration-500"
               >
-                {/* Image */}
                 <div className="h-48 overflow-hidden">
                   <img
                     src={
@@ -179,7 +169,7 @@ const AllServices = () => {
                     alt={issue.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
-                  {/* Priority Badge */}
+
                   <div className="absolute top-3 right-3">
                     <div className={getPriorityBadge(issue.priority)}>
                       {issue.priority === "high" ? "HIGH PRIORITY" : "Normal"}
@@ -187,7 +177,6 @@ const AllServices = () => {
                   </div>
                 </div>
 
-                {/* Card Body */}
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-white mb-2 line-clamp-2">
                     {issue.title}

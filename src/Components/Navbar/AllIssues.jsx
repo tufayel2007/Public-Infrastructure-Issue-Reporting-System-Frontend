@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react";
 import {
   FaSearch,
@@ -12,7 +13,6 @@ import { useQueryClient } from "@tanstack/react-query";
 
 const reactionTypes = ["like", "love", "haha", "wow", "sad", "angry"];
 
-// Helper function to get status-specific colors and icons
 const getStatusInfo = (status) => {
   switch (status) {
     case "pending":
@@ -39,7 +39,6 @@ const AllIssues = () => {
   const token = localStorage.getItem("token");
   const fetchIssues = async () => {
     try {
-      // NOTE: Logic for API call remains unchanged
       const token = localStorage.getItem("token");
 
       const res = await fetch(
@@ -54,8 +53,7 @@ const AllIssues = () => {
       );
 
       const data = await res.json();
-      // Added a small delay to simulate loading for a better UX experience
-      // await new Promise(resolve => setTimeout(resolve, 300));
+
       setIssues(data.issues || []);
       setTotalPages(data.totalPages || 1);
     } catch {
@@ -65,7 +63,7 @@ const AllIssues = () => {
 
   useEffect(() => {
     fetchIssues();
-  }, [page, search, category, status]); // Dependencies remain unchanged
+  }, [page, search, category, status]);
 
   const handleReact = async (id, type) => {
     if (!id || !type) return toast.error("Invalid reaction data");
@@ -170,7 +168,7 @@ const AllIssues = () => {
               value={category}
               onChange={(e) => {
                 setCategory(e.target.value);
-                setPage(1); // Reset to page 1 on new filter
+                setPage(1);
               }}
             >
               <option value="all">All Categories</option>
@@ -183,7 +181,7 @@ const AllIssues = () => {
               value={status}
               onChange={(e) => {
                 setStatus(e.target.value);
-                setPage(1); // Reset to page 1 on new filter
+                setPage(1);
               }}
             >
               <option value="all">All Status</option>
@@ -196,7 +194,6 @@ const AllIssues = () => {
 
         <hr className="mb-8" />
 
-        {/* Issues Grid */}
         <div className="grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-8">
           {issues.map((issue) => {
             const statusInfo = getStatusInfo(issue.status);
@@ -205,7 +202,6 @@ const AllIssues = () => {
                 key={issue._id}
                 className="card bg-white shadow-xl hover:shadow-2xl transition-shadow duration-300 rounded-xl overflow-hidden flex flex-col"
               >
-                {/* Image */}
                 <div className="relative h-48 overflow-hidden">
                   <img
                     src={
@@ -216,7 +212,7 @@ const AllIssues = () => {
                     alt={issue.title}
                     className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                   />
-                  {/* Status Badge */}
+
                   <div
                     className={`absolute top-3 right-3 text-xs font-semibold px-3 py-1 rounded-full ${statusInfo.className}`}
                   >
@@ -226,7 +222,6 @@ const AllIssues = () => {
                   </div>
                 </div>
 
-                {/* Content Body */}
                 <div className="p-4 flex flex-col flex-grow">
                   <h3 className="text-xl font-bold text-gray-900 line-clamp-2 mb-1">
                     {issue.title}
@@ -241,7 +236,6 @@ const AllIssues = () => {
                     </p>
                   </div>
 
-                  {/* Reactions Bar */}
                   <div className="flex gap-2 mb-4 flex-wrap border-t pt-3">
                     {reactionTypes.map((type) => {
                       const count =

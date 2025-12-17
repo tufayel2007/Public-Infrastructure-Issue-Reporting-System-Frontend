@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -57,7 +58,6 @@ const RportAnIssue = () => {
       return;
     }
 
-    // Free user limit check
     if (!isPremium && totalReports >= FREE_LIMIT) {
       Swal.fire({
         icon: "warning",
@@ -126,7 +126,6 @@ const RportAnIssue = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-12 px-4">
       <div className="max-w-3xl mx-auto">
-        {/* Header */}
         <div className="text-center mb-10">
           <h1 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
             Report a New Issue
@@ -136,14 +135,12 @@ const RportAnIssue = () => {
           </p>
         </div>
 
-        {/* Blocked Warning */}
         {user?.blocked && (
           <div className="alert alert-error shadow-lg mb-8">
             Your account has been blocked. You cannot submit reports.
           </div>
         )}
 
-        {/* Form */}
         <div className="backdrop-blur-xl bg-white/10 rounded-3xl shadow-2xl border border-white/20 p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             {preview && (
@@ -224,26 +221,21 @@ const RportAnIssue = () => {
         </div>
       </div>
 
-      {/* Free Limit Warning - Only show for non-premium users */}
       {!isPremium && (
         <div className="max-w-md mx-auto mt-12 bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-500 rounded-2xl shadow-2xl p-6 text-center text-black">
-          {/* Badge */}
           <div className="mb-3">
             <span className="inline-block bg-black/80 text-yellow-400 px-3 py-1 rounded-full text-sm font-bold tracking-wide">
               PREMIUM REQUIRED
             </span>
           </div>
 
-          {/* Title */}
           <h2 className="text-2xl font-extrabold">Free Report Limit Reached</h2>
 
-          {/* Description */}
           <p className="mt-3 text-sm opacity-90">
             Free users can submit up to <strong>3 reports</strong>. Upgrade to
             Premium to continue reporting issues without limits.
           </p>
 
-          {/* Features */}
           <ul className="mt-4 text-sm text-left space-y-1">
             <li>✅ Unlimited issue reporting</li>
             <li>✅ Default high-priority issues</li>

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -69,6 +70,7 @@ const MyIssues = () => {
                     </tr>
                   </thead>
                   <tbody>
+                    // eslint-disable-next-line no-unused-vars, no-unused-vars
                     {issues.map((i, index) => (
                       <tr
                         key={i._id}
