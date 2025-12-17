@@ -37,7 +37,6 @@ const PremiumSuccess = () => {
         if (data.success) {
           toast.success("Premium activated successfully!");
 
-          // 🔥 update AuthContext dynamically
           login({
             ...user,
             subscription: "premium",
