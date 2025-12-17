@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/purity */
 import React, { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
@@ -7,10 +8,10 @@ import toast from "react-hot-toast";
 const CitizenHome = () => {
   const { user, loading: authLoading } = useContext(AuthContext);
 
-  // Fetch Citizen Stats
   const {
     data: stats = {},
     isLoading: statsLoading,
+    // eslint-disable-next-line no-unused-vars
     error: statsError,
   } = useQuery({
     queryKey: ["citizenStats", user?.email],

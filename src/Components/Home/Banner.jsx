@@ -117,7 +117,6 @@ const Banner = () => {
             </Link>
           </div>
 
-          {/* Trust Stats - Responsive Grid */}
           <div className="mt-16 sm:mt-24 md:mt-32 grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-16 max-w-5xl mx-auto">
             <div
               className="text-center animate-fadeInUp"
@@ -154,7 +153,6 @@ const Banner = () => {
             </div>
           </div>
 
-          {/* Final Tagline - Responsive */}
           <p
             className="mt-16 sm:mt-20 md:mt-28 text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-purple-300 to-pink-300 italic drop-shadow-2xl animate-fadeInUp"
             style={{ animationDelay: "2.2s" }}

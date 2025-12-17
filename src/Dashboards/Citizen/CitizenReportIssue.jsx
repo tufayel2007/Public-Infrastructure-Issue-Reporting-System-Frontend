@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -256,7 +257,6 @@ const CitizenReportIssue = () => {
           </form>
         </div>
 
-        {/* Premium Upsell Card - Shown only when limit reached */}
         {!isPremium && totalReports >= FREE_LIMIT && (
           <div className="max-w-2xl mx-auto p-10 bg-gradient-to-br from-purple-800/60 via-pink-800/50 to-cyan-800/60 backdrop-blur-xl rounded-3xl border border-purple-500/50 shadow-2xl text-center relative overflow-hidden">
             {/* Animated Blobs */}
@@ -311,7 +311,7 @@ const CitizenReportIssue = () => {
         )}
       </div>
 
-      {/* Custom Animation Styles */}
+      {/* Custom  */}
       <style jsx>{`
         @keyframes blob {
           0%,

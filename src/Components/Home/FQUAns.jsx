@@ -1,4 +1,3 @@
-// src/components/FAQSection.jsx
 import React, { useState } from "react";
 import { ChevronDown, ChevronUp, HelpCircle } from "lucide-react";
 
@@ -43,7 +42,6 @@ const FAQSection = () => {
   return (
     <section className="py-20 px-6 bg-gradient-to-b from-slate-900 to-black">
       <div className="max-w-4xl mx-auto">
-        {/* Header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-3 text-cyan-400 mb-4">
             <HelpCircle className="w-10 h-10" />
@@ -56,14 +54,12 @@ const FAQSection = () => {
           </p>
         </div>
 
-        {/* FAQ Accordion */}
         <div className="space-y-6">
           {faqs.map((faq, index) => (
             <div
               key={index}
               className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl overflow-hidden transition-all duration-300 hover:border-cyan-400/60 hover:bg-white/15 shadow-lg"
             >
-              {/* Question */}
               <button
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
                 className="w-full px-8 py-6 text-left flex items-center justify-between gap-4 hover:bg-white/5 transition-all duration-200"
@@ -80,7 +76,6 @@ const FAQSection = () => {
                 </div>
               </button>
 
-              {/* Answer */}
               {openIndex === index && (
                 <div className="px-8 pb-8 animate-in slide-in-from-top-2">
                   <p className="text-gray-300 leading-relaxed text-lg">
@@ -92,7 +87,6 @@ const FAQSection = () => {
           ))}
         </div>
 
-        {/* Support CTA */}
         <div className="text-center mt-16">
           <p className="text-gray-400 mb-6 text-lg">Still have questions?</p>
           <a

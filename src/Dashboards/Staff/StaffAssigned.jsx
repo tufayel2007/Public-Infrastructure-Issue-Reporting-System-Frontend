@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -143,7 +144,7 @@ const StaffAssigned = () => {
                       >
                         <td>
                           <div className="flex items-center gap-4">
-                            <img
+                            <ss
                               src={`${import.meta.env.VITE_API_URL}${
                                 issue.imageUrl || "/placeholder.jpg"
                               }`}

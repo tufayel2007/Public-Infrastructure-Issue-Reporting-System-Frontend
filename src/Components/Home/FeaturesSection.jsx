@@ -72,11 +72,9 @@ const FeaturesSection = () => {
 
   return (
     <section className="relative py-20 px-6 overflow-hidden">
-      {/* Background Gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-purple-900/20 to-slate-900"></div>
 
       <div className="relative z-10 max-w-7xl mx-auto">
-        {/* Section Title */}
         <div className="text-center mb-16">
           <h2 className="text-5xl md:text-6xl font-extrabold text-white mb-4">
             Powerful Features
@@ -87,7 +85,6 @@ const FeaturesSection = () => {
           </p>
         </div>
 
-        {/* Features Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature, index) => (
             <div
