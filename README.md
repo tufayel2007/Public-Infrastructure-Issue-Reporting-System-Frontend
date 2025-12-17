@@ -3,6 +3,8 @@
 This system is a digital platform where citizens can report public issues such as broken streetlights, potholes, water leakage, garbage overflow, and damaged sidewalks.  
 Admins and government staff can quickly manage, verify, assign, and resolve citizen reports.
 
+Premium users get **priority support** and can post issues for **50৳** with direct admin access.
+
 ---
 
 ## 🌐 Live Website
@@ -13,8 +15,28 @@ Admins and government staff can quickly manage, verify, assign, and resolve citi
 
 ## 👤 Admin Credentials
 
-- **Email:** admin@example.com
-- **Password:** Admin@123
+| Email             | Password  | Notes       |
+| ----------------- | --------- | ----------- |
+| admin@example.com | Admin@123 | Full access |
+
+---
+
+## 🧑‍💻 Citizens (Sample Accounts)
+
+| Name       | Email            | Password | Premium | Notes                              |
+| ---------- | ---------------- | -------- | ------- | ---------------------------------- |
+| John Doe   | john@example.com | John1234 | No      | Free user                          |
+| Jane Smith | jane@example.com | Jane1234 | Yes     | Can post for 50৳, priority support |
+| Ali Khan   | ali@example.com  | Ali1234  | No      | Free user                          |
+
+---
+
+## 👥 Staff (Sample Accounts)
+
+| Name      | Email              | Password | Assigned Issues |
+| --------- | ------------------ | -------- | --------------- |
+| Staff One | staff1@example.com | Staff123 | 0               |
+| Staff Two | staff2@example.com | Staff123 | 0               |
 
 ---
 
@@ -23,15 +45,18 @@ Admins and government staff can quickly manage, verify, assign, and resolve citi
 1. Citizens can report issues with images and location
 2. Issue status tracking: Pending → In-Progress → Resolved → Closed
 3. Free & Premium user limits and subscriptions
-4. Upvote feature: a user can upvote an issue only once
-5. Boosted Issue: Increase priority via payment
-6. Search, filter, and pagination (server-side)
-7. Dashboards: Citizen, Staff, and Admin with stats & charts
-8. Issue Timeline: Full history of each issue
-9. Profile Page & User Management
-10. Payments & Invoice PDF download
-11. Responsive Design: Mobile, Tablet, Desktop
-12. SweetAlert/Toast notifications for all CRUD operations
+4. Premium users get **priority support** and can post issues for **50৳**
+5. Upvote feature: a user can upvote an issue only once
+6. Boosted Issue: Increase priority via payment
+7. Search, filter, and pagination (server-side)
+8. Dashboards: Citizen, Staff, and Admin with stats & charts
+9. Issue Timeline: Full history of each issue
+10. Profile Page & User Management
+11. Payments & Invoice PDF download
+12. Responsive Design: Mobile, Tablet, Desktop
+13. SweetAlert/Toast notifications for all CRUD operations
+14. Private routes persist after refresh
+15. Full audit of actions via Issue Timeline
 
 ---
 
@@ -44,110 +69,121 @@ Admins and government staff can quickly manage, verify, assign, and resolve citi
 - TanStack Query (data fetching)
 - SweetAlert2 / React Hot Toast
 - Stripe / Payment Gateway (Boost & Subscription)
+- JWT for authentication
+- Environment variables for secrets
 
 ---
 
 ## 📂 Folder Structure (Detailed)
 
-/client
-├─ /public # Static files like index.html, favicon
-├─ /src
-│ ├─ /components # Reusable UI components
-│ ├─ /pages # Pages like Home, AllIssues, Profile, Dashboard
-│ ├─ /context # React context providers (Auth, Theme, etc.)
-│ ├─ /hooks # Custom hooks
-│ ├─ /services # API services (axios/fetch)
-│ ├─ /utils # Utility functions
-│ ├─ /assets # Images, icons, logos
+/client  
+├─ /public  
+├─ /src  
+│ ├─ /components  
+│ ├─ /pages  
+│ ├─ /context  
+│ ├─ /hooks  
+│ ├─ /services  
+│ ├─ /utils  
+│ ├─ /assets  
 │ └─ App.jsx
-/server
-├─ /routes # API routes
-├─ /controllers # Controllers with business logic
-├─ /models # Mongoose models / database schemas
-├─ /middlewares # Auth, error handling, validation
-├─ /utils # Utility functions (email, PDF generator)
-└─ server.js # Main Express server file
+
+/server  
+├─ /routes  
+├─ /controllers  
+├─ /models  
+├─ /middlewares  
+├─ /utils  
+└─ server.js
+
 .env # Environment variables
 
 ---
 
-## 📦 Installation & Setup
+## 📝 How to Use
 
-1. Clone the repository:
+1. Visit the **Home page** → Explore the latest resolved issues & features.
+2. Sign up / Login as **Citizen, Staff, or Admin**.
+3. **Citizens**:
+   - Submit new issues with images & location.
+   - Edit pending issues.
+   - Boost issue priority via payment (Premium only).
+   - Track status and issue timeline.
+4. **Staff**:
+   - View assigned issues.
+   - Update status (Pending → In-Progress → Resolved → Closed).
+   - Resolve issues and add timeline entries.
+5. **Admin**:
+   - Manage all users & staff.
+   - Assign or reject issues.
+   - Monitor payments and dashboard statistics.
+   - Access full issue history and timelines.
 
-```bash
-git clone https://github.com/yourusername/repo-name.git
-# Client
-cd client
-npm install
+---
 
-# Server
-cd server
-npm install
-MONGO_URI=your_mongo_connection_string
-FIREBASE_API_KEY=your_firebase_api_key
-FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
-STRIPE_SECRET_KEY=your_stripe_secret_key
- # Client
-cd client
-npm run dev
+## 📊 User Roles & Permissions
 
-# Server
-cd server
-npm run dev
- 📝 How to Use
+| Role    | Permissions                                                           | Special Notes                                          |
+| ------- | --------------------------------------------------------------------- | ------------------------------------------------------ |
+| Admin   | Manage users & staff, assign/reject issues, view all payments & stats | Full dashboard access, can see all issues              |
+| Citizen | Submit/edit own issues, boost priority, track issue timeline          | Premium users get priority support & 50৳ posting limit |
+| Staff   | Update assigned issues, progress tracking, resolve issues             | Assigned only, cannot access other users' data         |
 
-Visit Home page → See latest resolved issues & features
+**Premium citizens** get direct admin communication and priority support for faster resolution.
 
-Sign up / Login as Citizen, Staff, or Admin
+---
 
-Citizens can submit issues, edit pending issues, boost priority
+## 🔒 Security & Notes
 
-Staff can see assigned issues, update status, resolve
+- Refreshing the page while logged in **does not break private routes**.
+- All sensitive keys are stored in **`.env`** files.
+- **TanStack Query** is used for efficient API fetching.
+- **SweetAlert2 / React Hot Toast** notifications are implemented for CRUD & payment actions.
+- Fully responsive across **Mobile, Tablet, and Desktop** devices.
+- All inputs are validated, and **no Lorem Ipsum** is used anywhere.
+- **Boosted issues** always appear on top in lists.
+- **Stripe / Payment Gateway** securely handles all transactions.
 
-Admin can manage users, staff, payments, and all issues
+---
 
-Track each issue’s timeline & status
-🤝 Contributing
+## 🔗 Useful Links
 
-Fork the repository
+| Resource    | Link                                                       | Notes                                      |
+| ----------- | ---------------------------------------------------------- | ------------------------------------------ |
+| React.js    | [https://reactjs.org](https://reactjs.org)                 | Frontend library for building UI           |
+| Vite        | [https://vitejs.dev](https://vitejs.dev)                   | Fast build tool & development server       |
+| TailwindCSS | [https://tailwindcss.com](https://tailwindcss.com)         | Styling framework for responsive UI        |
+| Firebase    | [https://firebase.google.com](https://firebase.google.com) | Auth, storage, and real-time DB            |
+| MongoDB     | [https://www.mongodb.com](https://www.mongodb.com)         | Database for persistent storage            |
+| Stripe      | [https://stripe.com](https://stripe.com)                   | Payment gateway for subscriptions & boosts |
 
-Create your branch (git checkout -b feature-name)
+---
 
-Commit your changes (git commit -m "Update: description")
+## 🧑‍💻 Developer Information
 
-Push to the branch (git push origin feature-name)
+| Field              | Details                                                          |
+| ------------------ | ---------------------------------------------------------------- |
+| Developer Name     | Tufayel Ahmed                                                    |
+| Email              | [ta07092007@gmail.com](mailto:ta07092007@gmail.com)              |
+| GitHub Profile     | [https://github.com/tufayel2007](https://github.com/tufayel2007) |
+| Project Created On | November 13, 2025                                                |
+| Tech Stack         | React, TailwindCSS, Firebase, MongoDB, Stripe, TanStack Query    |
+| Contact            | [ta07092007@gmail.com](mailto:ta07092007@gmail.com)              |
+| Contribution Guide | Fork → Branch → Commit → Pull Request                            |
+| Project Status     | Active / Live                                                    |
+| Live Demo          | [https://your-live-site.com](https://your-live-site.com)         |
 
-Create a Pull Request
+---
 
-🔒 Environment Variables
-MONGO_URI=your_mongo_connection_string
-FIREBASE_API_KEY=your_firebase_api_key
-FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
-STRIPE_SECRET_KEY=your_stripe_secret_key
+## 🌐 Connect & Vote for This Project
 
+Support and follow the project on social platforms. Click the icons below:
 
-Do not hard-code secrets in the source code.
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/tufayel2007)  
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/tufayel)  
+[![Facebook](https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white)](https://facebook.com/tufayel)  
+[![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/tufayel)  
+[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/tufayel)  
+[![Team](https://img.shields.io/badge/Team-00C853?style=for-the-badge&logo=slack&logoColor=white)](https://example.com/team)
 
-📝 Notes
-
-Refreshing the page while logged in will not break private routes
-
-All data fetching is done using TanStack Query
-
-SweetAlert/Toast notifications are used for CRUD & Payment actions
-
-Fully responsive on mobile, tablet, and desktop
-
-🔗 Useful Links
-
-React Official
-
-Vite Official
-
-TailwindCSS
-
-Firebase
-
-MongoDB
-```
+> ⭐ **Tip:** Click the GitHub icon to star the repository or the social icons to follow & support the project.

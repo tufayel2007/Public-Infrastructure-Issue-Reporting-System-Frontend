@@ -102,7 +102,7 @@ const Login = () => {
       const user = result.user;
 
       const res = await fetch(
-        "http://localhost:5000/api/LOGIN_USER/save-user",
+        "https://issue-server-site.vercel.app/api/LOGIN_USER/save-user",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

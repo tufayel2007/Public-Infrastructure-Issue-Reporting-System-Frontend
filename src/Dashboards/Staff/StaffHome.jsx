@@ -23,7 +23,7 @@ const StaffHome = () => {
     try {
       const res = await fetch(
         `${
-          import.meta.env.VITE_API_URL || "http://localhost:5000"
+          import.meta.env.VITE_API_URL || "https://issue-server-site.vercel.app"
         }/staff/issues/my-assigned`,
         {
           headers: {
@@ -69,7 +69,7 @@ const StaffHome = () => {
     try {
       await fetch(
         `${
-          import.meta.env.VITE_API_URL || "http://localhost:5000"
+          import.meta.env.VITE_API_URL || "https://issue-server-site.vercel.app"
         }/staff/issue/${issueId}/status`,
         {
           method: "PATCH",

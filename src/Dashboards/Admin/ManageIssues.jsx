@@ -40,7 +40,7 @@ const AdminManageIssues = () => {
       const res = await fetch(
         `${
           import.meta.env.VITE_API_URL
-        }/admin/issues?search=${encodeURIComponent(
+        }/issues?mine=false&search=${encodeURIComponent(
           search
         )}&status=${filterStatus}&category=${filterCategory}&priority=${filterPriority}&page=${page}&limit=15`,
         { headers: { authorization: `Bearer ${token}` } }
@@ -65,9 +65,17 @@ const AdminManageIssues = () => {
     setSelectedIssue(issue);
     document.getElementById("assign_modal").showModal();
   };
+  const handleReject = async (issue) => {
+    console.log("Reject button clicked for issue:", issue);
 
-  const handleReject = (issue) => {
-    Swal.fire({
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("No token found! Please login as admin.");
+      Swal.fire("Error!", "You must be logged in as admin.", "error");
+      return;
+    }
+
+    const { value: reason } = await Swal.fire({
       title: "Reject this issue?",
       input: "text",
       inputLabel: "Reason for rejection",
@@ -76,29 +84,41 @@ const AdminManageIssues = () => {
       confirmButtonText: "Reject",
       cancelButtonText: "Cancel",
       confirmButtonColor: "#d33",
-    }).then((result) => {
-      if (result.isConfirmed && result.value?.trim()) {
-        fetch(
-          `${import.meta.env.VITE_API_URL}/admin/issue/reject/${issue._id}`,
-          {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-              authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-            body: JSON.stringify({ reason: result.value.trim() }),
-          }
-        )
-          .then((res) => res.json())
-          .then(() => {
-            Swal.fire("Rejected!", "Issue has been rejected.", "success");
-            refetch();
-          })
-          .catch(() => {
-            Swal.fire("Error!", "Something went wrong.", "error");
-          });
-      }
     });
+
+    if (!reason || !reason.trim()) {
+      console.log("Rejection cancelled or reason empty");
+      return; // খালি reason হলে exit
+    }
+
+    try {
+      console.log("Sending PATCH request...", issue._id, reason.trim());
+
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/admin/issue/reject/${issue._id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ reason: reason.trim() }),
+        }
+      );
+
+      const data = await res.json();
+      console.log("Server response:", res.status, data);
+
+      if (res.ok) {
+        Swal.fire("Rejected!", "Issue has been rejected.", "success");
+        refetch(); // যদি react-query use করো
+      } else {
+        Swal.fire("Error!", data.message || "Failed to reject", "error");
+      }
+    } catch (err) {
+      console.error("Network or server error:", err);
+      Swal.fire("Error!", "Network error", "error");
+    }
   };
 
   const handleReact = async (issueId, type) => {
@@ -109,11 +129,13 @@ const AdminManageIssues = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+
             authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           body: JSON.stringify({ type }),
         }
       );
+
       const data = await res.json();
       if (data.success) {
         queryClient.invalidateQueries({ queryKey: ["adminIssues"] });
@@ -309,10 +331,13 @@ const AdminManageIssues = () => {
             <div className="card-body p-5">
               <div className="flex gap-4">
                 <img
-                  src={issue.imageUrl || "/placeholder.jpg"}
+                  src={`${import.meta.env.VITE_API_URL}${
+                    issue.imageUrl || "/placeholder.jpg"
+                  }`}
                   alt="issue"
                   className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl shadow-md"
                 />
+
                 <div className="flex-1">
                   <h3 className="font-bold text-lg sm:text-xl">
                     {issue.title}
@@ -456,10 +481,13 @@ const AdminManageIssues = () => {
                 <td>
                   <div className="flex items-center gap-4">
                     <img
-                      src={issue.imageUrl || "/placeholder.jpg"}
+                      src={`${import.meta.env.VITE_API_URL}${
+                        issue.imageUrl || "/placeholder.jpg"
+                      }`}
                       alt="issue"
-                      className="w-14 h-14 object-cover rounded-xl shadow"
+                      className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl shadow-md"
                     />
+
                     <div>
                       <div className="font-bold text-lg">{issue.title}</div>
                       <div className="text-sm opacity-70">{issue.location}</div>
@@ -512,7 +540,7 @@ const AdminManageIssues = () => {
                     {!issue.assignedStaff && issue.status === "pending" && (
                       <button
                         onClick={() => handleAssignStaff(issue)}
-                        className="btn btn-sm btn-primary"
+                        className="btn btn-primary btn-sm"
                       >
                         Assign
                       </button>
@@ -521,7 +549,7 @@ const AdminManageIssues = () => {
                     {issue.status === "pending" && (
                       <button
                         onClick={() => handleReject(issue)}
-                        className="btn btn-sm btn-error"
+                        className="btn btn-error btn-sm"
                       >
                         Reject
                       </button>
@@ -552,14 +580,14 @@ const AdminManageIssues = () => {
                             refetch();
                           }
                         }}
-                        className="btn btn-sm btn-outline btn-error"
+                        className="btn btn-outline btn-error btn-sm"
                       >
                         Delete
                       </button>
                     )}
                     <a
                       href={`/issue/${issue._id}`}
-                      className="btn btn-sm btn-ghost"
+                      className="btn btn-ghost btn-sm"
                     >
                       View
                     </a>

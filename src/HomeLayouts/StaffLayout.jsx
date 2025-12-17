@@ -1,14 +1,19 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import StaffSidebar from "../Dashboards/Sidebr/StaffSidebar";
+import StaffNavbar from "../Dashboards/Staff/StaffNavbar";
 
 const StaffLayout = () => {
   return (
     <div className="flex">
       <StaffSidebar />
 
-      <div className="flex-1 p-6 bg-gray-100 min-h-screen">
-        <Outlet />
+      <div style={{ flex: 1 }}>
+        <StaffNavbar></StaffNavbar>
+
+        <div className="p-4">
+          <Outlet /> {/* এখানে child route load হবে */}
+        </div>
       </div>
     </div>
   );

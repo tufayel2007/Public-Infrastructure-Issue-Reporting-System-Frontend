@@ -80,7 +80,7 @@ const CitizenSidebar = () => {
 
         {/* Report  */}
         <NavLink
-          to="/citizen/report-issue"
+          to="/citizen/reportKNow"
           className={({ isActive }) =>
             `flex items-center gap-4 px-5 py-4 rounded-xl transition-all duration-300 group relative overflow-hidden ${
               isActive

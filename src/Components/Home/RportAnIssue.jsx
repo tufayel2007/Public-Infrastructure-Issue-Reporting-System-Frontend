@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const FREE_LIMIT = 3;
 
-const ReportIssue = () => {
+const RportAnIssue = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -53,7 +53,7 @@ const ReportIssue = () => {
 
     // Blocked user check
     if (user?.blocked) {
-      toast.error("আপনার অ্যাকাউন্ট ব্লক করা হয়েছে।");
+      toast.error("Your account has been blocked.");
       return;
     }
 
@@ -61,15 +61,15 @@ const ReportIssue = () => {
     if (!isPremium && totalReports >= FREE_LIMIT) {
       Swal.fire({
         icon: "warning",
-        title: "ফ্রি লিমিট শেষ",
-        text: "ফ্রি ইউজার সর্বোচ্চ ৩টি রিপোর্ট করতে পারে। প্রিমিয়াম নিন।",
+        title: "Free Limit Exceeded",
+        text: "Free users can submit a maximum of 3 reports. Please upgrade to Premium.",
         confirmButtonText: "Go Premium",
       }).then(() => navigate("/premium"));
       return;
     }
 
     if (!title || !description || !location) {
-      toast.error("সব তথ্য পূরণ করুন");
+      toast.error("Please fill in all required fields");
       return;
     }
 
@@ -77,7 +77,7 @@ const ReportIssue = () => {
       setLoading(true);
       const token = localStorage.getItem("token");
       if (!token) {
-        toast.error("অনুগ্রহ করে লগইন করুন");
+        toast.error("Please log in to continue");
         return;
       }
 
@@ -99,17 +99,17 @@ const ReportIssue = () => {
       const data = await res.json();
 
       if (data.success) {
-        toast.success("সমস্যা সফলভাবে রিপোর্ট করা হয়েছে!");
+        toast.success("Issue reported successfully!");
         setTitle("");
         setDescription("");
         setLocation("");
         setImage(null);
         setPreview("");
       } else {
-        toast.error(data.message || "রিপোর্ট করতে সমস্যা হয়েছে");
+        toast.error(data.message || "Failed to report the issue");
       }
     } catch (error) {
-      toast.error("সার্ভার সমস্যা। আবার চেষ্টা করুন।");
+      toast.error("Server error. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -129,17 +129,17 @@ const ReportIssue = () => {
         {/* Header */}
         <div className="text-center mb-10">
           <h1 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-            নতুন সমস্যা রিপোর্ট করুন
+            Report a New Issue
           </h1>
           <p className="mt-4 text-xl text-gray-300">
-            আপনার শহরকে আরও ভালো করুন — একটি রিপোর্ট দিয়ে
+            Make your city better — one report at a time
           </p>
         </div>
 
         {/* Blocked Warning */}
         {user?.blocked && (
           <div className="alert alert-error shadow-lg mb-8">
-            আপনার অ্যাকাউন্ট ব্লক করা হয়েছে। রিপোর্ট করতে পারবেন না।
+            Your account has been blocked. You cannot submit reports.
           </div>
         )}
 
@@ -156,7 +156,7 @@ const ReportIssue = () => {
 
             <input
               type="text"
-              placeholder="সমস্যার শিরোনাম"
+              placeholder="Issue Title"
               className="input input-bordered input-lg w-full"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -164,7 +164,7 @@ const ReportIssue = () => {
             />
 
             <textarea
-              placeholder="বিস্তারিত বর্ণনা দিন..."
+              placeholder="Provide detailed description..."
               className="textarea textarea-bordered textarea-lg w-full"
               rows="4"
               value={description}
@@ -177,17 +177,17 @@ const ReportIssue = () => {
               value={category}
               onChange={(e) => setCategory(e.target.value)}
             >
-              <option value="pothole">গর্ত</option>
-              <option value="streetlight">স্ট্রিট লাইট</option>
-              <option value="garbage">ময়লা</option>
-              <option value="water-leakage">পানি লিকেজ</option>
-              <option value="drainage">ড্রেনেজ</option>
-              <option value="footpath">ফুটপাথ</option>
+              <option value="pothole">Pothole</option>
+              <option value="streetlight">Street Light</option>
+              <option value="garbage">Garbage</option>
+              <option value="water-leakage">Water Leakage</option>
+              <option value="drainage">Drainage</option>
+              <option value="footpath">Footpath</option>
             </select>
 
             <input
               type="text"
-              placeholder="লোকেশন"
+              placeholder="Location"
               className="input input-bordered input-lg w-full"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
@@ -207,59 +207,61 @@ const ReportIssue = () => {
               className="btn btn-primary btn-lg w-full"
             >
               {loading
-                ? "অপেক্ষা করুন..."
+                ? "Please wait..."
                 : user?.blocked
-                ? "ব্লক করা অ্যাকাউন্ট"
+                ? "Account Blocked"
                 : !canReport
-                ? "লিমিট শেষ - প্রিমিয়াম নিন"
-                : "রিপোর্ট জমা দিন"}
+                ? "Limit Reached - Go Premium"
+                : "Submit Report"}
             </button>
           </form>
 
           {!isPremium && (
             <div className="mt-6 text-center text-gray-300">
-              আপনি {totalReports} / {FREE_LIMIT} টি রিপোর্ট ব্যবহার করেছেন
+              You have used {totalReports} / {FREE_LIMIT} reports
             </div>
           )}
         </div>
       </div>
 
-      {/* Free Limit Warning */}
-      <div className="max-w-md mx-auto bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-500 rounded-2xl shadow-2xl p-6 text-center text-black">
-        {/* Badge */}
-        <div className="mb-3">
-          <span className="inline-block bg-black/80 text-yellow-400 px-3 py-1 rounded-full text-sm font-bold tracking-wide">
-            PREMIUM REQUIRED
-          </span>
+      {/* Free Limit Warning - Only show for non-premium users */}
+      {!isPremium && (
+        <div className="max-w-md mx-auto mt-12 bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-500 rounded-2xl shadow-2xl p-6 text-center text-black">
+          {/* Badge */}
+          <div className="mb-3">
+            <span className="inline-block bg-black/80 text-yellow-400 px-3 py-1 rounded-full text-sm font-bold tracking-wide">
+              PREMIUM REQUIRED
+            </span>
+          </div>
+
+          {/* Title */}
+          <h2 className="text-2xl font-extrabold">Free Report Limit Reached</h2>
+
+          {/* Description */}
+          <p className="mt-3 text-sm opacity-90">
+            Free users can submit up to <strong>3 reports</strong>. Upgrade to
+            Premium to continue reporting issues without limits.
+          </p>
+
+          {/* Features */}
+          <ul className="mt-4 text-sm text-left space-y-1">
+            <li>✅ Unlimited issue reporting</li>
+            <li>✅ Default high-priority issues</li>
+            <li>✅ Faster resolution workflow</li>
+            <li>✅ Premium user badge</li>
+          </ul>
+
+          {/* CTA */}
+          <Link
+            to="/premium"
+            className="btn btn-sm w-full mt-6 bg-black text-yellow-400 hover:bg-black/90 border-none"
+          >
+            Upgrade to Premium (৳1000)
+          </Link>
         </div>
-
-        {/* Title */}
-        <h2 className="text-2xl font-extrabold">Free Report Limit Reached</h2>
-
-        {/* Description */}
-        <p className="mt-3 text-sm opacity-90">
-          Free users can submit up to <strong>3 reports</strong>. Upgrade to
-          Premium to continue reporting issues without limits.
-        </p>
-
-        {/* Features */}
-        <ul className="mt-4 text-sm text-left space-y-1">
-          <li>✅ Unlimited issue reporting</li>
-          <li>✅ Default high-priority issues</li>
-          <li>✅ Faster resolution workflow</li>
-          <li>✅ Premium user badge</li>
-        </ul>
-
-        {/* CTA */}
-        <Link
-          to="/premium"
-          className="btn btn-sm w-full mt-6 bg-black text-yellow-400 hover:bg-black/90 border-none"
-        >
-          Upgrade to Premium (৳1000)
-        </Link>
-      </div>
+      )}
     </div>
   );
 };
 
-export default ReportIssue;
+export default RportAnIssue;

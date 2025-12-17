@@ -53,7 +53,7 @@ const StaffAssigned = () => {
     try {
       await fetch(
         `${
-          import.meta.env.VITE_API_URL || "http://localhost:5000"
+          import.meta.env.VITE_API_URL || "https://issue-server-site.vercel.app"
         }/staff/issue/${issueId}/status`,
         {
           method: "PATCH",
@@ -144,10 +144,13 @@ const StaffAssigned = () => {
                         <td>
                           <div className="flex items-center gap-4">
                             <img
-                              src={issue.imageUrl || "/placeholder.jpg"}
+                              src={`${import.meta.env.VITE_API_URL}${
+                                issue.imageUrl || "/placeholder.jpg"
+                              }`}
                               alt="issue"
-                              className="w-16 h-16 object-cover rounded-xl shadow-md"
+                              className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl shadow-md"
                             />
+
                             <div>
                               <div className="font-bold text-lg">
                                 {issue.title}

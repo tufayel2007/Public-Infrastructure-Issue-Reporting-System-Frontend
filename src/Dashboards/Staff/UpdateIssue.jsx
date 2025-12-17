@@ -7,7 +7,7 @@ const UpdateIssue = () => {
   const [status, setStatus] = useState("");
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/issues/${id}`)
+    fetch(`https://issue-server-site.vercel.app/api/issues/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setIssue(data);
@@ -16,7 +16,7 @@ const UpdateIssue = () => {
   }, [id]);
 
   const updateStatus = () => {
-    fetch(`http://localhost:5000/api/issues/${id}`, {
+    fetch(`https://issue-server-site.vercel.app/api/issues/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status }),

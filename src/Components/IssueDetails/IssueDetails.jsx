@@ -116,7 +116,6 @@ const IssueDetails = () => {
     }
   };
 
-  // Mark as Resolved
   const handleMarkResolved = async () => {
     if (!confirm("Mark this issue as resolved?")) return;
 
@@ -185,8 +184,12 @@ const IssueDetails = () => {
   };
 
   // ---------------- BOOST PAYMENT ----------------
+
   const handleBoost = async () => {
+    if (loading) return;
+
     try {
+      setLoading(true);
       const token = localStorage.getItem("token");
 
       const res = await fetch(
@@ -197,7 +200,7 @@ const IssueDetails = () => {
             "Content-Type": "application/json",
             authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ issueId: id, amount: 100 }),
+          body: JSON.stringify({ issueId: id }),
         }
       );
 
@@ -207,6 +210,8 @@ const IssueDetails = () => {
       window.location.href = data.url;
     } catch (err) {
       toast.error(err.message || "Boost failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -225,9 +230,7 @@ const IssueDetails = () => {
   return (
     <div className="min-h-screen bg-black text-white px-4 py-8 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-10">
-        {/* Main Issue Card - Dark Premium */}
         <div className="bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-3xl shadow-2xl border border-gray-800 overflow-hidden">
-          {/* Premium Gradient Header */}
           <div className="bg-gradient-to-r from-purple-700 via-indigo-800 to-pink-800 p-8 sm:p-10">
             <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight">
               {issue.title}
@@ -389,14 +392,25 @@ const IssueDetails = () => {
 
               <button
                 onClick={handleBoost}
-                disabled={issue.status === "closed"}
-                className={`py-6 rounded-3xl font-bold text-2xl shadow-2xl transition transform hover:scale-110 bg-gradient-to-r ${
-                  issue.status === "closed"
+                disabled={issue.status === "closed" || loading}
+                className={`py-6 rounded-3xl font-bold text-2xl shadow-2xl transition transform ${
+                  issue.status === "closed" || loading
                     ? "from-gray-700 to-gray-800 text-gray-500 cursor-not-allowed"
-                    : "from-pink-500 via-purple-600 to-indigo-700 text-white animate-pulse shadow-pink-500/50"
+                    : "hover:scale-110 bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-700 text-white animate-pulse shadow-pink-500/50"
                 }`}
               >
-                Boost Priority (৳100)
+                {loading ? (
+                  "Redirecting to payment..."
+                ) : issue.isPremiumUser ? (
+                  <>
+                    Boost Priority{" "}
+                    <span className="text-green-300 font-extrabold">
+                      (৳50 • Premium)
+                    </span>
+                  </>
+                ) : (
+                  "Boost Priority (৳100)"
+                )}
               </button>
 
               {issue.status !== "resolved" && issue.status !== "closed" && (

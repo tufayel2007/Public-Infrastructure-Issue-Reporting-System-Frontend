@@ -36,6 +36,7 @@ import About from "../Components/Navbar/About";
 import CitizenProfile from "../Dashboards/Citizen/CitizenProfile";
 
 import Register from "../Components/Login/Register";
+import ContactSuportTem from "../Dashboards/Citizen/ContactSuportTem";
 
 const router = createBrowserRouter([
   {
@@ -133,6 +134,7 @@ const router = createBrowserRouter([
       { path: "citizenReportIssue", element: <CitizenReportIssue /> },
       { path: "premium", element: <Premium /> },
       { path: "premium/success", element: <PremiumSuccess /> },
+      { path: "contactSuportTem", element: <ContactSuportTem /> },
     ],
   },
 ]);
