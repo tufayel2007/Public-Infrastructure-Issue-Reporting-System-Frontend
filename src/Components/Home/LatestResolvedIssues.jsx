@@ -32,8 +32,48 @@ const LatestResolvedIssues = () => {
     );
   if (!issues.length)
     return (
-      <div className="text-center py-10 text-gray-400 text-lg">
-        No resolved issues yet.
+      <div className="flex justify-center py-16">
+        <div
+          className="
+      group
+      bg-gradient-to-br from-gray-900 to-gray-800
+      border border-gray-700
+      rounded-2xl
+      shadow-xl
+      px-10 py-12
+      text-center
+      max-w-md
+      animate-fadeIn
+      hover:scale-105
+      transition-all
+      duration-500
+    "
+        >
+          <div className="flex justify-center mb-4">
+            <div
+              className="
+          w-14 h-14
+          flex items-center justify-center
+          rounded-full
+          bg-green-500/10
+          text-green-400
+          text-3xl
+          animate-bounce
+        "
+            >
+              ✓
+            </div>
+          </div>
+
+          <h3 className="text-xl font-semibold text-white mb-2">
+            No Resolved Issues Yet
+          </h3>
+
+          <p className="text-gray-400 text-sm">
+            Resolved issues will appear here once available. Keep reporting to
+            make the city better.
+          </p>
+        </div>
       </div>
     );
 
