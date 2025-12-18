@@ -37,6 +37,8 @@ import CitizenProfile from "../Dashboards/Citizen/CitizenProfile";
 
 import Register from "../Components/Login/Register";
 import ContactSuportTem from "../Dashboards/Citizen/ContactSuportTem";
+import AdminPayments from "../Dashboards/Admin/AdminPayments";
+import CitizenPaymentHomePayment from "../Dashboards/Citizen/CitizenPaymentHomePayment";
 
 const router = createBrowserRouter([
   {
@@ -99,6 +101,7 @@ const router = createBrowserRouter([
       { path: "dashboard", element: <AdminHome /> },
       { path: "manage-users", element: <ManageUsers /> },
       { path: "manage-issues", element: <ManageIssues /> },
+      { path: "payments", element: <AdminPayments /> },
     ],
   },
 
@@ -135,6 +138,10 @@ const router = createBrowserRouter([
       { path: "premium", element: <Premium /> },
       { path: "premium/success", element: <PremiumSuccess /> },
       { path: "contactSuportTem", element: <ContactSuportTem /> },
+      {
+        path: "citizenPaymentHomePayment",
+        element: <CitizenPaymentHomePayment />,
+      },
     ],
   },
 ]);

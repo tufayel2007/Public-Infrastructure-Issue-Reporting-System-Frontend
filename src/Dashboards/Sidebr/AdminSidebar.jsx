@@ -1,4 +1,3 @@
-// src/components/AdminSidebar.jsx  (বা যেখানে আছে)
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import {
@@ -8,11 +7,12 @@ import {
   MdHome,
   MdLogout,
   MdSettings,
+  MdCreditCard,
 } from "react-icons/md";
 
 const AdminSidebar = () => {
   return (
-    <div className="w-64 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white min-h-screen shadow-2xl flex flex-col overflow-hidden">
+    <div className="hidden lg:flex w-64 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white min-h-screen shadow-2xl flex-col overflow-hidden">
       {/* Header */}
       <div className="p-6 border-b border-white/20">
         <h2 className="text-3xl font-bold flex items-center gap-3 bg-gradient-to-r from-cyan-300 to-purple-400 bg-clip-text text-transparent">
@@ -105,9 +105,32 @@ const AdminSidebar = () => {
             </>
           )}
         </NavLink>
-        <span>
-          <Link to="/staff/profileRouter">MY Profile</Link>
-        </span>
+        <NavLink
+          to="/admin/payments"
+          className={({ isActive }) =>
+            `flex items-center gap-4 px-5 py-4 rounded-xl transition-all duration-300 group relative overflow-hidden ${
+              isActive
+                ? "bg-gradient-to-r from-emerald-600 to-teal-600 shadow-xl shadow-emerald-500/30 font-bold scale-[1.02]"
+                : "hover:bg-white/10 hover:scale-[1.02] hover:shadow-lg"
+            }`
+          }
+          end
+        >
+          {({ isActive }) => (
+            <>
+              {isActive && (
+                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-emerald-300 to-teal-400 rounded-r"></div>
+              )}
+              <MdCreditCard
+                className={`w-6 h-6 transition-all ${
+                  isActive ? "text-white" : "group-hover:text-purple-300"
+                }`}
+              />
+              <span> All Payments</span>
+            </>
+          )}
+        </NavLink>
+
         {/* Divider */}
         <div className="my-6 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
 

@@ -7,6 +7,8 @@ import {
   MdAddCircle,
   MdArrowBack,
   MdPerson,
+  MdCreditCard, // for payment
+  MdAccountCircle, // better for profile
 } from "react-icons/md";
 
 const CitizenSidebar = () => {
@@ -39,7 +41,7 @@ const CitizenSidebar = () => {
           {({ isActive }) => (
             <>
               {isActive && (
-                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-cyan-300 to-blue-400 rounded-r"></div>
+                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-cyan-300 to-blue-400 rounded-r" />
               )}
               <MdHome
                 className={`w-6 h-6 transition-all ${
@@ -66,7 +68,7 @@ const CitizenSidebar = () => {
           {({ isActive }) => (
             <>
               {isActive && (
-                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-emerald-300 to-teal-400 rounded-r"></div>
+                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-emerald-300 to-teal-400 rounded-r" />
               )}
               <MdReportProblem
                 className={`w-6 h-6 transition-all ${
@@ -78,40 +80,13 @@ const CitizenSidebar = () => {
           )}
         </NavLink>
 
-        {/* Report  */}
+        {/* Report New Issue */}
         <NavLink
-          to="/citizen/reportKNow"
+          to="/citizen/citizenReportIssue"
           className={({ isActive }) =>
             `flex items-center gap-4 px-5 py-4 rounded-xl transition-all duration-300 group relative overflow-hidden ${
               isActive
                 ? "bg-gradient-to-r from-orange-500 to-red-600 shadow-xl shadow-orange-500/30 font-bold scale-[1.02]"
-                : "hover:bg-white/10 hover:scale-[1.02] hover:shadow-lg"
-            }`
-          }
-        >
-          {({ isActive }) => (
-            <>
-              {isActive && (
-                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-orange-300 to-red-400 rounded-r"></div>
-              )}
-              <MdAddCircle
-                className={`w-6 h-6 transition-all ${
-                  isActive ? "text-white" : "group-hover:text-orange-300"
-                }`}
-              />
-              <span className="text-base tracking-wide">
-                <Link to="/citizen/citizenReportIssue">Report New Issue</Link>
-              </span>
-            </>
-          )}
-        </NavLink>
-
-        <NavLink
-          to="/citizen/profileRouter"
-          className={({ isActive }) =>
-            `flex items-center gap-4 px-5 py-4 rounded-xl transition-all duration-300 group relative overflow-hidden ${
-              isActive
-                ? "bg-gradient-to-r from-cyan-500 to-blue-600 shadow-xl shadow-cyan-500/30 font-bold scale-[1.02]"
                 : "hover:bg-white/10 hover:scale-[1.02] hover:shadow-lg"
             }`
           }
@@ -120,23 +95,79 @@ const CitizenSidebar = () => {
           {({ isActive }) => (
             <>
               {isActive && (
-                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-cyan-300 to-blue-400 rounded-r"></div>
+                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-orange-300 to-red-400 rounded-r" />
               )}
-              <MdHome
+              <MdAddCircle
                 className={`w-6 h-6 transition-all ${
-                  isActive ? "text-white" : "group-hover:text-cyan-300"
+                  isActive ? "text-white" : "group-hover:text-orange-300"
                 }`}
               />
-              <span className="text-base tracking-wide">Profile update</span>
+              <span className="text-base tracking-wide">Report New Issue</span>
             </>
           )}
         </NavLink>
 
-        <div className="my-6 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+        {/* Payment */}
+        <NavLink
+          to="/citizen/citizenPaymentHomePayment"
+          className={({ isActive }) =>
+            `flex items-center gap-4 px-5 py-4 rounded-xl transition-all duration-300 group relative overflow-hidden ${
+              isActive
+                ? "bg-gradient-to-r from-purple-500 to-pink-600 shadow-xl shadow-purple-500/30 font-bold scale-[1.02]"
+                : "hover:bg-white/10 hover:scale-[1.02] hover:shadow-lg"
+            }`
+          }
+          end
+        >
+          {({ isActive }) => (
+            <>
+              {isActive && (
+                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-purple-300 to-pink-400 rounded-r" />
+              )}
+              <MdCreditCard
+                className={`w-6 h-6 transition-all ${
+                  isActive ? "text-white" : "group-hover:text-purple-300"
+                }`}
+              />
+              <span className="text-base tracking-wide">Your Payments</span>
+            </>
+          )}
+        </NavLink>
 
+        {/* Profile Update */}
+        <NavLink
+          to="/citizen/profileRouter"
+          className={({ isActive }) =>
+            `flex items-center gap-4 px-5 py-4 rounded-xl transition-all duration-300 group relative overflow-hidden ${
+              isActive
+                ? "bg-gradient-to-r from-indigo-500 to-purple-600 shadow-xl shadow-indigo-500/30 font-bold scale-[1.02]"
+                : "hover:bg-white/10 hover:scale-[1.02] hover:shadow-lg"
+            }`
+          }
+          end
+        >
+          {({ isActive }) => (
+            <>
+              {isActive && (
+                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-indigo-300 to-purple-400 rounded-r" />
+              )}
+              <MdAccountCircle
+                className={`w-6 h-6 transition-all ${
+                  isActive ? "text-white" : "group-hover:text-indigo-300"
+                }`}
+              />
+              <span className="text-base tracking-wide">Profile Update</span>
+            </>
+          )}
+        </NavLink>
+
+        <div className="my-6 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+
+        {/* Back to Home */}
         <NavLink
           to="/"
           className="flex items-center gap-4 px-5 py-4 rounded-xl hover:bg-white/10 hover:scale-[1.02] hover:shadow-lg transition-all duration-300 group"
+          end
         >
           <MdArrowBack className="w-6 h-6 text-gray-300 group-hover:text-white group-hover:-translate-x-1 transition-all" />
           <span className="text-base tracking-wide">Back to Home</span>

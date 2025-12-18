@@ -96,7 +96,6 @@ const CitizenNavbar = () => {
               5
             </span>
           </div>
-
           {/* Profile Dropdown */}
           <div className="relative group">
             <div
@@ -109,9 +108,13 @@ const CitizenNavbar = () => {
               <div className="w-full h-full rounded-full bg-white overflow-hidden flex items-center justify-center">
                 {getAvatarUrl() ? (
                   <img
-                    src={getAvatarUrl()}
+                    src={getAvatarUrl() || "/fallback-avatar.jpg"}
                     alt="Profile"
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "/fallback-avatar.jpg";
+                    }}
                   />
                 ) : (
                   <CgProfile className="text-2xl text-gray-600" />
@@ -123,8 +126,18 @@ const CitizenNavbar = () => {
             <div className="absolute right-0 mt-3 w-64 bg-white rounded-2xl shadow-2xl border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 pointer-events-none group-hover:pointer-events-auto z-50">
               <div className="p-5">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white text-2xl font-bold flex-shrink-0">
-                    {user?.name?.charAt(0).toUpperCase() || "C"}
+                  <div className="w-12 h-12 rounded-full overflow-hidden border-4 border-purple-500 shadow-lg">
+                    {getAvatarUrl() ? (
+                      <img
+                        src={getAvatarUrl()}
+                        alt="Profile"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white text-2xl font-bold">
+                        {user?.name?.charAt(0).toUpperCase() || "C"}
+                      </div>
+                    )}
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="font-bold text-gray-800 truncate">

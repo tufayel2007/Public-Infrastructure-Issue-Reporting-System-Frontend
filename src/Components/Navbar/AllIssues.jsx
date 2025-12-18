@@ -205,12 +205,11 @@ const AllIssues = () => {
                 <div className="relative h-48 overflow-hidden">
                   <img
                     src={
-                      issue.imageUrl
-                        ? `${import.meta.env.VITE_API_URL}${issue.imageUrl}`
-                        : "https://via.placeholder.com/600x400?text=No+Image+Available"
+                      issue.imageUrl?.startsWith("http")
+                        ? issue.imageUrl
+                        : `${import.meta.env.VITE_API_URL}${issue.imageUrl}`
                     }
                     alt={issue.title}
-                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                   />
 
                   <div
@@ -232,7 +231,7 @@ const AllIssues = () => {
                     <span className="mx-2 text-gray-300">|</span>
                     <FaCalendarAlt className="mr-1 text-blue-500" />
                     <p className="text-xs">
-                      {formatIssueDate(issue.createdAt)}
+                      {formatIssueDate(issue.date)} {/* createdAt → date */}
                     </p>
                   </div>
 
@@ -331,9 +330,20 @@ const AllIssues = () => {
                             className="flex items-start gap-2 text-xs bg-gray-50 p-2 rounded-lg"
                           >
                             <img
-                              src={c.avatarUrl}
-                              alt={c.name}
-                              className="h-5 w-5 rounded-full object-cover mt-0.5"
+                              src={
+                                issue.imageUrl?.startsWith("http")
+                                  ? issue.imageUrl
+                                  : issue.imageUrl
+                                  ? `${import.meta.env.VITE_API_URL}${
+                                      issue.imageUrl
+                                    }`
+                                  : "https://via.placeholder.com/400x300?text=No+Image" // fallback
+                              }
+                              alt={issue.title}
+                              onError={(e) => {
+                                e.target.src =
+                                  "https://via.placeholder.com/400x300?text=No+Image";
+                              }}
                             />
                             <div className="leading-tight">
                               <b className="font-bold text-gray-900">

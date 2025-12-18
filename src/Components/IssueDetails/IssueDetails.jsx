@@ -274,9 +274,18 @@ const IssueDetails = () => {
           {issue.imageUrl && (
             <div className="p-6 sm:p-8">
               <img
-                src={`${import.meta.env.VITE_API_URL}${issue.imageUrl}`}
-                className="w-full h-72 sm:h-96 object-cover rounded-2xl border-4 border-gray-800 shadow-2xl"
-                alt="Issue visual reference"
+                src={
+                  issue.imageUrl?.startsWith("http")
+                    ? issue.imageUrl
+                    : issue.imageUrl
+                    ? `${import.meta.env.VITE_API_URL}${issue.imageUrl}`
+                    : "https://via.placeholder.com/400x300?text=No+Image" // fallback
+                }
+                alt={issue.title}
+                onError={(e) => {
+                  e.target.src =
+                    "https://via.placeholder.com/400x300?text=No+Image";
+                }}
               />
             </div>
           )}

@@ -144,12 +144,18 @@ const StaffAssigned = () => {
                       >
                         <td>
                           <div className="flex items-center gap-4">
-                            <ss
-                              src={`${import.meta.env.VITE_API_URL}${
-                                issue.imageUrl || "/placeholder.jpg"
-                              }`}
+                            <img
+                              src={
+                                issue.imageUrl &&
+                                !issue.imageUrl.includes("placeholder")
+                                  ? issue.imageUrl
+                                  : "/placeholder-issue.jpg"
+                              }
                               alt="issue"
                               className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl shadow-md"
+                              onError={(e) => {
+                                e.target.src = "/placeholder-issue.jpg";
+                              }}
                             />
 
                             <div>

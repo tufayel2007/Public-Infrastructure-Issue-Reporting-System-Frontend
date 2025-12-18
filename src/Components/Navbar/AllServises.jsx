@@ -162,12 +162,17 @@ const AllServices = () => {
                 <div className="h-48 overflow-hidden">
                   <img
                     src={
-                      issue.imageUrl && issue.imageUrl !== "/placeholder.jpg"
-                        ? `${import.meta.env.VITE_API_URL}${issue.imageUrl}`
+                      issue.imageUrl &&
+                      issue.imageUrl !== "/placeholder.jpg" &&
+                      issue.imageUrl !== ""
+                        ? issue.imageUrl // Cloudinary URL → সরাসরি
                         : "/placeholder-service.jpg"
                     }
                     alt={issue.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    onError={(e) => {
+                      e.target.src = "/placeholder-service.jpg"; // যদি কোনো কারণে লোড না হয়
+                    }}
                   />
 
                   <div className="absolute top-3 right-3">

@@ -16,9 +16,10 @@ const RportAnIssue = () => {
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("pothole");
   const [location, setLocation] = useState("");
-  const [image, setImage] = useState(null);
-  const [preview, setPreview] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [preview, setPreview] = useState(""); // লোকাল প্রিভিউ
+  const [imageUrl, setImageUrl] = useState(""); // Cloudinary থেকে পাওয়া URL
+  const [uploading, setUploading] = useState(false); // ইমেজ আপলোড লোডিং
+  const [loading, setLoading] = useState(false); // ফর্ম সাবমিট লোডিং
 
   // Fetch citizen stats
   const { data: stats, isLoading: statsLoading } = useQuery({
@@ -41,18 +42,57 @@ const RportAnIssue = () => {
   const isPremium = user?.subscription === "premium";
   const canReport = isPremium || totalReports < FREE_LIMIT;
 
-  const handleImage = (e) => {
+  // ইমেজ সিলেক্ট + Cloudinary-তে আপলোড
+  const handleImage = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setImage(file);
-      setPreview(URL.createObjectURL(file));
+    if (!file) return;
+
+    // লোকাল প্রিভিউ দেখানো
+    setPreview(URL.createObjectURL(file));
+    setUploading(true);
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append(
+      "upload_preset",
+      import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
+    );
+
+    // চাইলে ফোল্ডার সেট করতে পারো
+    // formData.append("folder", "issuehub/issues");
+
+    try {
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${
+          import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+        }/image/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const data = await res.json();
+
+      if (data.secure_url) {
+        setImageUrl(data.secure_url);
+        toast.success("ইমেজ সফলভাবে আপলোড হয়েছে!");
+      } else {
+        toast.error("ইমেজ আপলোড ফেল! আবার চেষ্টা করো।");
+        setPreview("");
+      }
+    } catch (error) {
+      console.error("Cloudinary upload error:", error);
+      toast.error("ইমেজ আপলোডে সমস্যা হয়েছে।");
+      setPreview("");
+    } finally {
+      setUploading(false);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Blocked user check
     if (user?.blocked) {
       toast.error("Your account has been blocked.");
       return;
@@ -81,34 +121,40 @@ const RportAnIssue = () => {
         return;
       }
 
-      const formData = new FormData();
-      formData.append("title", title);
-      formData.append("description", description);
-      formData.append("category", category);
-      formData.append("location", location);
-      if (image) formData.append("image", image);
+      const payload = {
+        title,
+        description,
+        category,
+        location,
+        imageUrl:
+          imageUrl ||
+          "https://res.cloudinary.com/your-cloud-name/image/upload/v1234567890/placeholder-issue.jpg", // একটা default Cloudinary placeholder দাও
+      };
 
       const res = await fetch(`${import.meta.env.VITE_API_URL}/issues`, {
         method: "POST",
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: formData,
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json();
 
       if (data.success) {
         toast.success("Issue reported successfully!");
+
         setTitle("");
         setDescription("");
         setLocation("");
-        setImage(null);
         setPreview("");
+        setImageUrl("");
       } else {
         toast.error(data.message || "Failed to report the issue");
       }
     } catch (error) {
+      console.error(error);
       toast.error("Server error. Please try again.");
     } finally {
       setLoading(false);
@@ -143,14 +189,16 @@ const RportAnIssue = () => {
 
         <div className="backdrop-blur-xl bg-white/10 rounded-3xl shadow-2xl border border-white/20 p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* প্রিভিউ */}
             {preview && (
-              <img
-                src={preview}
-                alt="Preview"
-                className="h-64 w-full object-cover rounded-xl shadow-lg"
-              />
+              <div className="relative">
+                {uploading && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-xl">
+                    <span className="loading loading-spinner loading-md text-white"></span>
+                  </div>
+                )}
+              </div>
             )}
-
             <input
               type="text"
               placeholder="Issue Title"
@@ -196,15 +244,18 @@ const RportAnIssue = () => {
               accept="image/*"
               className="file-input file-input-bordered file-input-lg w-full"
               onChange={handleImage}
+              disabled={uploading}
             />
 
             <button
               type="submit"
-              disabled={loading || !canReport || user?.blocked}
+              disabled={loading || uploading || !canReport || user?.blocked}
               className="btn btn-primary btn-lg w-full"
             >
               {loading
-                ? "Please wait..."
+                ? "Submitting..."
+                : uploading
+                ? "Uploading Image..."
                 : user?.blocked
                 ? "Account Blocked"
                 : !canReport
@@ -221,7 +272,7 @@ const RportAnIssue = () => {
         </div>
       </div>
 
-      {!isPremium && (
+      {!isPremium && totalReports >= FREE_LIMIT && (
         <div className="max-w-md mx-auto mt-12 bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-500 rounded-2xl shadow-2xl p-6 text-center text-black">
           <div className="mb-3">
             <span className="inline-block bg-black/80 text-yellow-400 px-3 py-1 rounded-full text-sm font-bold tracking-wide">
@@ -243,7 +294,6 @@ const RportAnIssue = () => {
             <li>✅ Premium user badge</li>
           </ul>
 
-          {/* CTA */}
           <Link
             to="/premium"
             className="btn btn-sm w-full mt-6 bg-black text-yellow-400 hover:bg-black/90 border-none"
