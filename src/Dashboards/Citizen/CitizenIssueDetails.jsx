@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 
 const CitizenIssueDetails = () => {
@@ -24,8 +24,9 @@ const CitizenIssueDetails = () => {
           }
         );
 
-        if (res.status === 404) {
-          setError("Issue not found");
+        if (!res.ok) {
+          if (res.status === 404) setError("Issue not found");
+          else setError("Failed to fetch issue");
           setLoading(false);
           return;
         }
@@ -43,9 +44,11 @@ const CitizenIssueDetails = () => {
     fetchIssue();
   }, [id, token]);
 
+  // Boost Function
   const handleBoost = async () => {
-    if (!issue.isPremiumUser) {
-      toast.error("Only premium users can boost for ৳50");
+    // check if user is premium (or adjust condition as per your backend)
+    if (!issue || issue.priority === "high") {
+      toast.error("Only eligible issues can be boosted");
       return;
     }
 
@@ -66,6 +69,7 @@ const CitizenIssueDetails = () => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Boost failed");
 
+      // redirect to Stripe checkout
       window.location.href = data.url;
     } catch (err) {
       toast.error(err.message || "Boost failed");
@@ -79,10 +83,11 @@ const CitizenIssueDetails = () => {
   if (error)
     return <div className="text-center mt-20 text-red-500">{error}</div>;
 
+  const isOwner = issue.uid.toString() === uid;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-8 text-white">
       <div className="max-w-4xl mx-auto bg-white/10 backdrop-blur-xl rounded-3xl p-6 shadow-2xl">
-        {/* Issue Info */}
         <h1 className="text-4xl font-bold mb-4">{issue.title}</h1>
         <p className="mb-4">{issue.description}</p>
         <p className="mb-2">
@@ -123,14 +128,42 @@ const CitizenIssueDetails = () => {
           {boostLoading ? "Redirecting..." : `Boost Priority (৳100)`}
         </button>
 
-        {/* Edit Button */}
-        {issue.status === "pending" && issue.uid === uid && (
-          <button
-            onClick={() => navigate(`/issues/edit/${id}`)}
-            className="mt-4 w-full py-4 rounded-3xl font-bold text-2xl shadow-2xl bg-yellow-500 hover:bg-yellow-600 text-black transition"
-          >
-            Edit Issue
-          </button>
+        {/* Edit / Delete Button */}
+        {isOwner && issue.status === "pending" && (
+          <div className="flex flex-col gap-4 mt-4">
+            <button
+              onClick={() => navigate(`/issues/edit/${id}`)}
+              className="w-full py-4 rounded-3xl font-bold text-2xl shadow-2xl bg-yellow-500 hover:bg-yellow-600 text-black transition"
+            >
+              Edit Issue
+            </button>
+            <button
+              onClick={async () => {
+                if (
+                  !window.confirm("Are you sure you want to delete this issue?")
+                )
+                  return;
+                try {
+                  const res = await fetch(
+                    `${import.meta.env.VITE_API_URL}/issues/${id}`,
+                    {
+                      method: "DELETE",
+                      headers: { authorization: `Bearer ${token}` },
+                    }
+                  );
+                  const data = await res.json();
+                  if (!res.ok) throw new Error(data.message || "Delete failed");
+                  toast.success("Issue deleted successfully");
+                  navigate("/citizen/issues");
+                } catch (err) {
+                  toast.error(err.message || "Delete failed");
+                }
+              }}
+              className="w-full py-4 rounded-3xl font-bold text-2xl shadow-2xl bg-red-500 hover:bg-red-600 text-white transition"
+            >
+              Delete Issue
+            </button>
+          </div>
         )}
 
         {/* Timeline */}

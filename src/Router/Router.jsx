@@ -39,11 +39,16 @@ import Register from "../Components/Login/Register";
 import ContactSuportTem from "../Dashboards/Citizen/ContactSuportTem";
 import AdminPayments from "../Dashboards/Admin/AdminPayments";
 import CitizenPaymentHomePayment from "../Dashboards/Citizen/CitizenPaymentHomePayment";
+import Error from "../Error/Error";
+import StaffManagement from "../Dashboards/Admin/StaffManagement";
+import AddStaff from "../Dashboards/Sidebr/AddStaff";
+import StaffChangePassword from "../Dashboards/Staff/StaffChangePassword";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <HomeLayouts />,
+    errorElement: <Error></Error>,
     children: [
       { path: "/", element: <Home /> },
       { path: "/login", element: <Login /> },
@@ -102,6 +107,8 @@ const router = createBrowserRouter([
       { path: "manage-users", element: <ManageUsers /> },
       { path: "manage-issues", element: <ManageIssues /> },
       { path: "payments", element: <AdminPayments /> },
+      { path: "staffManagement", element: <StaffManagement /> },
+      { path: "addstaffManagement", element: <AddStaff /> },
     ],
   },
 
@@ -117,6 +124,7 @@ const router = createBrowserRouter([
       { path: "dashboard", element: <StaffHome /> },
       { path: "issues", element: <StaffAssigned /> },
       { path: "issues/:id", element: <UpdateIssue /> },
+      { path: "staffChangePassword", element: <StaffChangePassword /> },
     ],
   },
 

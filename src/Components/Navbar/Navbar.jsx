@@ -294,6 +294,19 @@ const Navbar = () => {
                 </NavLink>
               </li>
               <li>
+                {" "}
+                <NavLink
+                  to="/adminLogin"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "btn btn-sm md:btn-md btn-primary text-primary-content font-bold"
+                      : "btn btn-sm md:btn-md btn-ghost hover:bg-base-200"
+                  }
+                >
+                  Dashboord
+                </NavLink>
+              </li>
+              <li>
                 <NavLink
                   to="/adminLogin"
                   className={({ isActive }) =>

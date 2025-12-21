@@ -275,12 +275,17 @@ const AllIssues = () => {
                   </div>
 
                   {/* Comment Input */}
-                  <div className="mb-4">
-                    <div className="relative flex">
+                  <div className="mb-6">
+                    <div className="relative flex items-center">
+                      {/* Main Input */}
                       <input
                         type="text"
                         placeholder="Add your support or comment..."
-                        className="input input-sm input-bordered w-full pr-12 text-sm rounded-full bg-gray-100 border-gray-300 focus:ring-indigo-500"
+                        className={`w-full px-5 py-3 pl-5 pr-14 text-sm bg-white border-2 rounded-full shadow-inner transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-indigo-500/30 focus:border-indigo-500 placeholder-gray-400 text-gray-800 ${
+                          commentTexts[issue._id]?.trim()
+                            ? "border-indigo-300"
+                            : "border-gray-200"
+                        }`}
                         value={commentTexts[issue._id] || ""}
                         onChange={(e) =>
                           setCommentTexts((prev) => ({
@@ -289,21 +294,45 @@ const AllIssues = () => {
                           }))
                         }
                         onKeyDown={(e) => {
-                          if (e.key === "Enter") {
+                          if (e.key === "Enter" && !e.shiftKey) {
+                            e.preventDefault(); // Prevents newline if you want
                             handleComment(issue._id, commentTexts[issue._id]);
                           }
                         }}
                       />
+
+                      {/* Send Button */}
                       <button
-                        className="absolute right-0 top-0 h-full w-10 btn btn-ghost btn-sm text-indigo-600 hover:text-indigo-700 rounded-full"
                         onClick={() =>
                           handleComment(issue._id, commentTexts[issue._id])
                         }
+                        disabled={!commentTexts[issue._id]?.trim()}
+                        className={`absolute right-1 top-1/2 -translate-y-1/2 p-2.5 rounded-full transition-all duration-300 flex items-center justify-center ${
+                          commentTexts[issue._id]?.trim()
+                            ? "bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg hover:shadow-xl transform hover:scale-110"
+                            : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                        }`}
                       >
-                        <MdOutlineDoubleArrow className="text-lg" />
+                        <MdOutlineDoubleArrow className="text-xl rotate-[-90deg]" />
                       </button>
                     </div>
+
+                    {/* Optional: Helper text */}
+                    <p className="text-xs text-gray-500 mt-2 ml-4">
+                      Press Enter to send • Show your support!
+                    </p>
                   </div>
+
+                  {/* View All Comments Button - Only if there are comments */}
+                  {issue.comments && issue.comments.length > 0 && (
+                    <button
+                      onClick={() => navigate(`/issue/${issue._id}`)}
+                      className="w-full mb-3 px-4 py-3 bg-gradient-to-r from-red-500 to-rose-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg hover:from-red-600 hover:to-rose-700 transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2"
+                    >
+                      <FaRegComment className="text-lg" />
+                      See All Comments ({issue.comments.length})
+                    </button>
+                  )}
 
                   {/* View Details Button */}
                   <button
@@ -312,7 +341,6 @@ const AllIssues = () => {
                   >
                     View Details
                   </button>
-
                   {/* Comments List Preview */}
                   {issue.comments && issue.comments.length > 0 && (
                     <div className="space-y-2 mt-4 border-t pt-3">
@@ -325,24 +353,21 @@ const AllIssues = () => {
                           c,
                           i // Show max 2 comments
                         ) => (
-                          <div
-                            key={i}
-                            className="flex items-start gap-2 text-xs bg-gray-50 p-2 rounded-lg"
-                          >
+                          <div className="flex items-start gap-2 text-xs bg-gray-50 p-2 rounded-lg">
+                            {/* Commenter's Avatar */}
                             <img
                               src={
-                                issue.imageUrl?.startsWith("http")
-                                  ? issue.imageUrl
-                                  : issue.imageUrl
-                                  ? `${import.meta.env.VITE_API_URL}${
-                                      issue.imageUrl
-                                    }`
-                                  : "https://via.placeholder.com/400x300?text=No+Image" // fallback
+                                c.avatar?.startsWith("http")
+                                  ? c.avatar
+                                  : c.avatar
+                                  ? `${import.meta.env.VITE_API_URL}${c.avatar}`
+                                  : "https://via.placeholder.com/40?text=👤"
                               }
-                              alt={issue.title}
+                              alt={c.name}
+                              className="w-8 h-8 rounded-full object-cover flex-shrink-0"
                               onError={(e) => {
                                 e.target.src =
-                                  "https://via.placeholder.com/400x300?text=No+Image";
+                                  "https://via.placeholder.com/40?text=👤";
                               }}
                             />
                             <div className="leading-tight">

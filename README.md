@@ -9,7 +9,7 @@ Premium users get **priority support** and can post issues for **50৳** with di
 
 ## 🌐 Live Website
 
-**Live Site URL:** [https://issue-hub-nine.vercel.app/](https://issue-hub-nine.vercel.app/)
+**Live Site URL:** [https://issue-server-site.vercel.app/](https://issue-server-site.vercel.app/)
 
 ---
 
@@ -157,18 +157,18 @@ Crate a new account 🏃🏼‍➡️🏃🏼‍➡️🏃🏼‍➡️ |
 
 ## 🧑‍💻 Developer Information
 
-| Field              | Details                                                                  |
-| ------------------ | ------------------------------------------------------------------------ |
-| Developer Name     | Tufayel Ahmed                                                            |
-| Email              | [ta07092007@gmail.com](mailto:ta07092007@gmail.com)                      |
-| GitHub Profile     | [https://github.com/tufayel2007](https://github.com/tufayel2007)         |
+| Field              | Details                                                                        |
+| ------------------ | ------------------------------------------------------------------------------ |
+| Developer Name     | Tufayel Ahmed                                                                  |
+| Email              | [ta07092007@gmail.com](mailto:ta07092007@gmail.com)                            |
+| GitHub Profile     | [https://github.com/tufayel2007](https://github.com/tufayel2007)               |
 | Project Created On |
 | December 118, 2025 |
-| Tech Stack         | React, TailwindCSS, Firebase, MongoDB, Stripe, TanStack Query            |
-| Contact            | [ta07092007@gmail.com](mailto:ta07092007@gmail.com)                      |
-| Contribution Guide | Fork → Branch → Commit → Pull Request                                    |
-| Project Status     | Active / Live                                                            |
-| Live Demo          | [https://issue-hub-nine.vercel.app/](https://issue-hub-nine.vercel.app/) |
+| Tech Stack         | React, TailwindCSS, Firebase, MongoDB, Stripe, TanStack Query                  |
+| Contact            | [ta07092007@gmail.com](mailto:ta07092007@gmail.com)                            |
+| Contribution Guide | Fork → Branch → Commit → Pull Request                                          |
+| Project Status     | Active / Live                                                                  |
+| Live Demo          | [https://issue-server-site.vercel.app/](https://issue-server-site.vercel.app/) |
 
 ---
 
