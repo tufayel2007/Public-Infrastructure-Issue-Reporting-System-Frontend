@@ -1,4 +1,13 @@
 import React from "react";
+const teamMembers = [
+  {
+    name: "MD. Tufayel Ahmed",
+    img: "https://i.ibb.co.com/Q75wsZ5B/banear.jpg",
+  },
+  { name: "MD", img: "https://i.ibb.co.com/Q75wsZ5B/banear.jpg" },
+  { name: "MD", img: "https://i.ibb.co.com/Q75wsZ5B/banear.jpg" },
+  { name: "MD", img: "https://i.ibb.co.com/Q75wsZ5B/banear.jpg" },
+];
 
 const About = () => {
   return (
@@ -150,22 +159,26 @@ const About = () => {
             ))}
           </div>
         </section>
-
-        {/* 7. Our Team */}
+        {/*  Our Team */}
         <section className="animate-fade-in">
           <h2 className="text-4xl sm:text-5xl font-bold text-center mb-16 text-purple-300">
             Meet Our Team
           </h2>
+
           <div className="grid md:grid-cols-4 gap-8">
-            {[
-              "John Doe - Founder",
-              "Jane Smith - Lead Developer",
-              "Alex Lee - UI/UX Designer",
-              "Sarah Kim - Community Manager",
-            ].map((member, i) => (
+            {teamMembers.map((member, i) => (
               <div key={i} className="text-center">
-                <div className="w-40 h-40 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full mx-auto mb-4" />
-                <p className="text-xl font-semibold">{member}</p>
+                {/* Image Container */}
+                <div className="w-40 h-40 mx-auto mb-4 rounded-full overflow-hidden border-4 border-purple-500">
+                  <img
+                    src={member.img}
+                    alt={member.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
+                {/* Name */}
+                <p className="text-xl font-semibold">{member.name}</p>
               </div>
             ))}
           </div>

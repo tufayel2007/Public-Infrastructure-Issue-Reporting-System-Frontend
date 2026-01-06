@@ -246,7 +246,7 @@ const CitizenHome = () => {
           <div className="flex flex-col sm:flex-row justify-center items-center gap-10 max-w-5xl mx-auto">
             {/* Primary Action: Report New Issue */}
             <Link
-              to="/reportIssue"
+              to="/citizen/citizenReportIssue"
               onClick={(e) => {
                 if (!isPremium && stats.total >= 3) {
                   e.preventDefault();
@@ -255,16 +255,12 @@ const CitizenHome = () => {
               }}
               className="group relative inline-flex items-center justify-center overflow-hidden rounded-3xl px-12 py-8 text-2xl font-bold text-white shadow-2xl transition-all duration-700 hover:shadow-purple-500/60 hover:scale-110"
             >
-              {/* Gradient Background */}
               <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-cyan-600 group-hover:from-purple-700 group-hover:via-pink-700 group-hover:to-cyan-700 transition-all duration-700"></div>
 
-              {/* Shimmer Effect */}
               <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 transition-transform duration-1000 group-hover:translate-x-full"></div>
 
-              {/* Glowing Border Ring */}
               <div className="absolute inset-0 rounded-3xl ring-4 ring-purple-500/0 group-hover:ring-purple-500/60 transition-all duration-700"></div>
 
-              {/* Content */}
               <span className="relative z-10 flex items-center gap-5 drop-shadow-lg">
                 <span className="text-4xl">📢</span>
                 Report a New Issue
