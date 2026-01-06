@@ -4,9 +4,18 @@ const teamMembers = [
     name: "MD. Tufayel Ahmed",
     img: "https://i.ibb.co.com/Q75wsZ5B/banear.jpg",
   },
-  { name: "MD", img: "https://i.ibb.co.com/Q75wsZ5B/banear.jpg" },
-  { name: "MD", img: "https://i.ibb.co.com/Q75wsZ5B/banear.jpg" },
-  { name: "MD", img: "https://i.ibb.co.com/Q75wsZ5B/banear.jpg" },
+  {
+    name: "MD. Tufayel Ahmed",
+    img: "https://i.ibb.co.com/Q75wsZ5B/banear.jpg",
+  },
+  {
+    name: "MD. Tufayel Ahmed",
+    img: "https://i.ibb.co.com/Q75wsZ5B/banear.jpg",
+  },
+  {
+    name: "MD. Tufayel Ahmed",
+    img: "https://i.ibb.co.com/Q75wsZ5B/banear.jpg",
+  },
 ];
 
 const About = () => {

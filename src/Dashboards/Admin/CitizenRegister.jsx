@@ -109,7 +109,7 @@ const CitizenRegister = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-black">
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-black mt-5">
       <div className="relative z-10 w-full max-w-md mx-4">
         <div className="backdrop-blur-2xl bg-white/5 border border-white/10 rounded-3xl shadow-2xl p-8 md:p-12">
           <h2 className="text-4xl font-extrabold text-center text-white mb-4 tracking-tight">

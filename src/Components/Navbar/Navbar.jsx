@@ -1,8 +1,8 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { signOut, onAuthStateChanged } from "firebase/auth";
-
 import { FaUserCircle } from "react-icons/fa";
+
 import logoIMG from "../../assets/Profiel.png";
 import { auth } from "../../../FirebasseConfig";
 
@@ -20,123 +20,40 @@ const Navbar = () => {
   }, []);
 
   const handleLogout = async () => {
-    const confirmLogout = window.confirm("আপনি কি লগআউট করতে চান?");
+    const confirmLogout = window.confirm("are you shur Logout");
     if (confirmLogout) {
       await signOut(auth);
       navigate("/login");
     }
   };
 
-  const navLinks = (
-    <>
-      <li>
-        <NavLink
-          to="/"
-          className={({ isActive }) =>
-            isActive
-              ? "btn btn-sm md:btn-md btn-primary text-primary-content font-bold"
-              : "btn btn-sm md:btn-md btn-ghost hover:bg-base-200"
-          }
-        >
-          Home
-        </NavLink>
-      </li>
-      <li>
-        <NavLink
-          to="/allIssues"
-          className={({ isActive }) =>
-            isActive
-              ? "btn btn-sm md:btn-md btn-primary text-primary-content font-bold"
-              : "btn btn-sm md:btn-md btn-ghost hover:bg-base-200"
-          }
-        >
-          All Issues
-        </NavLink>
-      </li>
-      <li>
-        <NavLink
-          to="/about"
-          className={({ isActive }) =>
-            isActive
-              ? "btn btn-sm md:btn-md btn-primary text-primary-content font-bold"
-              : "btn btn-sm md:btn-md btn-ghost hover:bg-base-200"
-          }
-        >
-          About
-        </NavLink>
-      </li>
-      <li>
-        <NavLink
-          to="/allservises"
-          className={({ isActive }) =>
-            isActive
-              ? "btn btn-sm md:btn-md btn-primary text-primary-content font-bold"
-              : "btn btn-sm md:btn-md btn-ghost hover:bg-base-200"
-          }
-        >
-          All Servises
-        </NavLink>
-      </li>
-      <li>
-        <NavLink
-          to="/reportIssue"
-          className={({ isActive }) =>
-            isActive
-              ? "btn btn-sm md:btn-md btn-primary text-primary-content font-bold"
-              : "btn btn-sm md:btn-md btn-ghost hover:bg-base-200"
-          }
-        >
-          Report An Issue
-        </NavLink>
-      </li>
-      <li>
-        <NavLink
-          to="/adminLogin"
-          className={({ isActive }) =>
-            `
-      btn btn-xs md:btn-sm
-      rounded-full
-      px-4 md:px-5
-      py-2
-      font-medium
-      tracking-wide
-      text-sm md:text-base
-      transition-all duration-200 ease-in-out
-      animate-bounce-slow
-      ${
-        isActive
-          ? "bg-gradient-to-r from-primary to-secondary text-white shadow-lg scale-105"
-          : "bg-base-200 text-base-content hover:bg-gradient-to-r hover:from-primary hover:to-secondary hover:text-white hover:shadow-md"
-      }
-      `
-          }
-        >
-          Access Portal
-        </NavLink>
-      </li>
-    </>
-  );
+  // Main navigation links (shared between desktop and mobile)
+  const navItems = [
+    { to: "/", label: "Home" },
+    { to: "/allIssues", label: "All Issues" },
+    { to: "/about", label: "About" },
+    { to: "/allservises", label: "All Services" },
+    { to: "/HowItWorksSection", label: "How It Works" },
+    { to: "/featuresSection", label: "Features" },
+    { to: "/latestResolvedIssuess", label: "Resolved Issues" },
+    { to: "/reportIssue", label: "Report Issue" },
+  ];
+
+  const activeLinkClass =
+    "btn btn-sm md:btn-md btn-primary text-primary-content font-bold";
+  const inactiveLinkClass = "btn btn-sm md:btn-md btn-ghost hover:bg-base-200";
 
   if (loading) {
     return (
-      <div
-        className="navbar bg-base-100 shadow-md sticky
-       top-0 z-50 h-16 flex items-center justify-center"
-      >
-        <span
-          className="loading loading-spinner
-         text-primary"
-        ></span>
+      <div className="fixed top-0 left-0 right-0 z-50 h-16 bg-base-100 shadow-md flex items-center justify-center">
+        <span className="loading loading-spinner loading-md text-primary"></span>
       </div>
     );
   }
 
   return (
-    <div
-      className="navbar bg-base-100 text-base-content shadow-md 
-               fixed top-0 left-0 right-0 z-50 
-               transition-colors duration-300 h-16"
-    >
+    <div className="navbar bg-base-100 shadow-lg fixed top-0 left-0 right-0 z-50 h-16 px-4 md:px-8">
+      {/* Logo & Brand */}
       <div className="navbar-start">
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -156,45 +73,81 @@ const Navbar = () => {
             </svg>
           </label>
           <ul
-            className="menu menu-sm dropdown-content mt-3 p-3 
-          shadow bg-base-100 rounded-box w-52"
+            tabIndex={0}
+            className="menu menu-sm dropdown-content mt-3 z-10 p-4 shadow bg-base-100 rounded-box w-64 gap-2"
           >
-            {navLinks}
+            {navItems.map((item) => (
+              <li key={item.to}>
+                <NavLink
+                  to={item.to}
+                  className={({ isActive }) =>
+                    isActive ? activeLinkClass : inactiveLinkClass
+                  }
+                >
+                  {item.label}
+                </NavLink>
+              </li>
+            ))}
+            <li>
+              <NavLink
+                to="/adminLogin"
+                className="btn btn-sm bg-green-300 animate-pulse text-black"
+              >
+                Access Portal
+              </NavLink>
+            </li>
           </ul>
         </div>
 
-        <NavLink to="/" className="flex items-center gap-2">
+        <NavLink to="/" className="flex items-center gap-3">
           <img
             src={logoIMG}
-            alt="Logo"
-            className="w-9 h-9 rounded-full object-cover border
-             border-base-300"
+            alt="PIIRS Logo"
+            className="w-10 h-10 rounded-full object-cover ring-2 ring-primary ring-offset-2 ring-offset-base-100"
           />
-          <span
-            className="hidden md:inline-flex font-bold 
-          text-xl text-primary"
-          >
-            Public Infrastructure Issue Reporting System
-          </span>
-          <span
-            className="md:hidden font-bold 
-          text-lg text-primary"
-          >
-            PIIRS
-          </span>
+          <div>
+            <span className="font-bold text-lg md:text-xl text-primary hidden sm:block">
+              PIIRS
+            </span>
+            <p className="text-xs text-base-content/70 hidden md:block -mt-1">
+              Public Infrastructure Issue Reporting System
+            </p>
+          </div>
         </NavLink>
       </div>
 
+      {/* Desktop Navigation */}
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1 gap-2">{navLinks}</ul>
+        <ul className="menu menu-horizontal px-1 gap-3">
+          {navItems.map((item) => (
+            <li key={item.to}>
+              <NavLink
+                to={item.to}
+                className={({ isActive }) =>
+                  isActive ? activeLinkClass : inactiveLinkClass
+                }
+              >
+                {item.label}
+              </NavLink>
+            </li>
+          ))}
+          <li>
+            <NavLink
+              to="/adminLogin"
+              className="btn btn-sm bg-green-300 animate-pulse text-black"
+            >
+              Access Portal
+            </NavLink>
+          </li>
+        </ul>
       </div>
 
-      <div className="navbar-end flex items-center gap-3">
+      {/* User Section */}
+      <div className="navbar-end">
         {!user ? (
           <NavLink
             to="/login"
-            className="btn btn-primary btn-sm 
-            md:btn-md font-bold text-primary-content"
+            className="btn btn-primary btn-sm md:btn-md font-semibold"
           >
             Login
           </NavLink>
@@ -202,128 +155,59 @@ const Navbar = () => {
           <div className="dropdown dropdown-end">
             <label
               tabIndex={0}
-              className="btn
-               btn-ghost btn-circle avatar group"
+              className="btn btn-ghost btn-circle avatar tooltip tooltip-bottom"
+              data-tip={user.displayName || "User"}
             >
-              <div
-                className="w-10 h-10 rounded-full 
-              ring ring-primary ring-offset-2 ring-offset-base-100"
-              >
+              <div className="w-10 rounded-full ring-2 ring-primary ring-offset-base-100 ring-offset-2">
                 {user.photoURL ? (
                   <img
                     src={user.photoURL}
-                    alt={user.displayName}
+                    alt="User"
                     className="rounded-full object-cover"
                     onError={(e) => (e.target.src = logoIMG)}
                   />
                 ) : (
-                  <FaUserCircle className="w-full h-full text-base-content/40" />
+                  <FaUserCircle className="w-full h-full text-primary/50" />
                 )}
-              </div>
-              <div
-                className="absolute hidden group-hover:block 
-              bg-base-300 text-base-content text-xs
-               rounded px-2 
-              py-1 -left-6 top-12 whitespace-nowrap
-              
-              z-10 shadow"
-              >
-                {user.displayName}
               </div>
             </label>
 
             <ul
-              className="menu menu-sm
-             dropdown-content
-             mt-3 p-3 shadow bg-base-100 
-            rounded-box w-56 border border-base-300"
+              tabIndex={0}
+              className="dropdown-content menu p-4 shadow-lg bg-base-100 rounded-box w-64 mt-3 border border-base-300"
             >
-              <li
-                className="menu-title text-center
-               pb-2 border-b border-base-300"
-              >
-                <span className="font-bold">{user.displayName}</span>
+              <li className="menu-title">
+                <span className="font-bold text-lg">
+                  {user.displayName || "User"}
+                </span>
+                <span className="text-sm text-base-content/60">
+                  {user.email}
+                </span>
               </li>
+              <div className="divider my-2"></div>
               <li>
                 <NavLink
-                  to="/"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "btn btn-sm md:btn-md btn-primary text-primary-content font-bold"
-                      : "btn btn-sm md:btn-md btn-ghost hover:bg-base-200"
-                  }
+                  to="/dashboard"
+                  className="btn btn-ghost justify-start"
                 >
-                  Home
+                  Dashboard
                 </NavLink>
               </li>
               <li>
-                <NavLink
-                  to="/allIssues"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "btn btn-sm md:btn-md btn-primary text-primary-content font-bold"
-                      : "btn btn-sm md:btn-md btn-ghost hover:bg-base-200"
-                  }
-                >
-                  All Issues
+                <NavLink to="/profile" className="btn btn-ghost justify-start">
+                  My Profile
                 </NavLink>
               </li>
               <li>
-                <NavLink
-                  to="/about"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "btn btn-sm md:btn-md btn-primary text-primary-content font-bold"
-                      : "btn btn-sm md:btn-md btn-ghost hover:bg-base-200"
-                  }
-                >
-                  About
+                <NavLink to="/myIssues" className="btn btn-ghost justify-start">
+                  My Reported Issues
                 </NavLink>
               </li>
+              <div className="divider my-2"></div>
               <li>
-                {" "}
-                <NavLink
-                  to="/allservises"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "btn btn-sm md:btn-md btn-primary text-primary-content font-bold"
-                      : "btn btn-sm md:btn-md btn-ghost hover:bg-base-200"
-                  }
-                >
-                  All Servises
-                </NavLink>
-              </li>
-              <li>
-                {" "}
-                <NavLink
-                  to="/adminLogin"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "btn btn-sm md:btn-md btn-primary text-primary-content font-bold"
-                      : "btn btn-sm md:btn-md btn-ghost hover:bg-base-200"
-                  }
-                >
-                  Dashboord
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/adminLogin"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "btn btn-sm md:btn-md btn-primary text-primary-content font-bold"
-                      : "btn btn-sm md:btn-md btn-ghost hover:bg-base-200"
-                  }
-                >
-                  Login
-                </NavLink>
-              </li>
-              <li className="border-t border-base-300 mt-2 pt-2">
                 <button
                   onClick={handleLogout}
-                  className="text-error hover:bg-error 
-                  hover:text-error-content w-full
-                   text-left"
+                  className="btn btn-error btn-outline w-full"
                 >
                   Logout
                 </button>

@@ -43,6 +43,9 @@ import Error from "../Error/Error";
 import StaffManagement from "../Dashboards/Admin/StaffManagement";
 import AddStaff from "../Dashboards/Sidebr/AddStaff";
 import StaffChangePassword from "../Dashboards/Staff/StaffChangePassword";
+import HowItWorksSection from "../Components/Home/HowItWorksSection";
+import FeaturesSection from "../Components/Home/FeaturesSection";
+import LatestResolvedIssues from "../Components/Home/LatestResolvedIssues";
 
 const router = createBrowserRouter([
   {
@@ -86,6 +89,18 @@ const router = createBrowserRouter([
       {
         path: "/CitizenRegister",
         element: <CitizenRegister></CitizenRegister>,
+      },
+      {
+        path: "/HowItWorksSection",
+        element: <HowItWorksSection></HowItWorksSection>,
+      },
+      {
+        path: "/featuresSection",
+        element: <FeaturesSection></FeaturesSection>,
+      },
+      {
+        path: "/latestResolvedIssuess",
+        element: <LatestResolvedIssues></LatestResolvedIssues>,
       },
     ],
   },
