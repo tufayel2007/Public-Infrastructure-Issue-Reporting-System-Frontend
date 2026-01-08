@@ -187,22 +187,37 @@ const Navbar = () => {
               <div className="divider my-2"></div>
               <li>
                 <NavLink
-                  to="/dashboard"
+                  to="/adminLogin"
                   className="btn btn-ghost justify-start"
                 >
                   Dashboard
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/profile" className="btn btn-ghost justify-start">
+                <NavLink
+                  to="/citizen/profileRouter"
+                  className="btn btn-ghost justify-start"
+                >
                   My Profile
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/myIssues" className="btn btn-ghost justify-start">
+                <NavLink
+                  to="/featuresSection"
+                  className="btn btn-ghost justify-start"
+                >
+                  Features
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/citizen/citizenReportIssue"
+                  className="btn btn-ghost justify-start"
+                >
                   My Reported Issues
                 </NavLink>
               </li>
+
               <div className="divider my-2"></div>
               <li>
                 <button

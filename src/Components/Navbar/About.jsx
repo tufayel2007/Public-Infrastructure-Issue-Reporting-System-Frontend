@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 const teamMembers = [
   {
     name: "MD. Tufayel Ahmed",
@@ -178,13 +179,19 @@ const About = () => {
             {teamMembers.map((member, i) => (
               <div key={i} className="text-center">
                 {/* Image Container */}
-                <div className="w-40 h-40 mx-auto mb-4 rounded-full overflow-hidden border-4 border-purple-500">
-                  <img
-                    src={member.img}
-                    alt={member.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+                <a
+                  href="https://my-protflio-web.vercel.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div className="w-40 h-40 mx-auto mb-4 rounded-full overflow-hidden border-4 border-purple-500 hover:scale-105 transition">
+                    <img
+                      src={member.img}
+                      alt={member.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </a>
 
                 {/* Name */}
                 <p className="text-xl font-semibold">{member.name}</p>
