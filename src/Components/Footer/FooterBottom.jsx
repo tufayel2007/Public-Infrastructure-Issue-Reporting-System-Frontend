@@ -48,13 +48,13 @@ const FooterBottom = ({ currentYear }) => {
         <p className="text-sm md:text-base text-gray-400">
           Made & Developed by{" "}
           <Link
-            to="https://my-protflio-web.vercel.app/"
+            to="https://www.famousit-solutions.com/"
             target="_blank"
             className="font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 
                  bg-clip-text text-transparent hover:opacity-80 transition duration-300
                  animate-gradient"
           >
-            👉🏼 Tufayel
+            👉🏼 Famous IT Solutions
           </Link>{" "}
           — Web Experts
         </p>
